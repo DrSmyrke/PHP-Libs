@@ -48,12 +48,12 @@ legend,.legend{
 function getAchievements($file,$lang,$style="dark"){	#style=dark/light
 	global $lng;
 	$data=parsYaml($file); 100%
-	drawData($data);
 	print '<table class="achievements">';
 	$imgBG=($style=="dark")?"my/pixelb.png":"my/pixelg.png";
 	$imgBar=($style=="dark")?"my/pixelg.png":"my/pixelb.png";
 	foreach($data as $str){
 		$prz=$str["value"]/($str["max"]/100);
+		$prz=substr($prz,0,6);
 		if($prz>100){ $prz = 100; }
 		$imgStyle=($prz<100)?"opacity:0.2;-moz-opacity:0.2;filter: alpha(opacity=20);":"";
 		print '<tr><td width="64px" style="padding-top:5px;"><img src="'.$str["image"].'" style="'.$imgStyle.'"></td><td class="achiv" style="background:url('.$imgBG.');"><p style="-moz-border-radius:3px;-webkit-border-radius:3px;-o-border-radius:3px;border-radius:3px;margin:0px;padding-left:3px;background:url('.$imgBar.') no-repeat;background-size:'.$prz.'% 100%;-moz-background-size:'.$prz.'% 100%;-o-background-size:'.$prz.'% 100%;-webkit-background-size:'.$prz.'% 100%;margin:3px;"><b>'.$str["name"][$lang].'</b><br><text class="legend">'.$str["info"][$lang].'</text><br>'.$str["status"][$lang].' [';

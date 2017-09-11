@@ -1,4 +1,4 @@
--
+0:
   image: my/Achievements/5e9b5391af90fe2c88dd0ca91b309fef2f0c0875.jpg
   name:
     en: To the edge of the world
@@ -11,4 +11,18 @@
     ru: Пройдено
   value: 277.4
   max: 10000
+  reward: -1
+1:
+  image: my/Achievements/Top-Secret.jpg
+  name:
+    en: Top Secret
+    ru: Совершенно секретно
+  info:
+    en: *****************************
+    ru: *****************************
+  status:
+    en: *****
+    ru: *****
+  value: 2
+  max: 17
   reward: -1
