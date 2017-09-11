@@ -1,0 +1,14 @@
+-
+  image: my/Achievements/5e9b5391af90fe2c88dd0ca91b309fef2f0c0875.jpg
+  name:
+    en: To the edge of the world
+    ru: На край света
+  info:
+    en: Travel by bike 10 000 km
+    ru: Проехать на велосипеде 10 000 км
+  status:
+    en: Passed
+    ru: Пройдено
+  value: 277.4
+  max: 10000
+  reward: -1
