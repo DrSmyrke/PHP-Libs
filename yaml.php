@@ -15,7 +15,7 @@ function parsDataYaml($data,$spc,$recursion){
 			for($i=0;$i<$recursion;$i++){$string.="$spc ";}
 			$string.="$val\n";continue;
 		}
-		if(is_int($key)){
+		if(is_int($key) and gettype($val)!="array"){
 			for($i=0;$i<$recursion-1;$i++){$string.="$spc ";}
 			$string.="- $val\n";continue;
 		}
