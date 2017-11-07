@@ -16,7 +16,7 @@ function parsDataYaml($data,$spc,$recursion){
 			$string.="$val\n";continue;
 		}
 		if(is_int($key) and gettype($val)!="array"){
-			for($i=0;$i<$recursion-1;$i++){$string.="$spc ";}
+			for($i=0;$i<$recursion;$i++){$string.="$spc ";}
 			$string.="- $val\n";continue;
 		}
 		if(gettype($val)=="string" or gettype($val)=="integer"){
@@ -51,7 +51,7 @@ function parsYaml($file){
 function setListYaml(&$dt,$pr,$string,$level){
 	$string=substr($string,2);
 	$string=str_replace("\"","'",$string);
-	parsUrlYaml($dt,$pr,$string,"",$level+1,"list");
+	parsUrlYaml($dt,$pr,$string,"",$level,"list");
 }
 function setPeremYaml(&$dt,&$pr,$p,$v,$level){
 	$tmp=null;for($i=0;$i<$level;$i++){$tmp[]=$pr[$i];}$pr=$tmp;
