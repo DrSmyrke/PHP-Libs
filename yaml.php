@@ -48,6 +48,23 @@ function parsYaml($file){
 	}
 	return $data;
 }
+function parsYamlFromString($string){
+	$fs = explode("\n",$string);
+	$data=array();
+	$prew=null;
+	foreach($fs as $str){
+		$str=str_replace(array("\n","\r"),"",$str);
+		$str=str_replace("  "," ",$str);
+		if(substr($str,0,1)=="#" or $str==""){setComentYaml($data,$str);continue;}
+		$level=0;while(substr($str,$level,1)==" "){$level++;}
+		$str=substr($str,$level);
+		if(substr($str,-1,1)==":"){setArrayYaml($data,$prew,$str,$level);continue;}
+		list($p,$v)=explode(": ",$str);
+		if($p!="" and $v!=""){setPeremYaml($data,$prew,$p,$v,$level);continue;}
+		if(substr($str,0,2)=="- "){setListYaml($data,$prew,$str,$level);continue;}
+	}
+	return $data;
+}
 function setListYaml(&$dt,$pr,$string,$level){
 	$string=substr($string,2);
 	$string=str_replace("\"","'",$string);
