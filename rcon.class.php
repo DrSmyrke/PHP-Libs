@@ -1,4 +1,20 @@
 <?php
+/* Example
+	include "libs/rcon.class.php";
+	$rcon=new Rcon;
+	list($server,$constat)=$rcon->Connect($servers[$serv][0],$servers[$serv][3],$servers[$serv][4]);
+	if($server){
+		$ver=$rcon->Command("/version");
+		$players=$rcon->Command("/players");
+		$time=$rcon->Command("/time");
+		print '<table class="table" cellspacing="0">';
+		print '<tr><td>VERSION</td><td>'.$ver.'</td></tr>';
+		print '<tr><td>TIME</td><td>'.$time.'</td></tr>';
+		print '<tr><td>ONLINE</td><td>'.join("<br>",$players).'</td></tr>';
+		print "</table>";
+	}
+
+*/
 class RconException extends Exception
 {
 	// Exception thrown by Rcon class
