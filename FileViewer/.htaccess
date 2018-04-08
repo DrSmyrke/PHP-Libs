@@ -1,0 +1,4 @@
+AuthType Digest
+AuthName "SecretZone"
+AuthUserFile <PATH>/family.dav
+Require user family

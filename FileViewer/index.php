@@ -1,49 +1,119 @@
 ﻿<?php
 	
-	$dir = "/mnt/photo";
+	$dir = "files";
 	
 	$cmd = null;
 	$target = null;
+	$file = null;
 	if( $_POST["c"] != "" ) $cmd = $_POST["c"];
 	if( $_POST["t"] != "" ) $target = $_POST["t"];
-	if( $_GET["c"] != "" ) $cmd = $_GET["c"];
+	if( $_POST["f"] != "" ) $file = $_POST["f"];
 	if( $_GET["t"] != "" ) $target = $_GET["t"];
 
 	
+/*
 
-	if( $cmd == "open" ){
-		$file = "$dir$target";
-		if( is_file( $file ) ){
-			list($name,$type)=explode(".",$file);
-			$type = strtolower($type);
-			$str = "File parsing error";
-			if($type == "jpg"){
-				$str = '<img src="?c=get&t='.$target.'">';
-			}
-			if($type == "mp4"){
-				$str = '
-<video controls width="400" height="300">
-	<!-- MP4 для Safari, IE9, iPhone, iPad, Android, и Windows Phone 7 -->
-	<source src="?c=get&t='.$target.'" type="video/mp4">
-	<!-- добавляем видеоконтент для устаревших браузеров, в которых нет поддержки элемента video -->
-	<object data="video.swf" type="application/x-shockwave-flash">
-		<param name="movie" value="video.swf">
-	</object>
-</video>';
+';
 #	<source src="video.webm" type="video/webm"><!-- WebM/VP8 для Firefox4, Opera, и Chrome -->
 #	<source src="video.ogv" type="video/ogg"><!-- Ogg/Vorbis для старых версий браузеров Firefox и Opera -->
-			}
-			print $str;
+
+*/
+		$name = substr($nameOrig, 0, $countSymName);
+		if( strlen( $name ) != strlen( $elem ) ){
+			$name = substr($nameOrig, 0, $countSymName - 3 )."...";
 		}
+		
+		$ico = "file";
+	if( $cmd == "back" ){
+		$dir = "$dir$target";
+		$count = 0;
+		$fileNum = 0;
+		$type = "";
+		$path = "";
+		$write = true;
+		if( is_dir( $dir ) ){
+			if( is_file( "$dir/$file" ) ){
+				foreach(glob("$dir/*") as $elem){
+					if(is_file($elem)){
+						$count++;
+						if( $elem == "$dir/$file" ) $write = false;
+						if( $write ){
+							$fileNum = $count;
+							$type = "image";
+							$tmp = explode(".",$elem);
+							$rashir = array_pop( $tmp );
+							$rashir = strtolower($rashir);
+							if($rashir == "mp4") $type = "video";
+							if($rashir == "avi") $type = "video";
+							$path = $elem;
+						}
+					}
+				}
+			}
+		}
+		if($path && $type) print 'open:'.$fileNum.':'.$count.':'.$type.':'.$path;
 		die;
 	}
-	if( $cmd == "get" ){
-		$file = "$dir$target";
-		if( is_file( $file ) ){
-			$fname=array_pop(explode("/",$target));
-			print "$fname,$file";
-			file_download($file,$fname);
+	if( $cmd == "next" ){
+		$dir = "$dir$target";
+		$count = 0;
+		$fileNum = 0;
+		$type = "";
+		$path = "";
+		$next = false;
+		if( is_dir( $dir ) ){
+			if( is_file( "$dir/$file" ) ){
+				foreach(glob("$dir/*") as $elem){
+					if(is_file($elem)){
+						$count++;
+						if( $elem == "$dir/$file" ){
+							$next = true;
+							continue;
+						}
+						if( $next ){
+							$next = false;
+							$fileNum = $count;
+							$type = "image";
+							$tmp = explode(".",$elem);
+							$rashir = array_pop( $tmp );
+							$rashir = strtolower($rashir);
+							if($rashir == "mp4") $type = "video";
+							if($rashir == "avi") $type = "video";
+							$path = $elem;
+						}
+					}
+				}
+			}
 		}
+		if($path && $type) print 'open:'.$fileNum.':'.$count.':'.$type.':'.$path;
+		die;
+	}
+	if( $cmd == "open" ){
+		$dir = "$dir$target";
+		$count = 0;
+		$fileNum = 0;
+		$type = "";
+		$path = "";
+		if( is_dir( $dir ) ){
+			if( is_file( "$dir/$file" ) ){
+				foreach(glob("$dir/*") as $elem){
+					if(is_file($elem)){
+						$count++;
+						if( $elem == "$dir/$file" ){
+							$fileNum = $count;
+							$type = "image";
+							$tmp = explode(".",$elem);
+							$rashir = array_pop( $tmp );
+							$rashir = strtolower($rashir);
+							if($rashir == "mp4") $type = "video";
+							if($rashir == "avi") $type = "video";
+							$path = "$dir/$file";
+						}
+					}
+				}
+			}
+		}
+		print 'open:'.$fileNum.':'.$count.':'.$type.':'.$path;
 		die;
 	}
 
@@ -73,6 +143,7 @@ body{
 	height:100%;
 	background:black;
 	visibility:hidden;
+	cursor:default;
 }
 #player{
 	padding:2px;
@@ -131,39 +202,76 @@ body{
 	float: right;
 	padding: 11px 14px 14px 14px;
 }
+.download_btn{
+	display: inline-block;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	font-weight: 700;
+	float: left;
+	padding: 11px 14px 14px 14px;
+}
+.icon:hover{
+	-moz-transition: 0.4s;
+	-ms-transition: 0.4s;
+	-webkit-transition: 0.4s;
+	-o-transition: 0.4s;
+	transition: 0.4s;
+	-moz-transform: scale( 1.15 ); /* Для Firefox */
+	-ms-transform: scale( 1.15 ); /* Для IE */
+	-webkit-transform: scale( 1.15 ); /* Для Safari, Chrome, iOS */
+	-o-transform: scale( 1.15 ); /* Для Opera */
+	transform: scale( 1.15 );
+}
 .close_icon{
-	background: url(img/icons.png?2) no-repeat;
-	background-position: -108px;
-	padding: 2px 18px 2px 0;
+	background: url(img/close.png) no-repeat;
+	padding: 0px 18px 2px 0;
 	margin: 0;
 	font-weight: 700;
 }
+.download_icon{
+	background: url(img/download.png) no-repeat;
+	padding: 0px 18px 2px 0;
+	margin: 0;
+}
 .topText{
 	padding: 10px 14px 0px 12px;
+}
+.fileViewer{
+	width:100%;
+	height:300px;
+	overflow:auto;
 }
 </style>
 
 <section class="border"></section>
 
-<div onselectstart="return false" onmousedown="return false">
+<div class="fileViewer">
 	<?php
-	print "DIR: [$target]<br>";
+	print "<br>";
+	printPath($target);
+	print "<br><br>";
 	printDir( "$dir$target" );
 	?>
 </div>
 
-<div id="viewer">
+<div id="viewer" onselectstart="return false" onmousedown="return false">
+	<div id="player" unselectable="on"  onselectstart="return false;" onMouseDown="moveState=true;initMove(this, event);return false;" onmouseup="moveCancel(this, event);" onmousemove="moveHandler(this, event);" onMouseOut="moveCancel(this, event);"></div>
+	
 	<div class="panel topPanel">
-		<a class="close_btn" onClick="closeViewer();">
+		<a class="close_btn icon" onClick="closeViewer();">
 			<i class="close_icon"></i>
 		</a>
 		<div class="topText">
-			1 из <span id="totalFilesField"></span>
+			<span id="currentFileNumField"></span> из <span id="totalFilesField"></span>
 			<span style="padding-left:30px;" id="fileName">FILENAME</span>
 		</div>
 	</div>
-	<div id="player" onselectstart="return false" onmousedown="return false"></div>
-	<div class="panel bottomPanel"></div>
+	<div class="panel bottomPanel">
+		<a class="download_btn icon" onClick="alert();">
+			<i class="download_icon"></i>
+		</a>
+	</div>
 </div>
 
 
@@ -192,105 +300,216 @@ var viewer = document.getElementById("viewer");
 var player = document.getElementById("player");
 var fileNameField = document.getElementById("fileName");
 var folder = <?php print "'$target'"; ?>;
+var script = <?php $tmp = explode("/", $_SERVER["SCRIPT_NAME"]); print "'".array_pop($tmp)."'"; ?>;
+var moveState = false;
+var x0, y0;
+var moveTo = "";
+var openViewerFlag = false;
 
 request.onreadystatechange=function(){
 	if (request.readyState==4 && request.status == 200) {
-		player.innerHTML=request.responseText;
+		var tmp = request.responseText.split(":");
+		if( tmp[0] == "open" ){
+			document.getElementById("currentFileNumField").innerHTML = tmp[1];
+			document.getElementById("totalFilesField").innerHTML = tmp[2];
+			if( tmp[3] == "image" ){
+				document.getElementById("player").innerHTML = '<img src="'+ tmp[4] +'">';
+			}
+			if( tmp[3] == "video" ){
+				document.getElementById("player").innerHTML = '<video controls width="400" height="300"><!-- MP4 для Safari, IE9, iPhone, iPad, Android, и Windows Phone 7 --><source src="?c=get&t='+ tmp[4] +'" type="video/mp4"><!-- добавляем видеоконтент для устаревших браузеров, в которых нет поддержки элемента video --><object data="flvplayer.swf?url='+ tmp[4] +'&width=400&height=300" type="application/x-shockwave-flash"><param name="movie" value="flvplayer.swf?url='+ tmp[4] +'&width=400&height=300"></object></video>';
+			}
+			document.getElementById("fileName").innerHTML = tmp[4].split("/").pop();
+		}
+	}
+}
+document.onkeydown=function(event){
+	if( !openViewerFlag ) return;
+	switch( event.keyCode ){
+		case 37: prewFile( 0 ); break;			//LEFT
+		case 39: nextFile( 0 ); break;			//RIGHT
+		case 38: closeViewerUP(); break;		//UP
+		case 40: closeViewerDOWN(); break;		//DOWN
+		case 27: closeViewer(); break;			//ESC
 	}
 }
 
 function openViewer( file )
 {
+	openViewerFlag = true;
 	fileNameField.innerHTML = file;
-	totalFilesField.innerHTML = totalFiles;
 	viewer.style.visibility = "visible";
-	request.open('POST', "index.php",true);
+	viewer.style.opacity = 1;
+
+	request.open('POST', script,true);
 	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	str="c=open&t=" + folder + "/" + file;
+	str="c=open&t=" + folder+"&f="+file;
 	request.send(str);
+}
+function closeViewerUP()
+{
+	setYMove(0,-1000);
+	closeViewer();
+}
+function closeViewerDOWN()
+{
+	setYMove(0,1000);
+	closeViewer();
 }
 function closeViewer()
 {
-	viewer.style.visibility = "hidden";
-	player.innerHTML = "";
-	fileNameField.innerHTML = "";
+	setTimeout("viewer.style.opacity = .75;",50);
+	setTimeout("viewer.style.opacity = .50;",100);
+	setTimeout("viewer.style.opacity = .25;",150);
+	setTimeout("viewer.style.visibility = \"hidden\";player.innerHTML = \"\";fileNameField.innerHTML = \"\";openViewerFlag = false;",250);
 }
-//function resize()
-//{
-	//var w = window.innerWidth;
-	//var h = window.innerHeight;
-//	var w = parseInt(getComputedStyle(player).width.replace("px",""));
-//	var h = parseInt(getComputedStyle(player).height.replace("px",""));
-//	var imgW = parseInt(getComputedStyle(player.firstChild).width.replace("px",""));
-//	var imgH = parseInt(getComputedStyle(player.firstChild).height.replace("px",""));
-	//alert(w + "X" + h + " [" + imgW + "/" + imgH + "]");
-	//if( imgW > w ){
-	//	player.firstChild.style.width = w +'px';
-	//	alert(getComputedStyle(player).width + "X" + getComputedStyle(player).height + " [" + getComputedStyle(player.firstChild).width + "/" + getComputedStyle(player.firstChild).height + "]");
-	//}else{
-	//alert("12e3");
-//}
-/*
-	var imgR = imgW / imgH;
-	
-	if( imgW > w ){
-		player.firstChild.style.width = w +'px';
-		if( imgH > window.innerHeight ){
-			player.firstChild.style.width = w +'px';
-			player.style.height = h + 'px';
-			//alert( getComputedStyle(player.firstChild).width + "X" + getComputedStyle(player.firstChild).height );
+function nextFile( x )
+{
+	if( document.getElementById("currentFileNumField").innerHTML == document.getElementById("totalFilesField").innerHTML ) return;
+	setXMove(x,-1500);
+	setTimeout("setXMove(1500,0);",500);
+	request.open('POST', script,true);
+	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	str="c=next&t=" + folder+"&f="+document.getElementById("fileName").innerHTML;
+	request.send(str);
+}
+function prewFile(x)
+{
+	if( document.getElementById("currentFileNumField").innerHTML == 1 ) return;
+	setXMove(x,1500);
+	setTimeout("setXMove(-1500,0);",500);
+	request.open('POST', script,true);
+	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	str="c=back&t=" + folder+"&f="+document.getElementById("fileName").innerHTML;
+	request.send(str);
+}
+function setXMove(x,target)
+{
+	var steep = 200;
+	if( x < target ) x += steep;
+	if( x > target ) x -= steep;
+	player.style = "overflow: visible; transform: rotate(0deg) translate3d(" + x + "px, 0px, 0px); transition: none 0s ease 0s;";
+	if( Math.abs( x - target ) < steep ) x = target;
+	if( x != target ) setTimeout("setXMove("+x+","+target+");",1);
+}
+function setYMove(y,offset)
+{
+	var steep = 100;
+	if( y < offset ) y += steep;
+	if( y > offset ) y -= steep;
+	player.style = "overflow: visible; transform: rotate(0deg) translate3d(0px, " + y + "px, 0px); transition: none 0s ease 0s;";
+	if( y != offset ){
+		setTimeout("setYMove("+y+","+offset+");",10);
+	}else{
+		player.style = "overflow: visible; transform: rotate(0deg) translate3d(0px, 0px, 0px); transition: none 0s ease 0s;";
+	}
+}
+function initMove(div, event) {
+    var event = event || window.event;
+	x0 = event.clientX;
+	y0 = event.clientY;
+    moveState = true;
+}
+function moveHandler(div, event) {
+    var event = event || window.event;
+	if (moveState) {
+		rx = Math.abs(event.clientX-x0);
+		ry = Math.abs(event.clientY-y0);
+		chkMoveTo(rx, ry);
+		rx = (event.clientX-x0);
+		ry = (event.clientY-y0);
+		moveAnimation(rx, ry);
+    }
+}
+function moveCancel(div, event) {
+    var event = event || window.event;
+	var rx = event.clientX-x0;
+	var ry = event.clientY-y0;
+	if (moveState) moveEnd(rx, ry);
+}
+function chkMoveTo(absRX, absRY)
+{
+	if(moveTo == "" && (absRX > 30 || absRY > 30)){
+		if(absRX > absRY){
+			moveTo = "x";
+		}else{
+			moveTo = "y";
 		}
 	}
-*/
-	//if( getComputedStyle(player.firstChild).height.replace("px","") > window.innerHeight ){
-	//	player.firstChild.style.height = '100%';
-	//	alert( getComputedStyle(player.firstChild).width + "x" + getComputedStyle(player.firstChild).height );
-	//}
-	//if( getComputedStyle(player).width >= getComputedStyle(player).height ){
-	//	player.firstChild.style.width = "100%";
-	//}else{
-	//	player.firstChild.style.height = "100%";
-	//}
-	//alert( getComputedStyle(player.firstChild).width + "x" + getComputedStyle(player.firstChild).height );
-	//player.firstChild.style.width = "10%";
-	//alert( getComputedStyle(player).width );
-	//alert( player.firstChild.tagName );
-//}
-/*
-var str;
-var infoVal;
-var request=makeHttpObject();
-request.onreadystatechange=function(){
-	if (request.readyState==4 && request.status == 200) {
-		infoVal.innerHTML=request.responseText;
-		//delete  request;
+}
+function moveAnimation(rx, ry)
+{
+	if(moveTo == "x"){
+		player.style = "overflow: visible; transform: rotate(0deg) translate3d("+rx+"px, 0px, 0px); transition: none 0s ease 0s;";
+	}else{
+		player.style = "overflow: visible; transform: rotate(0deg) translate3d(0px, "+ry+"px, 0px); transition: none 0s ease 0s;";
 	}
 }
-function getInfo(elem,id){
-	request.open('POST', "index.php",true);
-	request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	str="cmd=getData&data="+elem;
-	request.send(str);
-	var infoBox=document.getElementById("info"+id);
-	infoVal=infoBox;
-	infoVal.style.visibility="visible";
-	infoVal.innerHTML="UPDATE...";
+function moveEnd(rx, ry)
+{
+	if(moveTo == "y" && Math.abs(ry) >= 200) closeViewer();
+	if(moveTo == "x" && (rx) <= -300) nextFile(rx);
+	if(moveTo == "x" && (rx) >= 300) prewFile(rx);
+	player.style = "transform: rotate(0deg) translate3d(0px, 0px, 0px); transition: none 0s ease 0s;";
+	moveTo = "";
+	moveState = false;
 }
-function out(id){
-	var obj=document.getElementById("info"+id);
-	obj.style.visibility="hidden";
-}
-*/
+/****************************************/
+/********** Touch screen mode  **********/
+/****************************************/
+var initialPoint;
+var currentPoint;
+
+player.addEventListener('touchstart', function(event) {
+	event.preventDefault();		//исключить возникновение стандартных реакций на действия курсора мыши со стороны браузера
+	//event.stopPropagation();
+	initialPoint=event.changedTouches[0];
+	moveState = true;
+}, false);
+
+player.addEventListener('touchmove', function(event) {
+	currentPoint=event.changedTouches[0];
+	if( moveState ){
+		var rx = Math.abs(currentPoint.pageX - initialPoint.pageX);
+		var ry = Math.abs(currentPoint.pageY - initialPoint.pageY);
+		chkMoveTo(rx, ry);
+		rx = (currentPoint.pageX - initialPoint.pageX);
+		ry = (currentPoint.pageY - initialPoint.pageY);
+		moveAnimation(rx, ry);
+	}
+}, false);
+
+player.addEventListener('touchend', function(event) {
+	currentPoint=event.changedTouches[0];
+	var rx = (currentPoint.pageX - initialPoint.pageX);
+	var ry = (currentPoint.pageY - initialPoint.pageY);
+	if (moveState) moveEnd(rx, ry);
+}, false);
+
 </script>
 <?php	pageBottom();	?>
 
 
 
 <?php
-function printDir( $dir ){
-
+function printPath( $dir )
+{
+	$array = explode( "/", $dir );
+	$tmp = null;
+	foreach( $array as $elem ){
+		if( $elem == "" ){
+			print '<input type="button" value="/" onClick="document.location.href=\'?\';"> '."\n";
+			continue;
+		}
+		print ' <input type="button" value="'.$elem.'" onClick="document.location.href=\'?t=/'.$tmp.$elem.'\';">'."\n";
+		$tmp .= $elem."/";
+	}
+}
+function printDir( $dir )
+{
+	global $target;
 	$dirs = array();
 	$files = array();
+	$countSymName = 12;
 
 	foreach(glob("$dir/*") as $elem){
 		if(array_pop(explode("/",$elem))=="index.php") continue;
@@ -303,20 +522,30 @@ function printDir( $dir ){
 	}
 
 	foreach($dirs as $elem){
-		print '<div class="elem"><img src="img/folder.png" onMouseOver="this.src=\'img/folder-open.png\';" onMouseOut="this.src=\'img/folder.png\';"><br>'.$elem.'</div>';
+		$name = substr($elem, 0, $countSymName);
+		if( strlen( $name ) != strlen( $elem ) ){
+			$name = substr($name, 0, $countSymName - 3 )."...";
+		}
+		print '<div class="elem"><a href="?t='.$target.'/'.$elem.'" title="'.$elem.'"><img src="img/folder.png" onMouseOver="this.src=\'img/folder-open.png\';" onMouseOut="this.src=\'img/folder.png\';"><br>'.$name.'</a></div>'."\n";
 	}
 	foreach($files as $elem){
-		list($name,$type)=explode(".",$elem);
+		$tmp = explode("/", $elem);
+		$file = array_pop($tmp);
+		$tmp = explode(".",$file);
+		$type = array_pop($tmp);
+		$nameOrig = join(".",$tmp);
+		$name = substr($nameOrig, 0, $countSymName);
+		if( strlen( $name ) != strlen( $nameOrig ) ){
+			$name = substr($nameOrig, 0, $countSymName - 3 )."...";
+		}
 		$type = strtolower($type);
 		$ico = "file";
 		if($type == "mp4") $ico = "video";
-		print '<div class="elem" onClick="openViewer(\''.$elem.'\');"><img src="img/'.$ico.'.png"><br>'.$name.'</div>';
+		if($type == "avi") $ico = "video";
+		print '<div class="elem" onClick="openViewer(\''.$elem.'\');" title="'.$elem.'"><img src="img/'.$ico.'.png"><br>'.$name.'</div>'."\n";
 	}
-	
-	print '<script>';
-	print 'var totalFiles = '.count($files).';';
-	print '</script>';
 }
+/*
 function file_download($file,$fileName)
 {
 	if(!file_exists($file)) return;
@@ -339,4 +568,5 @@ function file_download($file,$fileName)
 	// читаем файл и отправляем его пользователю
 	readfile($file);
 }
+*/
 ?>
