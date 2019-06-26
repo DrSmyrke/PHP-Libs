@@ -3,14 +3,15 @@
 //ini_set('display_errors', 1);
 //ini_set('error_reporting', -1);
 
-################################################
+	################################################
 
+	$usersDB			= "users";
 
-
-###############################################
+	###############################################
 
 function connectDB($user_name, $pass, $db){
     $connect_db = mysqli_connect('localhost', $user_name, $pass, $db) or die("Не могу соединиться с MySQL.");
+	mysqli_select_db( $connect_db, $db );
     return $connect_db;
 }
  
@@ -24,14 +25,9 @@ function selectDB($name)
    $connect_db = null;
 
     switch ($name) {
-    case "rsi":
-        $connect_db = connectDB("bdadmin","","rsi");
+    case "name":
+        $connect_db = connectDB("dbUser","userpasss","tableName");
         break;
-    case "Картриджи":
-        $connect_db = connectDB("bdadmin","","rsi_rash");
-        break;
-	case "TYPB":
-		$connect_db = connectDB("bdadmin","","rsi_time_sheet");
     }
     return $connect_db;
 }
@@ -121,14 +117,16 @@ function updateDataDB($connect_db, $table, $query, $where, $debug = false)
     $data = "";
     foreach($query as $key => $val){
         $counter++;
-        $data = $data . "`$key` = "."'$val'" ;
+		
+		if( is_int($val) or is_float($val) ){
+			$data = $data . "`$key` = ".$val ;
+		}else{
+			$data = $data . "`$key` = "."'$val'" ;
+		}
  
-        if($counter != $total) 
-        {
+        if($counter != $total){
             $data = $data . ",";
-
-        }
-        else{
+        }else{
           $data = $data; 
         }    
     }
@@ -137,14 +135,13 @@ function updateDataDB($connect_db, $table, $query, $where, $debug = false)
     foreach($where as $key => $val){
         if(!is_numeric($val)){
            $cond = $cond."`$key`"." LIKE "."`$val`"."\n"; 
-        }
-        else{
+        }else{
             $cond = $cond."`$key`"." = "."$val"."\n"; 
         }
         
         if(!$counter == $total){
             $cond = $cond." AND ";
-        } else{
+        }else{
             $cond = $cond;
         }
        
@@ -183,8 +180,8 @@ function getDataDB($connect_db, $table, $query, $sort = null, $debug = false){
                         $where_buf = "AND";
                     }
 
-                    if(is_numeric($val)){
-                        $where = $where. "`$key`"." = "."$val"."\n";
+                   if( is_int($val) or is_float($val) ){
+                        $where = $where. "`$key`"." = ".$val."\n";
                     } else {
                         $where = $where."`$key`"." LIKE "."'$val'"."\n";
                     }
@@ -197,8 +194,7 @@ function getDataDB($connect_db, $table, $query, $sort = null, $debug = false){
                 
             }
         }
-    }
-    else{
+    }else{
         foreach($query as $key => $val){
             $counter++;   
             $where_buf = "OR";
@@ -208,8 +204,7 @@ function getDataDB($connect_db, $table, $query, $sort = null, $debug = false){
                 } else{
                    $data = $data."`$key`,";
                 }
-            }
-            else{
+            }else{
                 if($where_f == true){
                     $where = "WHERE ";
                     $where_f = false;
@@ -220,8 +215,8 @@ function getDataDB($connect_db, $table, $query, $sort = null, $debug = false){
                     $where_buf = "AND";
                 }
                 
-                if(is_numeric($val)){
-                    $where = $where. "`$key`"." = "."$val"."\n";
+                if( is_int($val) or is_float($val) ){
+                    $where = $where. "`$key`"." = ".$val."\n";
                 } else {
                     $where = $where."`$key`"." LIKE "."'$val'"."\n";
                 }
