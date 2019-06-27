@@ -26,7 +26,7 @@ function selectDB($name)
 
     switch ($name) {
     case "name":
-        $connect_db = connectDB("dbUser","userpasss","tableName");
+        $connect_db = connectDB("username","userpassword","tablename");
         break;
     }
     return $connect_db;
@@ -157,7 +157,7 @@ function updateDataDB($connect_db, $table, $query, $where, $debug = false)
     
 }
 
-function getDataDB($connect_db, $table, $query, $sort = null, $debug = false){
+function getDataDB($connect_db, $table, $query, $sort = null, $random = false, $limit = null, $limitStart = null, $debug = false){
     $counter = 0;
     $where = "";
     $data = "";
@@ -233,12 +233,20 @@ function getDataDB($connect_db, $table, $query, $sort = null, $debug = false){
 
     }
 	
-	$sort_t = "";
-    if(!is_null($sort)){
-		$sort_t = "ORDER BY $sort ASC";
-	}
+	
+	if( $random )
 	
     $select = "SELECT ".$data." FROM "."`$table`"." ".$where." ".$sort_t.";";
+	
+	if( !is_null($sort) && $random ) $select .= " ORDER BY $sort ASC";
+	if( is_null($sort) && $random ) $select .= " ORDER BY RAND()";
+	if( !is_null($limit) && is_numeric($limit) ){
+		$select .= " LIMIT ";
+		if( !is_null($limitStart) && is_numeric($limitStart) ) $select .= $limitStart.",";
+		$select .= " ".$limit;
+	}
+	
+	$select .= ";";
     if($debug) print_r($select);
 	mysqli_query($connect_db,"SET NAMES `utf8`"); 
 	mysqli_query($connect_db,"SET CHARACTER SET `utf8`");
