@@ -233,9 +233,6 @@ function getDataDB($connect_db, $table, $query, $sort = null, $random = false, $
 
     }
 	
-	
-	if( $random )
-	
     $select = "SELECT ".$data." FROM "."`$table`"." ".$where;
 	
 	if( !is_null($sort) && $random ) $select .= " ORDER BY $sort ASC";
