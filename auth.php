@@ -93,9 +93,9 @@ function parsAuthHTTP()
 	}
 }
 
-parsAuthHTTP();
-if( !$auth ){
-	print $accessDeniedStr;
-	exit;
-}
+//parsAuthHTTP();
+//if( !$auth ){
+//	print $accessDeniedStr;
+//	exit;
+//}
 ?>
