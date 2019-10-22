@@ -20,16 +20,10 @@ function r_normal_array_DB($data_query){
     return $data;
 }
 
-function selectDB($name)
+function selectDB($username, $userpassword, $tablename)
 {
-   $connect_db = null;
-
-    switch ($name) {
-    case "name":
-        $connect_db = connectDB("username","userpassword","tablename");
-        break;
-    }
-    return $connect_db;
+	$connect_db = connectDB( $username, $userpassword, $tablename );
+	return $connect_db;
 }
 
 function deleteDataDB($connect_db, $table, $query, $debug = false){
