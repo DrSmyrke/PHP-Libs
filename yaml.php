@@ -56,6 +56,8 @@ class Yaml
 				foreach( $keys as $k ){
 					if( isset( $prew[$k] ) ) $prew = &$prew[$k];
 				}
+				
+				if( !is_array( $value ) ) $value = str_replace( "\"", "", $value );
 				$prew[$key] = $value;
 
 				if( $level != $prewLevel ) $prewLevel = $level;
