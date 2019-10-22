@@ -62,18 +62,7 @@ function writeType($fp,$typeid,$value){
                 	return writeType($fp,3,count( $value )) && is_int( fwrite( $fp,call_user_func_array( "pack",array_merge( array( "N" . count( $value )),$value ))));
 	}
 }
-function drawData($data,$spc,$recursion){
-	if($spc==null){$spc="| &#160;&#160;&#160;";}
-	if($recursion==null){$recursion=0;}
-	foreach($data as $key=>$val){
-		for($i=0;$i<$recursion;$i++){print "$spc ";}
-		print "[$key=>$val]";
-		if(gettype($val)=="array"){
-			print " (".count($val).")<br>";
-			drawData($val,$spc,$recursion+1);
-		}else{print "<br>";}
-	}
-}
+
 function readTag($fp,&$pdata){
 	global $NBT_types;
 	$typeid=readType($fp,1);
