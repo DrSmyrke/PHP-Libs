@@ -74,11 +74,14 @@ class vkBot
 	
 	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = false)
 	{
-		$buttonsSend = array(
-            "one_time"	=> $one_time,
-            "inline"	=> $inline,
-            "buttons"	=> $buttons
-		);
+		$buttonsSend = array();
+		if( $inline ){
+			$buttonsSend["buttons"] = $buttons;
+			$buttonsSend["inline"] = $inline;
+		}else{
+			$buttonsSend["buttons"] = $buttons;
+			$buttonsSend["one_time"] = $one_time;
+		}
 		
 		return vkBot::call('messages.send', array(
 			'peer_id'		=> $targetID,
