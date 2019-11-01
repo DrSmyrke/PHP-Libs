@@ -29,7 +29,7 @@ class vkBot
 	{
 		$returnData = array();
 		
-		$requestData = vkBot::getData();
+		$requestData = $this->getData();
 		
 		
 		$group_id = ( isset( $requestData["group_id"] ) ) ? $requestData["group_id"] : "";
@@ -94,21 +94,26 @@ class vkBot
 		$params['access_token'] = $this->accessToken;
 		$params['v'] = VK_API_VERSION;
 
-		$query = http_build_query( $params );
-		$url = VK_API_ENDPOINT.$method.'?'.$query;
+		#$query = http_build_query( $params );
+		#$url = VK_API_ENDPOINT.$method.'?'.$query;
+		$url = VK_API_ENDPOINT.$method;
 
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$json = curl_exec($curl);
-		$error = curl_error($curl);
-		if ($error) return "Failed '{$method}' request";
-
-		curl_close($curl);
-
-		$response = json_decode($json, true);
-		if (!$response || !isset($response['response'])) return "Invalid response for '{$method}' request";
-
-		return $response['response'];
+		if( function_exists('curl_init') ){
+			$curl = curl_init($url);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array( "Content-Type:multipart/form-data" ));
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+			$json = curl_exec($curl);
+			$error = curl_error($curl);
+			if ($error) return "Failed '{$method}' request";
+			curl_close($curl);
+			$response = json_decode($json, true);
+			if (!$response || !isset($response['response'])) return "Invalid response for '{$method}' request";
+			return $response['response'];
+		}else{
+			return "Failed CURL init";
+		}
 	}
 
 	public function setConfirmationToken( $value ){ $this->confirmationToken = $value; }
