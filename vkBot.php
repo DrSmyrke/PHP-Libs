@@ -52,6 +52,9 @@ class vkBot
 				if( isset( $requestData["object"]["body"] ) ){
 					$returnData["mess"] = $requestData["object"]['body'];
 				}
+				if( isset( $requestData["object"]["payload"] ) ){
+					$returnData["payload"] = $requestData["object"]['payload'];
+				}
 			break;
 		}
 		
@@ -69,11 +72,12 @@ class vkBot
 		));
 	}
 	
-	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true)
+	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = false)
 	{
 		$buttonsSend = array(
-            "one_time" => $one_time,
-            "buttons" => $buttons
+            "one_time"	=> $one_time,
+            "inline"	=> $inline,
+            "buttons"	=> $buttons
 		);
 		
 		$this->sendMessage( $targetID, $message );
@@ -118,7 +122,7 @@ class vkBot
 		switch ($color) {
 			case 'red':		$color = 'negative';	break;
 			case 'green':	$color = 'positive';	break;
-			case 'white':	$color = 'default';		break;
+			case 'white':	$color = 'secondary';		break;
 			case 'blue':	$color = 'primary';		break;
 
 			default: break;
