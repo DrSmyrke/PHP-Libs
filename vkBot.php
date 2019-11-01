@@ -80,8 +80,6 @@ class vkBot
             "buttons"	=> $buttons
 		);
 		
-		$this->sendMessage( $targetID, $message );
-		
 		return vkBot::call('messages.send', array(
 			'peer_id'		=> $targetID,
 			'message'		=> $message,
