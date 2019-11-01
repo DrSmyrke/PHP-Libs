@@ -107,8 +107,6 @@ class vkBot
 			$json = curl_exec($curl);
 			$error = curl_error($curl);
 			
-			echo 'ok';
-			
 			if ($error) return "Failed '{$method}' request";
 			curl_close($curl);
 			$response = json_decode($json, true);
