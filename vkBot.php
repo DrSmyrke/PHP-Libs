@@ -72,7 +72,7 @@ class vkBot
 		));
 	}
 	
-	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = true)
+	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = false)
 	{
 		$buttonsSend = array(
             "one_time"	=> $one_time,
