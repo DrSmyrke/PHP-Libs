@@ -72,7 +72,7 @@ class vkBot
 		));
 	}
 	
-	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = false)
+	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = true)
 	{
 		$buttonsSend = array(
             "one_time"	=> $one_time,
@@ -106,6 +106,9 @@ class vkBot
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 			$json = curl_exec($curl);
 			$error = curl_error($curl);
+			
+			echo 'ok';
+			
 			if ($error) return "Failed '{$method}' request";
 			curl_close($curl);
 			$response = json_decode($json, true);
