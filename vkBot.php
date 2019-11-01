@@ -21,7 +21,7 @@ class vkBot
 	
 	public function init()
 	{
-		define('VK_API_VERSION', '5.67');
+		define('VK_API_VERSION', '5.69');
 		define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
 	}
 	
@@ -72,16 +72,11 @@ class vkBot
 		));
 	}
 	
-	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true, $inline = false)
+	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true)
 	{
 		$buttonsSend = array();
-		if( $inline ){
-			$buttonsSend["buttons"] = $buttons;
-			$buttonsSend["inline"] = $inline;
-		}else{
-			$buttonsSend["buttons"] = $buttons;
-			$buttonsSend["one_time"] = $one_time;
-		}
+		$buttonsSend["buttons"] = $buttons;
+		$buttonsSend["one_time"] = $one_time;
 		
 		return vkBot::call('messages.send', array(
 			'peer_id'		=> $targetID,
