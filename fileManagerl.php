@@ -76,7 +76,7 @@ class FileManager
 			$action = "";
 			
 			$add = ( is_dir( $elem ) ) ? '<a href="javascript:void(0);" onClick="FileManager_openDir( \''.$rootDir.'/'.$name.'\', \''.$updateBox.'\' );"><img class="filemanager_fileIco" src="'.$this->folderIco.'"> '.$name.'</a>' : '<a href="'.$elem.'" target="_blank"><img class="filemanager_fileIco" src="'.$this->fileIco.'"> '.$name.'</a>';
-			if( is_file( $elem ) ){
+			if( is_file( $elem ) && filesize( $elem ) > 0 ){
 				$info   = getimagesize( $elem );
 				$width  = $info[0];
 				$height = $info[1];
