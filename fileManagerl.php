@@ -141,7 +141,7 @@ class FileManager
 				print '<form class="form" action="'.$thisPage.'" onSubmit="return changeParam( this, \''.$updateBox.'\' );">';
 					print '<input type="hidden" name="fileManagerData[cmd]" value="uploadFiles">';
 					print '<input type="hidden" name="fileManagerData[dir]" value="'.$path.'">';
-					print '<input type="file" id="FileManager_uploadB" name="userfile[]" accept="image/png" onChange="uploadForm( this.form, \''.$updateBox.'\' );" multiple>';
+					print '<input type="file" id="FileManager_uploadB" name="userfile[]" accept="image/png, .txt, .ini" onChange="uploadForm( this.form, \''.$updateBox.'\' );" multiple>';
 					print '<label style="order: 1;" for="FileManager_uploadB" class="valorange">UPLOAD</label>';
 				print '</form>';
 		}
