@@ -1,13 +1,13 @@
 <?php
 function fileManager_help()
 {
-	print "$fileManager		= new FileManager();<br>\n";
-	print "$fileManager->setFileIco( 'data/images/file.png' );<br>\n";
-	print "$fileManager->setFolderIco( 'data/images/folder.png' );<br>\n";
-	print "$fileManager->setFolderOpenIco( 'data/images/folder-open.png' );<br>\n";
-	print "$fileManager->printAssets();<br>\n";
-	print "$fileManager->printPath( $fileManagerData['dir'], 'ID DOM', true );<br>\n";
-	print "$fileManager->showDir( $assetsDir, $assetsDir, $thisPage, \"ID DOM\" );<br>\n";
+	print "\$fileManager		= new FileManager();<br>\n";
+	print "\$fileManager->setFileIco( 'data/images/file.png' );<br>\n";
+	print "\$fileManager->setFolderIco( 'data/images/folder.png' );<br>\n";
+	print "\$fileManager->setFolderOpenIco( 'data/images/folder-open.png' );<br>\n";
+	print "\$fileManager->printAssets();<br>\n";
+	print "\$fileManager->printPath( \$fileManagerData['dir'], 'ID DOM', true );<br>\n";
+	print "\$fileManager->showDir( \$assetsDir, \$assetsDir, \$thisPage, \"ID DOM\" );<br>\n";
 }
 
 
