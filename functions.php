@@ -185,7 +185,7 @@ function removeDirectory($dir)
 		}
 	}
 	
-	rmdir( $path );
+	rmdir( $dir );
 }
 
 
