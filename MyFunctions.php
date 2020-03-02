@@ -28,5 +28,25 @@ class MyFunctions
 		}
 		return $data;
 	}
+
+	public function getMonName( $mon, $language = "en" )
+	{
+		$ru = array( "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" );
+		$en = array( "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" );
+
+		if( $mon == 0 ){
+			return "----";
+		}
+		
+		if( $mon > 12 || $mon < 1 ) $mon = 1;
+
+		$mon--;
+		
+		switch ($language){
+			case "en":	return $en[$mon];	break;
+			case "ru":	return $ru[$mon];	break;
+			default:	return "----"; 		break;
+		}
+	}
 }
 ?>

@@ -114,23 +114,7 @@ function fileUploadCodeToMessage($code)
 	return $message;
 }
 
-function getMonName($mon, $language = "en"){
-	switch( $mon ){
-		case 1: return ( $language == "ru" ) ? "Январь" : "January" ;
-		case 2: return ( $language == "ru" ) ? "Февраль" : "February" ;
-		case 3: return ( $language == "ru" ) ? "Март" : "March" ;
-		case 4: return ( $language == "ru" ) ? "Апрель" : "April" ;
-		case 5: return ( $language == "ru" ) ? "Май" : "May" ;
-		case 6: return ( $language == "ru" ) ? "Июнь" : "June" ;
-		case 7: return ( $language == "ru" ) ? "Июль" : "July" ;
-		case 8: return ( $language == "ru" ) ? "Август" : "August" ;
-		case 9: return ( $language == "ru" ) ? "Сентябрь" : "September" ;
-		case 10: return ( $language == "ru" ) ? "Октябрь" : "October" ;
-		case 11: return ( $language == "ru" ) ? "Ноябрь" : "November" ;
-		case 12: return ( $language == "ru" ) ? "Декабрь" : "December" ;
-		default: return "---";
-	}
-}
+
 
 
 function chis($val){$dot=false;if(strpos($val,".")){list($val,$dot)=explode(".",$val);}$string=$val;$stmp=strlen($val);if($stmp>3 and $stmp<=6){$t1=substr($val,-3);$t2=substr($val,0,-3);$string="$t2 $t1";}if($stmp>6 and $stmp<=9){$t1=substr($val,-3);$t2=substr($val,-6,3);$t3=substr($val,0,-6);$string="$t3 $t2 $t1";}if($stmp>9 and $stmp<=12){$t1=substr($val,-3);$t2=substr($val,-6,3);$t3=substr($val,-9,3);$t4=substr($val,0,3);$string="$t4 $t3 $t2 $t1";}if($stmp>12 and $stmp<=15){$t1=substr($val,-3);$t2=substr($val,-6,3);$t3=substr($val,-9,3);$t4=substr($val,-12,3);$t5=substr($val,0,3);$string="$t5 $t4 $t3 $t2 $t1";}if($dot){$string.=".".$dot;}return $string;}
