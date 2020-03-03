@@ -2,8 +2,13 @@
 function sql_help()
 {
 	print "\$sql = new Sql;<br>\n";
-	print "\$sql->init( serverAddr, userName, password, dataBase );<br>\n";
-	print "\$sql->connect();<br>\n";
+	print "\$res = \$sql->init( serverAddr, userName, password, dataBase ); //return true or error<br>\n";
+	print "\$res = \$sql->connect(); //return true or error<br>\n";
+	print "\$res = \$sql->selectDB( dataBase ); //return true or error<br>\n";
+	print "\$res = \$sql->deleteData( table, query, debug = false ); //return true or error<br>\n";
+	print "\$res = \$sql->addData( table, query, debug = false ); //return true or error<br>\n";
+	print "\$res = \$sql->updateData( table, query, where, debug = false ); //return true or error<br>\n";
+	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error<br>\n";
 }
 
 class Sql
