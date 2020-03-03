@@ -2,13 +2,13 @@
 
 function vkBot_help()
 {
-	print "$vkBot = new vkBot();<br>\n";
-	print "$vkBot->setConfirmationToken( CALLBACK_API_CONFIRMATION_TOKEN );<br>\n";
-	print "$vkBot->setGroupID( CALLBACK_API_GROUP_ID )<br>\n";
-	print "$vkBot->setAccessToken( VK_API_ACCESS_TOKEN )<br>\n";
-	print "$vkBot->init()<br>\n";
-	print "$data = $vkBot->execute();<br>\n";
-	print "$color = $vkBot->replaceColor( \"blue\" );<br>\n";
+	print "\$vkBot = new vkBot();<br>\n";
+	print "\$vkBot->setConfirmationToken( CALLBACK_API_CONFIRMATION_TOKEN );<br>\n";
+	print "\$vkBot->setGroupID( CALLBACK_API_GROUP_ID )<br>\n";
+	print "\$vkBot->setAccessToken( VK_API_ACCESS_TOKEN )<br>\n";
+	print "\$vkBot->init()<br>\n";
+	print "\$data = \$vkBot->execute();<br>\n";
+	print "\$color = \$vkBot->replaceColor( \"blue\" );<br>\n";
 }
 
 
