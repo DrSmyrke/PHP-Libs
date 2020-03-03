@@ -153,12 +153,12 @@ class Sql
 		}
 	
 		$update = "UPDATE "."`$table` SET "." $data ".$cond.";"; 
-		if($debug) print_r($update);
+		if( $debug ) print_r( $update );
 		//print_r("UPDATE  `tempD`.`tb_color` SET  `color` =  'Многоцветный 2' WHERE  `tb_color`.`id` =6;");
-		mysqli_query($this->connect_db,"SET NAMES `utf8`"); 
-		mysqli_query($this->connect_db,"SET CHARACTER SET `utf8`");
-		mysqli_query($this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`");
-		return mysqli_query($this->connect_db, $update);
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" ); 
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
+		return mysqli_query( $this->connect_db, $update );
 	}
 
 	public function getData( $table, $query, $sort = null, $random = false, $limit = null, $limitStart = null, $debug = false )
@@ -179,21 +179,18 @@ class Sql
 							$where = "WHERE ";
 							$where_f = false;
 						}
-					 
 						if($val[0] == "&"){
 							$val = substr($val,1);
 							$where_buf = "AND";
 						}
-
-					   if( is_int($val) or is_float($val) ){
+						if( is_int($val) or is_float($val) ){
 							$where = $where. "`$key`"." = ".$val."\n";
-						} else {
+						}else {
 							$where = $where."`$key`"." LIKE "."'$val'"."\n";
 						}
-					
 						if($counter == $total){
 						   $where = $where;
-						} else{
+						}else{
 						   $where = $where." ".$where_buf." ";
 						}			
 				}
@@ -205,7 +202,7 @@ class Sql
 				if(is_numeric($key)){
 				   if($counter == $total){
 						$data = $data."`$key`";
-					} else{
+					}else{
 					   $data = $data."`$key`,";
 					}
 				}else{
@@ -213,12 +210,10 @@ class Sql
 						$where = "WHERE ";
 						$where_f = false;
 					}
-
 					if($val[0] == "&"){
 						$val = substr($val,1);
 						$where_buf = "AND";
 					}
-				
 					if( is_int($val) or is_float($val) ){
 						$where = $where. "`$key`"." = ".$val."\n";
 					} else {
@@ -246,10 +241,10 @@ class Sql
 		}
 	
 		$select .= ";";
-		if($debug) print_r($select);
-		mysqli_query($this->connect_db,"SET NAMES `utf8`"); 
-		mysqli_query($this->connect_db,"SET CHARACTER SET `utf8`");
-		mysqli_query($this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`");
+		if( $debug ) print_r( $select );
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" ); 
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
 	
 		$result = mysqli_query($this->connect_db, $select);
 		if(!$result) return array();
