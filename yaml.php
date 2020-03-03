@@ -2,9 +2,9 @@
 
 function yaml_help()
 {
-	print "$yaml = new Yaml;<br>\n";
-	print "$yaml->saveToFile( \"1.yml\", $dataArray );<br>\n";
-	print "$dataArray = $yaml->loadFile( \"1.yml\" );<br>\n";
+	print "\$yaml = new Yaml;<br>\n";
+	print "\$yaml->saveToFile( \"1.yml\", dataArray );<br>\n";
+	print "\$dataArray = \$yaml->loadFile( \"1.yml\" );<br>\n";
 }
 
 
