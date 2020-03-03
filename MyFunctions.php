@@ -1,4 +1,17 @@
 <?php
+function myfunctions_help()
+{
+	print "\$mf = new MyFunctions;<br>\n";
+	print "\$mf->printDir( path, asTable = true, className = \"table\" );<br>\n";
+	print "\$res = \$mf->readDirToArray( dir );<br>\n";
+	print "\$res = \$mf->getMonName( mon, language = \"en\" ); // print month name<br>\n";
+	print "\$res = \$mf->hex_dump( str ); // print string to hex format<br>\n";
+	print "\$res = \$mf->drawData( data, spc = \"| &#160;&#160;&#160;\", recursion = 0 ); // draw data (fork var_dump)<br>\n";
+	print "\$res = \$mf->chis( number ); // get human format to number ex: 1000130 -> 1 000 130<br>\n";
+	print "\$res = \$mf->getSize( size ); // get human format to bytes<br>\n";
+	print "\$res = \$mf->getAgeFromBirthday( birthday ); // get full years from birthday date<br>\n";
+}
+
 class MyFunctions
 {
 	public function printDir( $path, $asTable = true, $className = "table" )
@@ -147,6 +160,13 @@ class MyFunctions
 		}
 		*/
 		return $size;
+	}
+
+	public function getAgeFromBirthday( $birthday )
+	{
+		if( $birthday == "" ) return 0;
+		$years = intval( (strtotime('now') -  strtotime($birthday)) / 60 / 60 / 24 / 365 );
+		return $years;
 	}
 }
 ?>

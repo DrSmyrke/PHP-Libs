@@ -127,13 +127,6 @@ function setLog($mess)
 	return date("d.m.Y [H:i:s]")." ".$mess." ".getNameAsLogin( $adConnect, $userName )."\n";
 }
 
-function getAgeFromBirthday($birthday)
-{
-	if( $birthday == "" ) return 0;
-	$years = intval( (strtotime('now') -  strtotime($birthday)) / 60 / 60 / 24 / 365 );
-	return $years;
-}
-
 
 
 function removeDirectory($dir)
