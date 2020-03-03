@@ -10,6 +10,8 @@ function myfunctions_help()
 	print "\$res = \$mf->chis( number ); // get human format to number ex: 1000130 -> 1 000 130<br>\n";
 	print "\$res = \$mf->getSize( size ); // get human format to bytes<br>\n";
 	print "\$res = \$mf->getAgeFromBirthday( birthday ); // get full years from birthday date<br>\n";
+	print "\$mf->removeDirectory( dir ); //recursive remove directory<br>\n";
+	print "\$res = \$mf->setLog( mess ); //added date time before message\n"
 }
 
 class MyFunctions
@@ -167,6 +169,26 @@ class MyFunctions
 		if( $birthday == "" ) return 0;
 		$years = intval( (strtotime('now') -  strtotime($birthday)) / 60 / 60 / 24 / 365 );
 		return $years;
+	}
+
+	public function removeDirectory( $dir )
+	{
+		if( !is_dir( $dir ) ) return;
+	
+		foreach( glob( "$dir/*" ) as $path){
+			if( is_dir( $path ) ){
+				MyFunctions::removeDirectory( $path );
+			}else{
+				unlink( (string)$path );
+			}
+		}
+	
+		rmdir( $dir );
+	}
+	
+	public function setLog( $mess )
+	{
+		return date("d.m.Y [H:i:s]")." ".$mess."\n";
 	}
 }
 ?>

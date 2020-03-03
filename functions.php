@@ -114,36 +114,4 @@ function fileUploadCodeToMessage($code)
 	return $message;
 }
 
-
-
-
-
-
-
-
-function setLog($mess)
-{
-	global $userName,$adConnect;
-	return date("d.m.Y [H:i:s]")." ".$mess." ".getNameAsLogin( $adConnect, $userName )."\n";
-}
-
-
-
-function removeDirectory($dir)
-{
-	if( !is_dir( $dir ) ) return;
-	
-	foreach( glob( "$dir/*" ) as $path){
-		if( is_dir( $path ) ){
-			removeDirectory( $path );
-		}else{
-			unlink( (string)$path );
-		}
-	}
-	
-	rmdir( $dir );
-}
-
-
-
 ?>
