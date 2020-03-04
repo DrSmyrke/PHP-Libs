@@ -47,7 +47,8 @@ class Sql
 
 	public function connect()
 	{
-		$this->connect_db = mysqli_connect( $this->serverAddr, $this->userName, $this->password, $this->dataBase) or return "Cannot connect to MySQL server.";
+		$this->connect_db = mysqli_connect( $this->serverAddr, $this->userName, $this->password, $this->dataBase);
+		//TODO: Доделать return "Cannot connect to MySQL server."
 		$this->success = mysqli_select_db( $connect_db, $this->dataBase );
 		return $this;
 	}
