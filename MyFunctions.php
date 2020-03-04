@@ -11,7 +11,7 @@ function myfunctions_help()
 	print "\$res = \$mf->getSize( size ); // get human format to bytes<br>\n";
 	print "\$res = \$mf->getAgeFromBirthday( birthday ); // get full years from birthday date<br>\n";
 	print "\$mf->removeDirectory( dir ); //recursive remove directory<br>\n";
-	print "\$res = \$mf->setLog( mess ); //added date time before message\n"
+	print "\$res = \$mf->setLog( mess ); //added date time before message\n";
 }
 
 class MyFunctions
