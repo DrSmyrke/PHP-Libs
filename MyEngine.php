@@ -1,5 +1,6 @@
 <?php
-class MyEngine{
+class MyEngine
+{
 	private $language			= "en";
 	private $pageIco			= "";
 	private $useCookie			= false;
@@ -121,7 +122,7 @@ function acceptCookie()
 				</td>
 			</tr>
 			</table>';
-}
+		}
 	}
 
 	public function pageBottom()
