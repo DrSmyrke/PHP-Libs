@@ -8,8 +8,8 @@ function webbomb_help()
 
 class WebBomb
 {
-	private $userAgent		= $_SERVER['HTTP_USER_AGENT'];
-	private $requestURL		= $_SERVER['REQUEST_URI'];
+	private $userAgent		= "";//$_SERVER['HTTP_USER_AGENT'];
+	private $requestURL		= "";//$_SERVER['REQUEST_URI'];
 	private $bombFile		= "/www/data/10G.gzip";
 	private $findUA			= array( "nikto", "sqlmap" );
 	private $findUrls		= array( "/?timetodie", "/phpmyadmin", "/admin" );
