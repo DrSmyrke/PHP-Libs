@@ -123,6 +123,7 @@ class MyFunctions
 	public function getSize( $size = 0 )
 	{
 		global $language;
+
 		$mass = array( "bytes", "Kb", "Mb", "Gb" );
 		if( $language == "ru" ){
 			$mass = array( "байт(а)", "Кб", "Мб", "Гб" );
@@ -134,33 +135,13 @@ class MyFunctions
 			return "$size  $mass[0]";
 		}else{
 			do{
-				$count = round( $size / 1024 );
-				$size -= $count * 1024;
+				$size /= 1024;
 				$index++;
-			}while( $count > 0 );
-			return $st = "$size  ".$mass[$index];
+			}while( $size > 1024 );
+			$len = strlen( (int)$size );
+			$size = round( $size, 4 - $len );
+			return $st = "$size ".$mass[$index];
 		}
-		
-		/*
-		if( $sz < 1024 ){
-			$st = "$sz  $mass[0]";
-		}else{
-			if( $sz > 1024 and $sz < 1024000){
-				$sz = substr( $sz/1024, 0, 5 );
-				$st = "$sz $mass[1]";
-			}else{
-				if( $sz > 1024000 and  $sz < 1024000000 ){
-					$sz = substr( $sz/1048576, 0, 5 );
-					$st = "$sz $mass[2]";
-				}else{
-					if( $sz > 1024000000 ){
-						$sz = substr( $sz/1048576000, 0, 5 );
-						$st = "$sz $mass[3]";
-					}
-				}
-			}
-		}
-		*/
 		return $size;
 	}
 
