@@ -21,14 +21,16 @@
 	
 	#################################################################
 	
-	if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
-		if( isset( $_POST["authMode"] ) ) $authMode = $_POST["authMode"];
-		if( isset( $_POST["login"] ) ) $login = $_POST["login"];
-		if( isset( $_POST["pass"] ) ) $pass = $_POST["pass"];
-	}else{
-		if( isset( $_GET["authMode"] ) ) $authMode = $_GET["authMode"];
-		if( isset( $_GET["login"] ) ) $login = $_GET["login"];
-		if( isset( $_GET["pass"] ) ) $pass = $_GET["pass"];
+	if( isset( $_SERVER['REQUEST_METHOD'] ) ){
+		if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
+			if( isset( $_POST["authMode"] ) ) $authMode = $_POST["authMode"];
+			if( isset( $_POST["login"] ) ) $login = $_POST["login"];
+			if( isset( $_POST["pass"] ) ) $pass = $_POST["pass"];
+		}else{
+			if( isset( $_GET["authMode"] ) ) $authMode = $_GET["authMode"];
+			if( isset( $_GET["login"] ) ) $login = $_GET["login"];
+			if( isset( $_GET["pass"] ) ) $pass = $_GET["pass"];
+		}
 	}
 	
 	#################################################################
