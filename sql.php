@@ -4,6 +4,7 @@ function sql_help()
 	print "\$sql = new Sql;<br>\n";
 	print "\$res = \$sql->init( serverAddr, userName, password, dataBase ); //return true or error<br>\n";
 	print "\$res = \$sql->connect(); //return true or error<br>\n";
+	print "\$sql->disconnect();<br>\n";
 	print "\$res = \$sql->selectDB( dataBase ); //return true or error<br>\n";
 	print "\$res = \$sql->deleteData( table, query, debug = false ); //return true or error<br>\n";
 	print "\$res = \$sql->addData( table, query, debug = false ); //return true or error<br>\n";
@@ -51,6 +52,11 @@ class Sql
 		//TODO: Доделать return "Cannot connect to MySQL server."
 		$this->success = mysqli_select_db( $connect_db, $this->dataBase );
 		return $this;
+	}
+	
+	public function disconnect()
+	{
+		mysqli_close( $this->serverAddr );
 	}
 
 	public function deleteData( $table, $query, $debug = false )
