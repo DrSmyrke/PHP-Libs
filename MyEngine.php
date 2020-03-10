@@ -64,11 +64,7 @@ function chkCookie()
 function acceptCookie()
 {
 	setCookie( "acceptCookie", true );
-}
-document.body.onload=function()
-{
-	chkCookie();
-};';
+}';
 
 	public function __construct()
 	{
@@ -125,8 +121,12 @@ document.body.onload=function()
 			print '			<script type="text/javascript">'.$this->cookieJS.'</script>'."\n";
 		}
 		print '			<title>-= '.$pagetitle.' =-</title>
-		</head>
-		<body>'."\n";
+		</head>';
+		if( $this->useCookie ){
+			print '		<body onLoad="chkCookie();">'."\n";
+		}else{
+			print '		<body>'."\n";
+		}
 		
 		MyEngine::printMyCSS();
 		
