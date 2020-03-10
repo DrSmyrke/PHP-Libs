@@ -65,9 +65,7 @@ function acceptCookie()
 {
 	setCookie( "acceptCookie", true );
 }
-document.body.onload=function(){
-	chkCookie();
-};';
+';
 
 	public function getLanguage(){ return $this->language; }
 
