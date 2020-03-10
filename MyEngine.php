@@ -165,7 +165,7 @@ document.body.onload=function()
 		print ".madeBy i{ color: gray; fint-style: italic; font-size:8pt; }";
 		print ".madeBy{ text-align: center; }";
 
-		print "</style>\n"
+		print "</style>\n";
 	}
 }
 ?>
