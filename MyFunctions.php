@@ -24,6 +24,7 @@ class MyFunctions
 			foreach( MyFunctions::readDirToArray( $path ) as $key => $value ){
 				print '<tr><td colspan="2"><h3>'.basename($key).'</h3></td></tr>';
 				foreach( $value as $pkt ){
+					if( is_array( $pkt ) ) continue;
 					print '<tr><td><a href="'.$pkt.'">'.basename($pkt).'</a></td><td class="size">'.MyFunctions::getSize(filesize($pkt)).'</td></tr>';
 				}
 			}
