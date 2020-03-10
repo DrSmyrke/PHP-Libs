@@ -184,7 +184,7 @@ function acceptCookie()
 		print '.hidden{ display: none; }';
 		print 'hr{ border: 0px dashed; height: 1px; background-image: -webkit-linear-gradient(left, #fff, #000, #fff); background-image: -moz-linear-gradient(left, #fff, #000, #fff); background-image: -ms-linear-gradient(left, #fff, #000, #fff); background-image: -o-linear-gradient(left, #fff, #000, #fff); }';
 
-		print '</style>\n';
+		print '</style>'."\n";
 	}
 }
 ?>
