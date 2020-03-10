@@ -70,6 +70,19 @@ document.body.onload=function()
 	chkCookie();
 };';
 
+	public function __construct()
+	{
+		/*
+		$language="en";
+		if(!isset( $_COOKIE["lang"] )){
+			setcookie("lang","en");
+			$language = "en";
+		}else{
+			$language = $_COOKIE["lang"];
+		}
+		*/
+	}
+
 	public function getLanguage(){ return $this->language; }
 
 	public function init( $language = "en", $pageIco = "", $useCookie = false )
@@ -160,12 +173,18 @@ document.body.onload=function()
 
 	private function printMyCSS()
 	{
-		print "<style>\n";
+		print '<style>\n';
 
-		print ".madeBy i{ color: gray; fint-style: italic; font-size:8pt; }";
-		print ".madeBy{ text-align: center; }";
+		print '*, *:before, *:after { transition: .25s ease-in-out; }';
+		print '.madeBy i{ color: gray; fint-style: italic; font-size:8pt; }';
+		print '.madeBy{ text-align: center; }';
+		print '@media only screen and (max-width: 950px){ .block { width: 95%; margin: 25px auto; display: block; max-height: none; overflow: none; } }';
+		print '@media only screen and (max-width: 1170px){ .content, .logo {width: 95%;} }';
+		print '/* @media only screen and (orientation:portrait){ .menu .a {display: block; width: 95%; margin: auto; margin-bottom: 5px;} } */';
+		print '.hidden{ display: none; }';
+		print 'hr{ border: 0px dashed; height: 1px; background-image: -webkit-linear-gradient(left, #fff, #000, #fff); background-image: -moz-linear-gradient(left, #fff, #000, #fff); background-image: -ms-linear-gradient(left, #fff, #000, #fff); background-image: -o-linear-gradient(left, #fff, #000, #fff); }';
 
-		print "</style>\n";
+		print '</style>\n';
 	}
 }
 ?>
