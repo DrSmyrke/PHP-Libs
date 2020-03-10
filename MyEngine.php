@@ -64,7 +64,10 @@ function chkCookie()
 function acceptCookie()
 {
 	setCookie( "acceptCookie", true );
-}';
+}
+document.body.onload=function(){
+	chkCookie();
+};';
 
 	public function getLanguage(){ return $this->language; }
 
@@ -109,7 +112,7 @@ function acceptCookie()
 		}
 		print '			<title>-= '.$pagetitle.' =-</title>
 		</head>
-		<body2>'."\n";
+		<body>'."\n";
 		
 		MyEngine::printMyCSS();
 		
