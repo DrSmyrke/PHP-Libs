@@ -64,7 +64,8 @@ function chkCookie()
 function acceptCookie()
 {
 	setCookie( "acceptCookie", true );
-}';
+}
+'."\n";
 
 	public function __construct()
 	{
@@ -183,6 +184,12 @@ function acceptCookie()
 		print '/* @media only screen and (orientation:portrait){ .menu .a {display: block; width: 95%; margin: auto; margin-bottom: 5px;} } */';
 		print '.hidden{ display: none; }';
 		print 'hr{ border: 0px dashed; height: 1px; background-image: -webkit-linear-gradient(left, #fff, #000, #fff); background-image: -moz-linear-gradient(left, #fff, #000, #fff); background-image: -ms-linear-gradient(left, #fff, #000, #fff); background-image: -o-linear-gradient(left, #fff, #000, #fff); }';
+		
+		if( $this->useCookie ){
+			print '.bottomСookieBlock td{ padding: 10px; }';
+			print '.bottomСookieBlock{ position: fixed; bottom: 0px; left: 0px; background-color: gray; font-size: 14pt;}';
+			print '.cookieBlockAccept{ padding: 15px; border: 1px solid orange; color: orange; font-weight: bold; background-color: gray; cursor: pointer;}';
+		}
 
 		print '</style>'."\n";
 	}
