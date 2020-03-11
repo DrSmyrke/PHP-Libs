@@ -23,6 +23,7 @@ class MyFunctions
 			print '<table class="'.$className.'">'."\n";
 			foreach( MyFunctions::readDirToArray( $path ) as $key => $value ){
 				print '<tr><td colspan="2"><h3>'.basename($key).'</h3></td></tr>';
+				if( !is_array( $value ) ) continue;
 				foreach( $value as $pkt ){
 					if( is_array( $pkt ) ) continue;
 					print '<tr><td><a href="'.$pkt.'">'.basename($pkt).'</a></td><td class="size">'.MyFunctions::getSize(filesize($pkt)).'</td></tr>';
@@ -35,6 +36,9 @@ class MyFunctions
 	public function readDirToArray( $dir )
 	{
 		$data = array();
+
+		if( !is_dir( $dir ) ) return $data;
+
 		foreach( glob("$dir/*") as $elem ){
 			if( is_dir( $elem ) ){
 				$data["$elem"] = MyFunctions::readDirToArray( $elem );
