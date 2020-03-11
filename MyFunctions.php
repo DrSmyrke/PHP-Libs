@@ -41,6 +41,8 @@ class MyFunctions
 					$prewImg = ( is_file("$value/$name.png") ) ? "$value/$name.jpg" : $prewImg;
 					$prewImg = ( is_file("$value/$name.bmp") ) ? "$value/$name.bmp" : $prewImg;
 
+					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
+
 					print '<a href="'.$file.'"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
 				}
 			}
