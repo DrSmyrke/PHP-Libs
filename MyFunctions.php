@@ -16,7 +16,7 @@ function myfunctions_help()
 
 class MyFunctions
 {
-	public function printDir( $path, $asTable = true, $className = "table" )
+	public function printDir( $path, $asTable = true, $className = "table")
 	{
 		if( !is_dir( $path ) ) return;
 		if( $asTable ){
@@ -25,11 +25,25 @@ class MyFunctions
 				print '<tr><td colspan="2"><h3>'.basename($key).'</h3></td></tr>';
 				if( !is_array( $value ) ) continue;
 				foreach( $value as $pkt ){
-					if( is_array( $pkt ) ) continue;
+					if( is_array( $pkt ) ) continue;	//TODO: Maybe recursion ???
 					print '<tr><td><a href="'.$pkt.'">'.basename($pkt).'</a></td><td class="size">'.MyFunctions::getSize(filesize($pkt)).'</td></tr>';
 				}
 			}
 			print '</table>'."\n";
+		}else{
+			foreach( MyFunctions::readDirToArray( $path ) as $key => $value ){
+				foreach( $value as $file ){
+					$fName = basename( $file );
+					$tmp = explode( ".", $fName );
+					$rash = array_pop( $tmp );
+					$name = array_shift( $tmp );
+					$prewImg = ( is_file("$value/$name.jpg") ) ? "$value/$name.jpg" : "";
+					$prewImg = ( is_file("$value/$name.png") ) ? "$value/$name.jpg" : $prewImg;
+					$prewImg = ( is_file("$value/$name.bmp") ) ? "$value/$name.bmp" : $prewImg;
+
+					print '<a href="'.$file.'"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
+				}
+			}
 		}
 	}
 
