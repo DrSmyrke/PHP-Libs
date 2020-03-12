@@ -32,6 +32,7 @@ class MyFunctions
 			print '</table>'."\n";
 		}else{
 			foreach( MyFunctions::readDirToArray( $path ) as $key => $value ){
+				var_dump( $value );
 				foreach( $value as $file ){
 					$fName = basename( $file );
 					$tmp = explode( ".", $fName );
