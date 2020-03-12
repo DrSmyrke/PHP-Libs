@@ -2,8 +2,9 @@
 class MyEngine
 {
 	private $language			= "en";
-	private $pageIco			= "";
+	private $pageIco				= "";
 	private $useCookie			= false;
+	private $assetsPath			= "/my/www/ASSETS";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий,портфолио,Мои работы,Мои проекты, Программы, Свободное программное обеспечение";
@@ -79,23 +80,29 @@ function acceptCookie()
 			$language = $_COOKIE["lang"];
 		}
 		*/
-		if( !is_dir( "data/img" ) ) mkdir( "data/img", 755, true );
-		if( !is_dir( "data/img/sites_icons" ) ) mkdir( "data/img/sites_icons", 755, true );
+		if( !is_dir( "data" ) ) mkdir( "data", 775, true );
+		if( !is_dir( "data/img" ) ) mkdir( "data/img", 775, true );
+		if( !is_dir( "data/img/sites_icons" ) ) mkdir( "data/img/sites_icons", 775, true );
+		
+		if( is_dir( "data" ) ){
+			if( !is_file( "data/buttons.css" ) ) copy( "$assetsPath/buttons.css", "data/buttons.css" );
+			if( !is_file( "data/switchers.css" ) ) copy( "$assetsPath/switchers.css", "data/switchers.css" );
+		}
 		if( is_dir( "data/img" ) ){
-			if( !is_file( "data/img/my.png" ) ) copy( "/my/www/html/data/img/my.png", "data/img/my.png" );
-			if( !is_file( "data/img/fon.png" ) ) copy( "/my/www/html/data/img/fon.png", "data/img/fon.png" );
-			if( !is_file( "data/img/line.png" ) ) copy( "/my/www/html/data/img/line.png", "data/img/line.png" );
+			if( !is_file( "data/img/my.png" ) ) copy( "$assetsPath/img/my.png", "data/img/my.png" );
+			if( !is_file( "data/img/fon.png" ) ) copy( "$assetsPath/data/img/fon.png", "data/img/fon.png" );
+			if( !is_file( "data/img/line.png" ) ) copy( "$assetsPath/data/img/line.png", "data/img/line.png" );
 		}
 		if( is_dir( "data/img/sites_icons" ) ){
-			if( !is_file( "data/img/sites_icons/hh_ru.svg" ) ) copy( "/my/www/html/data/img/sites_icons/hh_ru.svg", "data/img/sites_icons/hh_ru.svg" );
-			if( !is_file( "data/img/sites_icons/icq.png" ) ) copy( "/my/www/html/data/img/sites_icons/icq.png", "data/img/sites_icons/icq.png" );
-			if( !is_file( "data/img/sites_icons/skype.png" ) ) copy( "/my/www/html/data/img/sites_icons/skype.png", "data/img/sites_icons/skype.png" );
-			if( !is_file( "data/img/sites_icons/stihi.svg" ) ) copy( "/my/www/html/data/img/sites_icons/stihi.svg", "data/img/sites_icons/stihi.svg" );
-			if( !is_file( "data/img/sites_icons/SuperJob.png" ) ) copy( "/my/www/html/data/img/sites_icons/SuperJob.png", "data/img/sites_icons/SuperJob.png" );
-			if( !is_file( "data/img/sites_icons/thingiverse.png" ) ) copy( "/my/www/html/data/img/sites_icons/thingiverse.png", "data/img/sites_icons/thingiverse.png" );
-			if( !is_file( "data/img/sites_icons/vk.png" ) ) copy( "/my/www/html/data/img/sites_icons/vk.png", "data/img/sites_icons/vk.png" );
-			if( !is_file( "data/img/sites_icons/youtube.png" ) ) copy( "/my/www/html/data/img/sites_icons/youtube.png", "data/img/sites_icons/youtube.png" );
-			if( !is_file( "data/img/sites_icons/cults-3d.svg" ) ) copy( "/my/www/html/data/img/sites_icons/cults-3d.svg", "data/img/sites_icons/cults-3d.svg" );
+			if( !is_file( "data/img/sites_icons/hh_ru.svg" ) ) copy( "$assetsPath/img/sites_icons/hh_ru.svg", "data/img/sites_icons/hh_ru.svg" );
+			if( !is_file( "data/img/sites_icons/icq.png" ) ) copy( "$assetsPath/img/sites_icons/icq.png", "data/img/sites_icons/icq.png" );
+			if( !is_file( "data/img/sites_icons/skype.png" ) ) copy( "$assetsPath/img/sites_icons/skype.png", "data/img/sites_icons/skype.png" );
+			if( !is_file( "data/img/sites_icons/stihi.svg" ) ) copy( "$assetsPath/img/sites_icons/stihi.svg", "data/img/sites_icons/stihi.svg" );
+			if( !is_file( "data/img/sites_icons/SuperJob.png" ) ) copy( "$assetsPath/img/sites_icons/SuperJob.png", "data/img/sites_icons/SuperJob.png" );
+			if( !is_file( "data/img/sites_icons/thingiverse.png" ) ) copy( "$assetsPath/img/sites_icons/thingiverse.png", "data/img/sites_icons/thingiverse.png" );
+			if( !is_file( "data/img/sites_icons/vk.png" ) ) copy( "$assetsPath/img/sites_icons/vk.png", "data/img/sites_icons/vk.png" );
+			if( !is_file( "data/img/sites_icons/youtube.png" ) ) copy( "$assetsPath/img/sites_icons/youtube.png", "data/img/sites_icons/youtube.png" );
+			if( !is_file( "data/img/sites_icons/cults-3d.svg" ) ) copy( "$assetsPath/img/sites_icons/cults-3d.svg", "data/img/sites_icons/cults-3d.svg" );
 		}
 	}
 
@@ -147,6 +154,9 @@ function acceptCookie()
 		}else{
 			print '		<body>'."\n";
 		}
+		
+		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }</style>';
+		print '<div class="logo"> <a href="/"><img src="/data/img/my.png"></a> </div>';
 		
 		MyEngine::printMyCSS();
 		
