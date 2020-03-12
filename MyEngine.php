@@ -236,7 +236,7 @@ function acceptCookie()
 					continue;
 				}
 
-				$text	= ( isset( $data[$this->language()] ) ) ? $data[$this->language()] : '';
+				$text	= ( isset( $data[$this->language] ) ) ? $data[$this->language] : '';
 				if( $text == "" ) continue;
 
 				$class = ( $openUrl == $url )?' selected':'';
