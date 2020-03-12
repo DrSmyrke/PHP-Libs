@@ -94,15 +94,10 @@ function acceptCookie()
 			if( !is_file( "data/img/line.png" ) ) copy( $this->assetsPath."/data/img/line.png", "data/img/line.png" );
 		}
 		if( is_dir( "data/img/sites_icons" ) ){
-			if( !is_file( "data/img/sites_icons/hh_ru.svg" ) ) copy( $this->assetsPath."/img/sites_icons/hh_ru.svg", "data/img/sites_icons/hh_ru.svg" );
-			if( !is_file( "data/img/sites_icons/icq.png" ) ) copy( $this->assetsPath."/img/sites_icons/icq.png", "data/img/sites_icons/icq.png" );
-			if( !is_file( "data/img/sites_icons/skype.png" ) ) copy( $this->assetsPath."/img/sites_icons/skype.png", "data/img/sites_icons/skype.png" );
-			if( !is_file( "data/img/sites_icons/stihi.svg" ) ) copy( $this->assetsPath."/img/sites_icons/stihi.svg", "data/img/sites_icons/stihi.svg" );
-			if( !is_file( "data/img/sites_icons/SuperJob.png" ) ) copy( $this->assetsPath."/img/sites_icons/SuperJob.png", "data/img/sites_icons/SuperJob.png" );
-			if( !is_file( "data/img/sites_icons/thingiverse.png" ) ) copy( $this->assetsPath."/img/sites_icons/thingiverse.png", "data/img/sites_icons/thingiverse.png" );
-			if( !is_file( "data/img/sites_icons/vk.png" ) ) copy( $this->assetsPath."/img/sites_icons/vk.png", "data/img/sites_icons/vk.png" );
-			if( !is_file( "data/img/sites_icons/youtube.png" ) ) copy( $this->assetsPath."/img/sites_icons/youtube.png", "data/img/sites_icons/youtube.png" );
-			if( !is_file( "data/img/sites_icons/cults-3d.svg" ) ) copy( $this->assetsPath."/img/sites_icons/cults-3d.svg", "data/img/sites_icons/cults-3d.svg" );
+			$icons = array( "hh_ru.svg", "icq.png", "skype.png", "stihi.svg", "SuperJob.png", "hingiverse.png", "vk.png", "youtube.png", "cults-3d.svg" );
+			foreach( $icons as $ico ){
+				if( !is_file( "data/img/sites_icons/$ico" ) ) copy( $this->assetsPath."/img/sites_icons/$ico", "data/img/sites_icons/$ico" );
+			}
 		}
 	}
 
