@@ -110,7 +110,7 @@ function acceptCookie()
 		$this->useCookie		= $useCookie;
 	}
 
-	public function pageTop( $pagetitle, $this->assetsPath )
+	public function pageTop( $pagetitle, $assetsPath )
 	{
 		print '<!DOCTYPE html>
 	<html lang="'.$this->language.'">
@@ -130,13 +130,13 @@ function acceptCookie()
 		if( $this->authorGenerator != "" ){
 			print '			<META NAME="Generator" CONTENT="'.$this->authorGenerator.'"/>'."\n";
 		}
-		foreach( glob( $this->assetsPath."data/*.css" ) as $file ){
+		foreach( glob( $assetsPath."data/*.css" ) as $file ){
 			print '			<link rel=stylesheet type="text/css" href="'.$file.'"/>'."\n";
 		}
 		if( $this->pageIco != "" ){
 			print '			<link rel="shortcut icon" href="'.$this->pageIco.'"/>'."\n";
 		}
-		foreach( glob( $this->assetsPath."data/*.js" ) as $file ){
+		foreach( glob( $assetsPath."data/*.js" ) as $file ){
 			print '			<script type="text/javascript" src="'.$file.'"></script>'."\n";
 		}
 		if( $this->useCookie ){
