@@ -85,24 +85,24 @@ function acceptCookie()
 		if( !is_dir( "data/img/sites_icons" ) ) mkdir( "data/img/sites_icons", 775, true );
 		
 		if( is_dir( "data" ) ){
-			if( !is_file( "data/buttons.css" ) ) copy( "$assetsPath/buttons.css", "data/buttons.css" );
-			if( !is_file( "data/switchers.css" ) ) copy( "$assetsPath/switchers.css", "data/switchers.css" );
+			if( !is_file( "data/buttons.css" ) ) copy( $this->assetsPath."/buttons.css", "data/buttons.css" );
+			if( !is_file( "data/switchers.css" ) ) copy( $this->assetsPath."/switchers.css", "data/switchers.css" );
 		}
 		if( is_dir( "data/img" ) ){
-			if( !is_file( "data/img/my.png" ) ) copy( "$assetsPath/img/my.png", "data/img/my.png" );
-			if( !is_file( "data/img/fon.png" ) ) copy( "$assetsPath/data/img/fon.png", "data/img/fon.png" );
-			if( !is_file( "data/img/line.png" ) ) copy( "$assetsPath/data/img/line.png", "data/img/line.png" );
+			if( !is_file( "data/img/my.png" ) ) copy( $this->assetsPath."/img/my.png", "data/img/my.png" );
+			if( !is_file( "data/img/fon.png" ) ) copy( $this->assetsPath."/data/img/fon.png", "data/img/fon.png" );
+			if( !is_file( "data/img/line.png" ) ) copy( $this->assetsPath."/data/img/line.png", "data/img/line.png" );
 		}
 		if( is_dir( "data/img/sites_icons" ) ){
-			if( !is_file( "data/img/sites_icons/hh_ru.svg" ) ) copy( "$assetsPath/img/sites_icons/hh_ru.svg", "data/img/sites_icons/hh_ru.svg" );
-			if( !is_file( "data/img/sites_icons/icq.png" ) ) copy( "$assetsPath/img/sites_icons/icq.png", "data/img/sites_icons/icq.png" );
-			if( !is_file( "data/img/sites_icons/skype.png" ) ) copy( "$assetsPath/img/sites_icons/skype.png", "data/img/sites_icons/skype.png" );
-			if( !is_file( "data/img/sites_icons/stihi.svg" ) ) copy( "$assetsPath/img/sites_icons/stihi.svg", "data/img/sites_icons/stihi.svg" );
-			if( !is_file( "data/img/sites_icons/SuperJob.png" ) ) copy( "$assetsPath/img/sites_icons/SuperJob.png", "data/img/sites_icons/SuperJob.png" );
-			if( !is_file( "data/img/sites_icons/thingiverse.png" ) ) copy( "$assetsPath/img/sites_icons/thingiverse.png", "data/img/sites_icons/thingiverse.png" );
-			if( !is_file( "data/img/sites_icons/vk.png" ) ) copy( "$assetsPath/img/sites_icons/vk.png", "data/img/sites_icons/vk.png" );
-			if( !is_file( "data/img/sites_icons/youtube.png" ) ) copy( "$assetsPath/img/sites_icons/youtube.png", "data/img/sites_icons/youtube.png" );
-			if( !is_file( "data/img/sites_icons/cults-3d.svg" ) ) copy( "$assetsPath/img/sites_icons/cults-3d.svg", "data/img/sites_icons/cults-3d.svg" );
+			if( !is_file( "data/img/sites_icons/hh_ru.svg" ) ) copy( $this->assetsPath."/img/sites_icons/hh_ru.svg", "data/img/sites_icons/hh_ru.svg" );
+			if( !is_file( "data/img/sites_icons/icq.png" ) ) copy( $this->assetsPath."/img/sites_icons/icq.png", "data/img/sites_icons/icq.png" );
+			if( !is_file( "data/img/sites_icons/skype.png" ) ) copy( $this->assetsPath."/img/sites_icons/skype.png", "data/img/sites_icons/skype.png" );
+			if( !is_file( "data/img/sites_icons/stihi.svg" ) ) copy( $this->assetsPath."/img/sites_icons/stihi.svg", "data/img/sites_icons/stihi.svg" );
+			if( !is_file( "data/img/sites_icons/SuperJob.png" ) ) copy( $this->assetsPath."/img/sites_icons/SuperJob.png", "data/img/sites_icons/SuperJob.png" );
+			if( !is_file( "data/img/sites_icons/thingiverse.png" ) ) copy( $this->assetsPath."/img/sites_icons/thingiverse.png", "data/img/sites_icons/thingiverse.png" );
+			if( !is_file( "data/img/sites_icons/vk.png" ) ) copy( $this->assetsPath."/img/sites_icons/vk.png", "data/img/sites_icons/vk.png" );
+			if( !is_file( "data/img/sites_icons/youtube.png" ) ) copy( $this->assetsPath."/img/sites_icons/youtube.png", "data/img/sites_icons/youtube.png" );
+			if( !is_file( "data/img/sites_icons/cults-3d.svg" ) ) copy( $this->assetsPath."/img/sites_icons/cults-3d.svg", "data/img/sites_icons/cults-3d.svg" );
 		}
 	}
 
@@ -115,7 +115,7 @@ function acceptCookie()
 		$this->useCookie		= $useCookie;
 	}
 
-	public function pageTop( $pagetitle, $assetsPath )
+	public function pageTop( $pagetitle, $this->assetsPath )
 	{
 		print '<!DOCTYPE html>
 	<html lang="'.$this->language.'">
@@ -135,13 +135,13 @@ function acceptCookie()
 		if( $this->authorGenerator != "" ){
 			print '			<META NAME="Generator" CONTENT="'.$this->authorGenerator.'"/>'."\n";
 		}
-		foreach( glob( $assetsPath."data/*.css" ) as $file ){
+		foreach( glob( $this->assetsPath."data/*.css" ) as $file ){
 			print '			<link rel=stylesheet type="text/css" href="'.$file.'"/>'."\n";
 		}
 		if( $this->pageIco != "" ){
 			print '			<link rel="shortcut icon" href="'.$this->pageIco.'"/>'."\n";
 		}
-		foreach( glob( $assetsPath."data/*.js" ) as $file ){
+		foreach( glob( $this->assetsPath."data/*.js" ) as $file ){
 			print '			<script type="text/javascript" src="'.$file.'"></script>'."\n";
 		}
 		if( $this->useCookie ){
