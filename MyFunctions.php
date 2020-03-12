@@ -31,6 +31,7 @@ class MyFunctions
 			}
 			print '</table>'."\n";
 		}else{
+			print '<div class="'.$className.'">';
 			foreach( MyFunctions::readDirToArray( $path ) as $key => $file ){
 				//var_dump( $value );
 				//foreach( $value as $file ){
@@ -47,6 +48,7 @@ class MyFunctions
 					print '<a href="'.$file.'"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
 				//}
 			}
+			print '</div>';
 		}
 	}
 
