@@ -71,15 +71,13 @@ function acceptCookie()
 
 	public function __construct()
 	{
-		/*
-		$language="en";
-		if(!isset( $_COOKIE["lang"] )){
-			setcookie("lang","en");
-			$language = "en";
+		if( !isset( $_COOKIE["lang"] ) ){
+			//setcookie("lang","en");
+			$this->language = "en";
 		}else{
-			$language = $_COOKIE["lang"];
+			$this->language = $_COOKIE["lang"];
 		}
-		*/
+		
 		if( !is_dir( "data" ) ) mkdir( "data", 775, true );
 		if( !is_dir( "data/img" ) ) mkdir( "data/img", 775, true );
 		if( !is_dir( "data/img/sites_icons" ) ) mkdir( "data/img/sites_icons", 775, true );
@@ -107,7 +105,7 @@ function acceptCookie()
 	public function init( $language = "en", $pageIco = "", $useCookie = false )
 	{
 		$this->language			= $language;
-		$this->pageIco			= $pageIco;
+		$this->pageIco				= $pageIco;
 		$this->useCookie		= $useCookie;
 	}
 
@@ -219,6 +217,33 @@ function acceptCookie()
 		}
 
 		print '</style>'."\n";
+	}
+	
+	public function drawMenu( $mainMenu )
+	{
+		$tmp = explode( "?", $_SERVER["REQUEST_URI"] );
+		$openUrl = $tmp[0];
+		print '<div class="mainMenu">';
+			foreach( $mainMenu as $url => $data ){
+				if( !is_array( $data ) ) continue;
+
+				if( $url == "switcher" ){
+					$onClick	= ( isset( $data["onClick"] ) ) ? ' onClick="'.$data["onClick"].'"' : '';
+					$first		= ( isset( $data["first"] ) ) ? $data["first"] : '';
+					$second		= ( isset( $data["second"] ) ) ? $data["second"] : '';
+					$checked	= ( isset( $data["checked"] ) ) ? ' checked' : '';
+					print '<label for="langSwitch"> <input type="checkbox" id="langSwitch"'.$checked.$onClick.'> <div class="switcher1"> <div class="rail"> <div class="state1">'.$second.'</div> <div class="slider"></div> <div class="state2">'.$first.'</div> </div> </div> </label>';
+					continue;
+				}
+
+				$text	= ( isset( $data[$this->language()] ) ) ? $data[$this->language()] : '';
+				if( $text == "" ) continue;
+
+				$class = ( $openUrl == $url )?' selected':'';
+				$img = ( isset($data["ico"]) ) ? '<img src="'.$data["ico"].'">' : "";
+				print '<a href="'.$url.'" class="button3'.$class.'" style="padding: 5px;">'.$data["ru"].'</a>'."\n";
+			}
+		print '</div>';
 	}
 }
 ?>
