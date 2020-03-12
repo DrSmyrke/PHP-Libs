@@ -40,7 +40,7 @@ class MyFunctions
 					$rash = array_pop( $tmp );
 					$name = array_shift( $tmp );
 					$prewImg = ( is_file("$path/$name.jpg") ) ? "$path/$name.jpg" : "";
-					$prewImg = ( is_file("$path/$name.png") ) ? "$path/$name.jpg" : $prewImg;
+					$prewImg = ( is_file("$path/$name.png") ) ? "$path/$name.png" : $prewImg;
 					$prewImg = ( is_file("$path/$name.bmp") ) ? "$path/$name.bmp" : $prewImg;
 
 					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
