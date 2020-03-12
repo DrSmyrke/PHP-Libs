@@ -94,8 +94,9 @@ function acceptCookie()
 			if( !is_file( "data/img/line.png" ) ) copy( $this->assetsPath."/data/img/line.png", "data/img/line.png" );
 		}
 		if( is_dir( "data/img/sites_icons" ) ){
-			$icons = array( "hh_ru.svg", "icq.png", "skype.png", "stihi.svg", "SuperJob.png", "hingiverse.png", "vk.png", "youtube.png", "cults-3d.svg" );
+			$icons = array( "hh_ru.svg", "icq.png", "skype.png", "stihi.svg", "SuperJob.png", "thingiverse.png", "vk.png", "youtube.png", "cults-3d.svg", "Patreon.png" );
 			foreach( $icons as $ico ){
+				if( !is_file( $this->assetsPath."/img/sites_icons/$ico" ) ) continue;
 				if( !is_file( "data/img/sites_icons/$ico" ) ) copy( $this->assetsPath."/img/sites_icons/$ico", "data/img/sites_icons/$ico" );
 			}
 		}
@@ -186,6 +187,7 @@ function acceptCookie()
 			<a href="https://www.stihi.ru/avtor/drsmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/stihi.svg" title="Стихи.ру"></a>
 			<a href="https://www.thingiverse.com/DrSmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/thingiverse.png" title="Thingiverse"></a>
 			<a href="https://cults3d.com/en/users/DrSmyrke/creations" target="_blank" class="button"><img src="/data/img/sites_icons/cults-3d.svg" title="Cults 3d"></a>
+			<a href="https://www.patreon.com/DrSmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/Patreon.png" title="Patreon"></a>
 		</div>
 	</div>
 	<hr>
