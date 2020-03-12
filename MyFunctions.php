@@ -31,9 +31,9 @@ class MyFunctions
 			}
 			print '</table>'."\n";
 		}else{
-			foreach( MyFunctions::readDirToArray( $path ) as $key => $value ){
-				var_dump( $value );
-				foreach( $value as $file ){
+			foreach( MyFunctions::readDirToArray( $path ) as $key => $file ){
+				//var_dump( $value );
+				//foreach( $value as $file ){
 					$fName = basename( $file );
 					$tmp = explode( ".", $fName );
 					$rash = array_pop( $tmp );
@@ -45,7 +45,7 @@ class MyFunctions
 					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
 
 					print '<a href="'.$file.'"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
-				}
+				//}
 			}
 		}
 	}
