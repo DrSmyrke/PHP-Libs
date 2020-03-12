@@ -45,7 +45,7 @@ class MyFunctions
 
 					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
 
-					print '<a href="'.$file.'"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
+					print '<a href="'.$file.'" target="_blank"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
 				//}
 			}
 			print '</div>';
