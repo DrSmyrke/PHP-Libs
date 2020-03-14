@@ -85,6 +85,9 @@ function acceptCookie()
 		if( is_dir( "data" ) ){
 			if( !is_file( "data/buttons.css" ) ) copy( $this->assetsPath."/buttons.css", "data/buttons.css" );
 			if( !is_file( "data/switchers.css" ) ) copy( $this->assetsPath."/switchers.css", "data/switchers.css" );
+			if( !is_file( "data/drsmyrke.css" ) ) copy( $this->assetsPath."/drsmyrke.css", "data/drsmyrke.css" );
+			if( !is_file( "data/color.css" ) ) copy( $this->assetsPath."/color.css", "data/color.css" );
+			if( !is_file( "data/animate.css" ) ) copy( $this->assetsPath."/animate.css", "data/animate.css" );
 		}
 		if( is_dir( "data/img" ) ){
 			if( !is_file( "data/img/my.png" ) ) copy( $this->assetsPath."/img/my.png", "data/img/my.png" );
@@ -152,8 +155,6 @@ function acceptCookie()
 		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }</style>';
 		print '<div class="logo"> <a href="/"><img src="/data/img/my.png"></a> </div>';
 		
-		MyEngine::printMyCSS();
-		
 		if( $this->useCookie ){
 			print '			<table class="bottomСookieBlock hidden" id="cookieBox" width="100%">
 			<tr>
@@ -195,28 +196,6 @@ function acceptCookie()
 		<i>при поддержке ЗАО "Мутные схемы" и ОАО "Любовь в займы"</i>!-->
 	</div>
 </body></html>';
-	}
-
-	private function printMyCSS()
-	{
-		print '<style>\n';
-
-		print '*, *:before, *:after { transition: .25s ease-in-out; }';
-		print '.madeBy i{ color: gray; fint-style: italic; font-size:8pt; }';
-		print '.madeBy{ text-align: center; }';
-		print '@media only screen and (max-width: 950px){ .block { width: 95%; margin: 25px auto; display: block; max-height: none; overflow: none; } }';
-		print '@media only screen and (max-width: 1170px){ .content, .logo {width: 95%;} }';
-		print '/* @media only screen and (orientation:portrait){ .menu .a {display: block; width: 95%; margin: auto; margin-bottom: 5px;} } */';
-		print '.hidden{ display: none; }';
-		print 'hr{ border: 0px dashed; height: 1px; background-image: -webkit-linear-gradient(left, #fff, #000, #fff); background-image: -moz-linear-gradient(left, #fff, #000, #fff); background-image: -ms-linear-gradient(left, #fff, #000, #fff); background-image: -o-linear-gradient(left, #fff, #000, #fff); }';
-		
-		if( $this->useCookie ){
-			print '.bottomСookieBlock td{ padding: 10px; }';
-			print '.bottomСookieBlock{ position: fixed; bottom: 0px; left: 0px; background-color: gray; font-size: 14pt;}';
-			print '.cookieBlockAccept{ padding: 15px; border: 1px solid orange; color: orange; font-weight: bold; background-color: gray; cursor: pointer;}';
-		}
-
-		print '</style>'."\n";
 	}
 	
 	public function drawMenu( $mainMenu )

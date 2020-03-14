@@ -148,9 +148,9 @@ class MyFunctions
 	{
 		global $language;
 
-		$mass = array( "bytes", "Kb", "Mb", "Gb" );
+		$mass = array( "bytes", "Kb", "Mb", "Gb", "Tb" );
 		if( $language == "ru" ){
-			$mass = array( "байт(а)", "Кб", "Мб", "Гб" );
+			$mass = array( "байт(а)", "Кб", "Мб", "Гб", "Тб" );
 		}
 
 		$index = 0;
@@ -161,7 +161,8 @@ class MyFunctions
 			do{
 				$size /= 1024;
 				$index++;
-			}while( $size > 1024 );
+				if( $index >= count( $mass ) ) break;
+			}while( $size > 1023 );
 			$len = strlen( (int)$size );
 			$size = round( $size, 4 - $len );
 			return $st = "$size ".$mass[$index];
