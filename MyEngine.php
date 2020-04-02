@@ -85,11 +85,12 @@ function acceptCookie()
 		if( !is_dir( $this->assetsPath."/img/sites_icons" ) ) mkdir( $this->assetsPath."/img/sites_icons", 775, true );
 		
 		if( is_dir( $this->assetsPath ) ){
-			if( !is_file( $this->assetsPath."/buttons.css" ) ) copy( $this->baseAssetsPath."/buttons.css", $this->assetsPath."/buttons.css" );
-			if( !is_file( $this->assetsPath."/switchers.css" ) ) copy( $this->baseAssetsPath."/switchers.css", $this->assetsPath."/switchers.css" );
-			if( !is_file( $this->assetsPath."/drsmyrke.css" ) ) copy( $this->baseAssetsPath."/drsmyrke.css", $this->assetsPath."/drsmyrke.css" );
-			if( !is_file( $this->assetsPath."/color.css" ) ) copy( $this->baseAssetsPath."/color.css", $this->assetsPath."/color.css" );
-			if( !is_file( $this->assetsPath."/animate.css" ) ) copy( $this->baseAssetsPath."/animate.css", $this->assetsPath."/animate.css" );
+			foreach( glob( $this->baseAssetsPath."/*.css" ) as $file ){
+				copy( $file, $this->assetsPath."/".basename( $file ) );
+			}
+			foreach( glob( $this->baseAssetsPath."/*.js" ) as $file ){
+				copy( $file, $this->assetsPath."/".basename( $file ) );
+			}
 		}
 		if( is_dir( $this->assetsPath."/img" ) ){
 			if( !is_file( $this->assetsPath."/img/my.png" ) ) copy( $this->baseAssetsPath."/img/my.png", $this->assetsPath."/img/my.png" );
