@@ -86,10 +86,14 @@ function acceptCookie()
 		
 		if( is_dir( $this->assetsPath ) ){
 			foreach( glob( $this->baseAssetsPath."/*.css" ) as $file ){
-				copy( $file, $this->assetsPath."/".basename( $file ) );
+				$newFile = $this->assetsPath."/".basename( $file );
+				if( is_file( $newFile ) ) continue;
+				copy( $file, $newFile );
 			}
 			foreach( glob( $this->baseAssetsPath."/*.js" ) as $file ){
-				copy( $file, $this->assetsPath."/".basename( $file ) );
+				$newFile = $this->assetsPath."/".basename( $file );
+				if( is_file( $newFile ) ) continue;
+				copy( $file, $newFile );
 			}
 		}
 		if( is_dir( $this->assetsPath."/img" ) ){
