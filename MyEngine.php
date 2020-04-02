@@ -223,6 +223,7 @@ function acceptCookie()
 				print '<a href="'.$url.'" class="button3'.$class.'" style="padding: 5px;">'.$data["ru"].'</a>'."\n";
 			}
 		print '</div>';
+		print '<hr>';
 	}
 }
 ?>
