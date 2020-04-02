@@ -3,7 +3,7 @@ class MyEngine
 {
 	private $language			= "en";
 	private $pageIco			= "";
-	private $useCookie			= false;
+	private $useCookie			= true;
 	private $assetsPath			= "/my/www/ASSETS";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
@@ -105,12 +105,6 @@ function acceptCookie()
 
 	public function getLanguage(){ return $this->language; }
 	public function setLanguage( $language = "en" ){ $this->language = $language; }
-
-	public function init( $pageIco = "", $useCookie = false )
-	{
-		$this->pageIco			= $pageIco;
-		$this->useCookie		= $useCookie;
-	}
 
 	public function pageTop( $pagetitle, $assetsPath )
 	{
