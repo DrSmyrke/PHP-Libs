@@ -205,7 +205,7 @@ function acceptCookie()
 					$first		= ( isset( $data["first"] ) ) ? $data["first"] : '';
 					$second		= ( isset( $data["second"] ) ) ? $data["second"] : '';
 					$checked	= ( isset( $data["checked"] ) ) ? ' checked' : '';
-					print '<label for="langSwitch"> <input type="checkbox" id="langSwitch"'.$checked.$onClick.'> <div class="switcher1"> <div class="rail"> <div class="state1">'.$second.'</div> <div class="slider"></div> <div class="state2">'.$first.'</div> </div> </div> </label>';
+					print '<label for="langSwitch"> <input type="checkbox" id="langSwitch"'.$onClick.$checked.'> <div class="switcher1"> <div class="rail"> <div class="state1">'.$second.'</div> <div class="slider"></div> <div class="state2">'.$first.'</div> </div> </div> </label>';
 					continue;
 				}
 
