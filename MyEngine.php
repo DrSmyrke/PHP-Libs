@@ -157,7 +157,7 @@ function acceptCookie()
 					<button class="cookieBlockAccept" onClick="acceptCookie();">OK</button>
 				</td>
 			</tr>
-			</table>';
+			</table>'."\n";
 		}
 	}
 
