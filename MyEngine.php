@@ -2,7 +2,7 @@
 class MyEngine
 {
 	private $language			= "en";
-	private $pageIco				= "";
+	private $pageIco			= "";
 	private $useCookie			= false;
 	private $assetsPath			= "/my/www/ASSETS";
 	###### EDIT MANUAL ##################
@@ -104,11 +104,11 @@ function acceptCookie()
 	}
 
 	public function getLanguage(){ return $this->language; }
+	public function setLanguage( $language = "en" ){ $this->language = $language; }
 
-	public function init( $language = "en", $pageIco = "", $useCookie = false )
+	public function init( $pageIco = "", $useCookie = false )
 	{
-		$this->language			= $language;
-		$this->pageIco				= $pageIco;
+		$this->pageIco			= $pageIco;
 		$this->useCookie		= $useCookie;
 	}
 
