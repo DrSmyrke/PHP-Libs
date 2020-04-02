@@ -4,7 +4,9 @@ class MyEngine
 	private $language			= "en";
 	private $pageIco			= "";
 	private $useCookie			= true;
-	private $assetsPath			= "/my/www/ASSETS";
+	private $baseAssetsPath		= "/my/www/ASSETS";
+	private $assetsPath			= "/my/www/html/data";
+	private $assetsPathUrl		= "/data/";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий,портфолио,Мои работы,Мои проекты, Программы, Свободное программное обеспечение";
@@ -78,27 +80,27 @@ function acceptCookie()
 			$this->language = $_COOKIE["lang"];
 		}
 		
-		if( !is_dir( "data" ) ) mkdir( "data", 775, true );
-		if( !is_dir( "data/img" ) ) mkdir( "data/img", 775, true );
-		if( !is_dir( "data/img/sites_icons" ) ) mkdir( "data/img/sites_icons", 775, true );
+		if( !is_dir( $this->assetsPath ) ) mkdir( $this->assetsPath, 775, true );
+		if( !is_dir( $this->assetsPath."/img" ) ) mkdir( $this->assetsPath."/img", 775, true );
+		if( !is_dir( $this->assetsPath."/img/sites_icons" ) ) mkdir( $this->assetsPath."/img/sites_icons", 775, true );
 		
-		if( is_dir( "data" ) ){
-			if( !is_file( "data/buttons.css" ) ) copy( $this->assetsPath."/buttons.css", "data/buttons.css" );
-			if( !is_file( "data/switchers.css" ) ) copy( $this->assetsPath."/switchers.css", "data/switchers.css" );
-			if( !is_file( "data/drsmyrke.css" ) ) copy( $this->assetsPath."/drsmyrke.css", "data/drsmyrke.css" );
-			if( !is_file( "data/color.css" ) ) copy( $this->assetsPath."/color.css", "data/color.css" );
-			if( !is_file( "data/animate.css" ) ) copy( $this->assetsPath."/animate.css", "data/animate.css" );
+		if( is_dir( $this->assetsPath ) ){
+			if( !is_file( $this->assetsPath."/buttons.css" ) ) copy( $this->baseAssetsPath."/buttons.css", $this->assetsPath."/buttons.css" );
+			if( !is_file( $this->assetsPath."/switchers.css" ) ) copy( $this->baseAssetsPath."/switchers.css", $this->assetsPath."/switchers.css" );
+			if( !is_file( $this->assetsPath."/drsmyrke.css" ) ) copy( $this->baseAssetsPath."/drsmyrke.css", $this->assetsPath."/drsmyrke.css" );
+			if( !is_file( $this->assetsPath."/color.css" ) ) copy( $this->baseAssetsPath."/color.css", $this->assetsPath."/color.css" );
+			if( !is_file( $this->assetsPath."/animate.css" ) ) copy( $this->baseAssetsPath."/animate.css", $this->assetsPath."/animate.css" );
 		}
-		if( is_dir( "data/img" ) ){
-			if( !is_file( "data/img/my.png" ) ) copy( $this->assetsPath."/img/my.png", "data/img/my.png" );
-			if( !is_file( "data/img/fon.png" ) ) copy( $this->assetsPath."/data/img/fon.png", "data/img/fon.png" );
-			if( !is_file( "data/img/line.png" ) ) copy( $this->assetsPath."/data/img/line.png", "data/img/line.png" );
+		if( is_dir( $this->assetsPath."/img" ) ){
+			if( !is_file( $this->assetsPath."/img/my.png" ) ) copy( $this->baseAssetsPath."/img/my.png", $this->assetsPath."/img/my.png" );
+			if( !is_file( $this->assetsPath."/img/fon.png" ) ) copy( $this->baseAssetsPath."/data/img/fon.png", $this->assetsPath."/img/fon.png" );
+			if( !is_file( $this->assetsPath."/img/line.png" ) ) copy( $this->baseAssetsPath."/data/img/line.png", $this->assetsPath."/img/line.png" );
 		}
-		if( is_dir( "data/img/sites_icons" ) ){
+		if( is_dir( $this->assetsPath."/img/sites_icons" ) ){
 			$icons = array( "hh_ru.svg", "icq.png", "skype.png", "stihi.svg", "SuperJob.png", "thingiverse.png", "vk.png", "youtube.png", "cults-3d.svg", "Patreon.png" );
 			foreach( $icons as $ico ){
-				if( !is_file( $this->assetsPath."/img/sites_icons/$ico" ) ) continue;
-				if( !is_file( "data/img/sites_icons/$ico" ) ) copy( $this->assetsPath."/img/sites_icons/$ico", "data/img/sites_icons/$ico" );
+				if( !is_file( $this->baseAssetsPath."/img/sites_icons/$ico" ) ) continue;
+				if( !is_file( $this->assetsPath."/img/sites_icons/$ico" ) ) copy( $this->baseAssetsPath."/img/sites_icons/$ico", $this->assetsPath."/img/sites_icons/$ico" );
 			}
 		}
 	}
@@ -106,7 +108,7 @@ function acceptCookie()
 	public function getLanguage(){ return $this->language; }
 	public function setLanguage( $language = "en" ){ $this->language = $language; }
 
-	public function pageTop( $pagetitle, $assetsPath )
+	public function pageTop( $pagetitle )
 	{
 		print '<!DOCTYPE html>
 	<html lang="'.$this->language.'">
@@ -126,14 +128,14 @@ function acceptCookie()
 		if( $this->authorGenerator != "" ){
 			print '			<META NAME="Generator" CONTENT="'.$this->authorGenerator.'"/>'."\n";
 		}
-		foreach( glob( $assetsPath."data/*.css" ) as $file ){
-			print '			<link rel=stylesheet type="text/css" href="'.$file.'"/>'."\n";
-		}
 		if( $this->pageIco != "" ){
 			print '			<link rel="shortcut icon" href="'.$this->pageIco.'"/>'."\n";
 		}
-		foreach( glob( $assetsPath."data/*.js" ) as $file ){
-			print '			<script type="text/javascript" src="'.$file.'"></script>'."\n";
+		foreach( glob( $this->assetsPath."/*.css" ) as $file ){
+			print '			<link rel=stylesheet type="text/css" href="'.$this->assetsPathUrl.basename( $file ).'"/>'."\n";
+		}
+		foreach( glob( $this->assetsPath."/*.js" ) as $file ){
+			print '			<script type="text/javascript" src="'.$this->assetsPathUrl.basename( $file ).'"></script>'."\n";
 		}
 		if( $this->useCookie ){
 			print '			<script type="text/javascript">'.$this->cookieJS.'</script>'."\n";
