@@ -43,8 +43,8 @@ class MyFunctions
 					$rash = array_pop( $tmp );
 					$name = array_shift( $tmp );
 					
-					if( $icoRash != "" ){
-						if( $icoRash != $rash ) continue;
+					if( $onlyRash != "" ){
+						if( $onlyRash != $rash ) continue;
 					}
 					
 					$prewImg = ( is_file("$path/$name.jpg") ) ? "$path/$name.jpg" : "";
