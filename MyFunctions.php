@@ -50,7 +50,7 @@ class MyFunctions
 
 					print '<article><figure><a href="'.$file.'" target="_blank"><img class="prewImg" src="'.$prewImg.'">';
 					if( $asIco ){
-						print $file;
+						print '<br>'.$file;
 					}
 					print '</a></figure></article>';
 				//}
