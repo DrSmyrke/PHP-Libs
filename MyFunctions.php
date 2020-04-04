@@ -21,18 +21,18 @@ class MyFunctions
 		if( !is_dir( $path ) ) return;
 		if( $asTable ){
 			print '<table class="'.$className.'">'."\n";
-			foreach( MyFunctions::readDirToArray( $path ) as $key => $value ){
-				print '<tr><td colspan="2"><h3>'.basename($key).'</h3></td></tr>';
+			foreach( $this->readDirToArray( $path ) as $key => $value ){
+				print '<tr><td colspan="2"><h3>'.basename($key).'/'.$value.'</h3></td></tr>';
 				if( !is_array( $value ) ) continue;
 				foreach( $value as $pkt ){
 					if( is_array( $pkt ) ) continue;	//TODO: Maybe recursion ???
-					print '<tr><td><a href="'.$pkt.'">'.basename($pkt).'</a></td><td class="size">'.MyFunctions::getSize(filesize($pkt)).'</td></tr>';
+					print '<tr><td><a href="'.$pkt.'">'.basename($pkt).'</a></td><td class="size">'.$this->getSize(filesize($pkt)).'</td></tr>';
 				}
 			}
 			print '</table>'."\n";
 		}else{
 			print '<div class="'.$className.'">';
-			foreach( MyFunctions::readDirToArray( $path ) as $key => $file ){
+			foreach( $this->readDirToArray( $path ) as $key => $file ){
 				//var_dump( $value );
 				//foreach( $value as $file ){
 					$fName = basename( $file );
@@ -60,7 +60,7 @@ class MyFunctions
 
 		foreach( glob("$dir/*") as $elem ){
 			if( is_dir( $elem ) ){
-				$data["$elem"] = MyFunctions::readDirToArray( $elem );
+				$data["$elem"] = $this->readDirToArray( $elem );
 			}else{
 				array_push( $data, $elem );
 			}
