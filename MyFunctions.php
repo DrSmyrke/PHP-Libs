@@ -56,7 +56,7 @@ class MyFunctions
 					print '<article><figure>';
 					if( $asIco ){
 						print '<a href="'.$prewImg.'" target="_blank"><img class="prewImg" src="'.$prewImg.'"></a>';
-						print '<br><i><a href="'.$file.'" target="_blank">'.$fName.'</a></i>';
+						print '<br><i><a href="'.$file.'" target="_blank">'.$name.'</a></i>';
 					}else{
 						print '<a href="'.$file.'" target="_blank"><img class="prewImg" src="'.$prewImg.'">';
 					}
