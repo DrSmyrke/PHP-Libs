@@ -38,7 +38,8 @@ class MyFunctions
 			foreach( $this->readDirToArray( $path ) as $key => $file ){
 				//var_dump( $value );
 				//foreach( $value as $file ){
-					$fName = basename( $file );
+					$tmp = explode( "/", $file );
+					$fName = array_pop( $tmp );
 					$tmp = explode( ".", $fName );
 					$rash = array_pop( $tmp );
 					$name = array_shift( $tmp );
