@@ -16,7 +16,7 @@ function myfunctions_help()
 
 class MyFunctions
 {
-	public function printDir( $path, $asTable = true, $className = "table", $asIco = false, $icoRash = "dxf")
+	public function printDir( $path, $asTable = true, $className = "table", $asIco = false, $onlyRash = "")
 	{
 		if( !is_dir( $path ) ) return;
 		if( $asTable ){
@@ -42,15 +42,23 @@ class MyFunctions
 					$tmp = explode( ".", $fName );
 					$rash = array_pop( $tmp );
 					$name = array_shift( $tmp );
+					
+					if( $icoRash != "" ){
+						if( $icoRash != $rash ) continue;
+					}
+					
 					$prewImg = ( is_file("$path/$name.jpg") ) ? "$path/$name.jpg" : "";
 					$prewImg = ( is_file("$path/$name.png") ) ? "$path/$name.png" : $prewImg;
 					$prewImg = ( is_file("$path/$name.bmp") ) ? "$path/$name.bmp" : $prewImg;
 
 					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
 
-					print '<article><figure><a href="'.$file.'" target="_blank"><img class="prewImg" src="'.$prewImg.'">';
+					print '<article><figure>';
 					if( $asIco ){
-						print '<br><i>'.$fName."</i>";
+						print '<a href="'.$prewImg.'" target="_blank"><img class="prewImg" src="'.$prewImg.'"></a>';
+						print '<br><i><a href="'.$file.'" target="_blank">'.$fName.'</a></i>';
+					}else{
+						print '<a href="'.$file.'" target="_blank"><img class="prewImg" src="'.$prewImg.'">';
 					}
 					print '</a></figure></article>';
 				//}
