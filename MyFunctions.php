@@ -22,8 +22,11 @@ class MyFunctions
 		if( $asTable ){
 			print '<table class="'.$className.'">'."\n";
 			foreach( $this->readDirToArray( $path ) as $key => $value ){
-				print '<tr><td colspan="2"><h3>'.basename($key).'/'.$value.'</h3></td></tr>';
-				if( !is_array( $value ) ) continue;
+				if( !is_array( $value ) ){
+					print '<tr><td><a href="'.$value.'">'.basename($value).'</a></td><td class="size">'.$this->getSize(filesize($value)).'</td></tr>';
+					continue;
+				}
+				print '<tr><td colspan="2"><h3>'.basename($key).'</h3></td></tr>';
 				foreach( $value as $pkt ){
 					if( is_array( $pkt ) ) continue;	//TODO: Maybe recursion ???
 					print '<tr><td><a href="'.$pkt.'">'.basename($pkt).'</a></td><td class="size">'.$this->getSize(filesize($pkt)).'</td></tr>';
