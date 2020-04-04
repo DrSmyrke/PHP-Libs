@@ -16,7 +16,7 @@ function myfunctions_help()
 
 class MyFunctions
 {
-	public function printDir( $path, $asTable = true, $className = "table")
+	public function printDir( $path, $asTable = true, $className = "table", $asIco = false, $icoRash = "dxf")
 	{
 		if( !is_dir( $path ) ) return;
 		if( $asTable ){
@@ -48,7 +48,11 @@ class MyFunctions
 
 					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
 
-					print '<a href="'.$file.'" target="_blank"><article><figure><img class="prewImg" src="'.$prewImg.'"></figure></article></a>';
+					print '<article><figure><a href="'.$file.'" target="_blank"><img class="prewImg" src="'.$prewImg.'">';
+					if( $asIco ){
+						print $file;
+					}
+					print '</a></figure></article>';
 				//}
 			}
 			print '</div>';
