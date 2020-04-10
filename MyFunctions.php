@@ -51,6 +51,7 @@ class MyFunctions
 					$prewImg = ( is_file("$path/$name.jpg") ) ? "$path/$name.jpg" : "";
 					$prewImg = ( is_file("$path/$name.png") ) ? "$path/$name.png" : $prewImg;
 					$prewImg = ( is_file("$path/$name.bmp") ) ? "$path/$name.bmp" : $prewImg;
+					$prewImg = ( is_file("$path/$name.gif") ) ? "$path/$name.gif" : $prewImg;
 
 					if( $prewImg == "" ) $prewImg = "/data/img/file.png";
 
