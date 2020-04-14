@@ -1,4 +1,11 @@
 <?php
+/*
+r	equire_once  "MyUI.php";
+	$ui					= new MyUI;
+	$ui->printProgressBar( 75 );print "<br>\n";
+	$ui->printProgressBar( 75, "<b>Free:</b> [1 024 / 2048] <i>{UNPRZ}%</i>", 0, null, "#F7CDA0, #E79844", false );print "<br>\n";
+	$ui->printProgressBar( 75, "<b>Free:</b> [1 024 / 2048] <i>{UNPRZ}%</i><br>123<br>000", 5, "rgba( 200, 200 ,200, 0.45 ), rgba( 200, 200 ,200, 0.45 )", "rgba( 200, 200, 200, 0.9 ), rgba( 200, 200, 200, 0.9 )" );print "<br>\n";
+*/
 class MyUI
 {
 	public function __construct()
