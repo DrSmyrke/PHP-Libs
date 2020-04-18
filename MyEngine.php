@@ -4,8 +4,6 @@ class MyEngine
 	private $language			= "en";
 	private $pageIco			= "";
 	private $useCookie			= true;
-	private $baseAssetsPath		= "/my/www/ASSETS";
-	private $assetsPath			= "/my/www/html/data";
 	private $assetsPathUrl		= "/data/";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
@@ -78,35 +76,6 @@ function acceptCookie()
 			$this->language = "en";
 		}else{
 			$this->language = $_COOKIE["lang"];
-		}
-		
-		if( !is_dir( $this->assetsPath ) ) mkdir( $this->assetsPath, 775, true );
-		if( !is_dir( $this->assetsPath."/img" ) ) mkdir( $this->assetsPath."/img", 775, true );
-		if( !is_dir( $this->assetsPath."/img/sites_icons" ) ) mkdir( $this->assetsPath."/img/sites_icons", 775, true );
-		
-		if( is_dir( $this->assetsPath ) ){
-			foreach( glob( $this->baseAssetsPath."/*.css" ) as $file ){
-				$newFile = $this->assetsPath."/".basename( $file );
-				if( is_file( $newFile ) ) continue;
-				copy( $file, $newFile );
-			}
-			foreach( glob( $this->baseAssetsPath."/*.js" ) as $file ){
-				$newFile = $this->assetsPath."/".basename( $file );
-				if( is_file( $newFile ) ) continue;
-				copy( $file, $newFile );
-			}
-		}
-		if( is_dir( $this->assetsPath."/img" ) ){
-			if( !is_file( $this->assetsPath."/img/my.png" ) ) copy( $this->baseAssetsPath."/img/my.png", $this->assetsPath."/img/my.png" );
-			if( !is_file( $this->assetsPath."/img/fon.png" ) ) copy( $this->baseAssetsPath."/data/img/fon.png", $this->assetsPath."/img/fon.png" );
-			if( !is_file( $this->assetsPath."/img/line.png" ) ) copy( $this->baseAssetsPath."/data/img/line.png", $this->assetsPath."/img/line.png" );
-		}
-		if( is_dir( $this->assetsPath."/img/sites_icons" ) ){
-			$icons = array( "hh_ru.svg", "icq.png", "skype.png", "stihi.svg", "SuperJob.png", "thingiverse.png", "vk.png", "youtube.png", "cults-3d.svg", "Patreon.png" );
-			foreach( $icons as $ico ){
-				if( !is_file( $this->baseAssetsPath."/img/sites_icons/$ico" ) ) continue;
-				if( !is_file( $this->assetsPath."/img/sites_icons/$ico" ) ) copy( $this->baseAssetsPath."/img/sites_icons/$ico", $this->assetsPath."/img/sites_icons/$ico" );
-			}
 		}
 	}
 
