@@ -253,7 +253,7 @@ class MyFunctions
 		return $data;
 	}
 	
-	public dirParamToRepoList( &$string, $data )
+	public function dirParamToRepoList( &$string, $data )
 	{
 		foreach( $data as $elem ){
 			if( !is_array( $elem ) ) continue;
