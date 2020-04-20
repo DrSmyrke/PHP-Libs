@@ -14,6 +14,7 @@ function myfunctions_help()
 	print "\$res = \$mf->setLog( mess ); //added date time before message\n";
 	print "\$res = \$mf->xorString( str, key ); //encode XOR string from key\n";
 	print "\$res = \$mf->scanDirParam( dir, true ); //scan dir recursive param\n";
+	print "\$mf->dirParamToRepoList( &string, data ); //print to string repo file list\n";
 }
 
 class MyFunctions
@@ -252,7 +253,7 @@ class MyFunctions
 		return $data;
 	}
 	
-	public dirParamToList( &$string, $data )
+	public dirParamToRepoList( &$string, $data )
 	{
 		foreach( $data as $elem ){
 			if( !is_array( $elem ) ) continue;
