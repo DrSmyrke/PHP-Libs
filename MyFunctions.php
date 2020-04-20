@@ -12,6 +12,7 @@ function myfunctions_help()
 	print "\$res = \$mf->getAgeFromBirthday( birthday ); // get full years from birthday date<br>\n";
 	print "\$mf->removeDirectory( dir ); //recursive remove directory<br>\n";
 	print "\$res = \$mf->setLog( mess ); //added date time before message\n";
+	print "\$res = \$mf->xorString( str, key ); //encode XOR string from key\n";
 }
 
 class MyFunctions
@@ -212,6 +213,42 @@ class MyFunctions
 	public function setLog( $mess )
 	{
 		return date("d.m.Y [H:i:s]")." ".$mess."\n";
+	}
+	
+	public function xorString( $string, $key )
+	{
+		$outText = '';
+
+		for( $i = 0; $i < strlen( $string ); ){
+			for( $j = 0; ($j < strlen($key) && $i < strlen( $string )); $j++, $i++ ){
+				$outText .= $string{$i} ^ $key{$j};
+			}
+		}
+		
+		return $outText;
+	}
+	
+	public function scanDirParam( $dir, $md5 = false )
+	{
+		$data = array();
+		if( !is_dir( $dir ) ) return $data;
+	
+		foreach( glob( "$dir/*" ) as $elem ){
+			if( is_dir( $elem ) ){
+				foreach( $this->scanDirParam( $elem, $md5 ) as $newElem ){
+					array_push( $data, $newElem );
+				}
+			}else{
+				if( filesize( $elem ) == 0 ) continue;
+				if( $md5 ){
+					array_push( $data, array( "path" => $dir, "file" => $elem, "size" => filesize( $elem ), "md5" => md5_file( $elem ) ) );
+				}else{
+					array_push( $data, array( "path" => $dir, "file" => $elem, "size" => filesize( $elem ) ) );
+				}
+			}
+		}
+
+		return $data;
 	}
 }
 ?>
