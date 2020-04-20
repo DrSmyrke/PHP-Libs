@@ -13,6 +13,7 @@ function myfunctions_help()
 	print "\$mf->removeDirectory( dir ); //recursive remove directory<br>\n";
 	print "\$res = \$mf->setLog( mess ); //added date time before message\n";
 	print "\$res = \$mf->xorString( str, key ); //encode XOR string from key\n";
+	print "\$res = \$mf->scanDirParam( dir, true ); //scan dir recursive param\n";
 }
 
 class MyFunctions
@@ -249,6 +250,19 @@ class MyFunctions
 		}
 
 		return $data;
+	}
+	
+	public dirParamToList( &$string, $data )
+	{
+		foreach( $data as $elem ){
+			if( !is_array( $elem ) ) continue;
+			$path	= ( isset( $elem["path"] ) ) ? $elem["path"] : "";
+			$file	= ( isset( $elem["file"] ) ) ? $elem["file"] : "";
+			$size	= ( isset( $elem["size"] ) ) ? $elem["size"] : "";
+			$md5	= ( isset( $elem["md5"] ) ) ? $elem["md5"] : "";
+			#$string .= "$md5	$size	$path	$file\n";
+			$string .= "$md5	$size	$file\n";
+		}
 	}
 }
 ?>
