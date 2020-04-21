@@ -78,6 +78,8 @@ function acceptCookie()
 		}else{
 			$this->language = $_COOKIE["lang"];
 		}
+		
+		$this->assetsPath = $_SERVER['DOCUMENT_ROOT'].$this->assetsPath;
 	}
 
 	public function getLanguage(){ return $this->language; }
