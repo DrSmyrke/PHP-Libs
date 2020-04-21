@@ -5,6 +5,7 @@ class MyEngine
 	private $pageIco			= "";
 	private $useCookie			= true;
 	private $assetsPathUrl		= "/data/";
+	private $assetsPath			= $_SERVER['DOCUMENT_ROOT']."/data";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий,портфолио,Мои работы,Мои проекты, Программы, Свободное программное обеспечение";
