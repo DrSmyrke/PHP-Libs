@@ -57,7 +57,6 @@ class Api
 
 	public function run()
 	{
-	global $_SERVER;
 		if( $this->apiName == "" ){
 			return $this->getHelp();
 		}
@@ -72,7 +71,6 @@ class Api
 			if( method_exists( $this->objectList[$this->apiName], $this->action ) ) {
 				$data = $this->objectList[$this->apiName]->{$this->action}();
 				$data["data"]["method"]=$this->method;
-				$data["data"]["method2"]=$_SERVER['REQUEST_METHOD'];
 				return $this->response( $data["data"], $data["code"] );
 			} else {
 				throw new RuntimeException('Invalid Method ['.$this->action.']', 405);
