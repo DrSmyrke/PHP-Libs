@@ -8,7 +8,7 @@ class Api
 
 	protected $method = ''; //GET|POST|PUT|DELETE
 	public $requestUri = [];
-	public $requestParams = [];
+	#public $requestParams = [];
 	protected $action = ''; //Name Method for execute
 
 	public function __construct()
@@ -18,7 +18,7 @@ class Api
 		header("Content-Type: application/json");
 
 		$this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
-		$this->requestParams = $_REQUEST;
+		#$this->requestParams = $_REQUEST;
 
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		if ($this->method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
