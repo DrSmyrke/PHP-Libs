@@ -71,7 +71,6 @@ class Api
 			if( method_exists( $this->objectList[$this->apiName], $this->action ) ) {
 				$data = $this->objectList[$this->apiName]->{$this->action}();
 				$data["data"]["method"]=$this->method;
-				//$data["data"]["method"]=$this->method;
 				return $this->response( $data["data"], $data["code"] );
 			} else {
 				throw new RuntimeException('Invalid Method ['.$this->action.']', 405);
