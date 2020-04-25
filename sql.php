@@ -56,7 +56,7 @@ class Sql
 	
 	public function disconnect()
 	{
-		mysqli_close( $this->serverAddr );
+		mysqli_close( $this->connect_db );
 	}
 
 	public function deleteData( $table, $query, $debug = false )
