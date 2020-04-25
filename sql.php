@@ -173,7 +173,7 @@ class Sql
 		return mysqli_query( $this->connect_db, $update );
 	}
 
-	public function getData( $table, $query, $sort = null, $random = false, $limit = null, $limitStart = null, $debug = false )
+	public function getData( $table, $query = array( "*" ), $sort = null, $random = false, $limit = null, $limitStart = null, $debug = false )
 	{
 		$counter = 0;
 		$where = "";
@@ -181,7 +181,7 @@ class Sql
 		$total = count($query);
 		$where_f = true;
 	
-		if(array_key_exists(0,$query) && $query[0] == '*'){
+		if( array_key_exists( 0, $query ) && $query[0] == '*' ){
 			$data = " * ";	
 			foreach($query as $key => $val){
 				$counter++;
