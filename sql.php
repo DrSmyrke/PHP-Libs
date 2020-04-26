@@ -158,7 +158,7 @@ class Sql
 		$cond = "WHERE ";
 		foreach($where as $key => $val){
 			if(!is_numeric($val)){
-			   $cond = $cond."`$key`"." LIKE "."`$val`"."\n"; 
+			   $cond = $cond."`$key`"." LIKE "."'$val'"."\n"; 
 			}else{
 				$cond = $cond."`$key`"." = "."$val"."\n"; 
 			}
