@@ -10,6 +10,7 @@ function sql_help()
 	print "\$res = \$sql->addData( table, query, debug = false ); //return true or error<br>\n";
 	print "\$res = \$sql->updateData( table, query, where, debug = false ); //return true or error<br>\n";
 	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error<br>\n";
+	print "\$string = \$sql->getErrorString(); //return error string<br>\n";
 }
 
 class Sql
@@ -57,6 +58,11 @@ class Sql
 	public function disconnect()
 	{
 		mysqli_close( $this->connect_db );
+	}
+	
+	public function getErrorString()
+	{
+		return mysqli_error( $this->connect_db );
 	}
 
 	public function deleteData( $table, $query, $debug = false )
