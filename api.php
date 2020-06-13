@@ -5,11 +5,12 @@ class Api
 	private $classList			= array();
 	private $objectList			= array();
 	private $apiName			= "";
-
-	protected $method = ''; //GET|POST|PUT|DELETE
-	public $requestUri = [];
-	#public $requestParams = [];
-	protected $action = ''; //Name Method for execute
+	private $auth				= false;
+	protected $method			= ''; //GET|POST|PUT|DELETE
+	public $requestUri			= [];
+	public $requestParams		= [];
+	protected $action			= ''; //Name Method for execute
+	protected $incommingData	= [];
 
 	public function __construct()
 	{
@@ -17,10 +18,13 @@ class Api
 		header("Access-Control-Allow-Methods: *");
 		header("Content-Type: application/json");
 
-		$this->requestUri = explode('/', trim($_SERVER['REQUEST_URI'],'/'));
-		#$this->requestParams = $_REQUEST;
-
-		$this->method = $_SERVER['REQUEST_METHOD'];
+		$this->requestUri		= explode('/', trim($_SERVER['REQUEST_URI'],'/'));
+		$this->requestParams	= $_REQUEST;
+		$this->incommingData	= json_decode( file_get_contents( 'php://input' ), true );
+		$this->method			= $_SERVER['REQUEST_METHOD'];
+		
+		if( count( $this->requestUri ) > 0 ) $this->apiName = array_shift( $this->requestUri );
+		
 		if ($this->method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
 			if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'DELETE') {
 				$this->method = 'DELETE';
@@ -30,8 +34,12 @@ class Api
 				throw new Exception("Unexpected Header");
 			}
 		}
-
-		$this->classList["requestUri"] = $this->requestUri;
+		
+		if( $this->apiName != "" ){
+			if( array_key_exists( "key", $this->incommingData ) ){
+				$this->auth = ApiAuth( $this->apiName, $this->incommingData["key"] );
+			}
+		}
 
 		foreach( glob("*.php") as $str ){
 			require_once  $str;
@@ -43,7 +51,7 @@ class Api
 
 			$file = "http://".$_SERVER['SERVER_NAME']."/".$name;
 			
-			$this->objectList[ $name ] = new $name;
+			$this->objectList[ $name ] = new $name( $this->requestUri, $this->incommingData, $this->auth );
 
 			if( method_exists( $this->objectList[$name], "getHelp" ) ) {
                $file .=  $this->objectList[$name]->{"getHelp"}();
@@ -52,7 +60,6 @@ class Api
 			array_push( $this->classList, $file );
 		}
 
-		$this->apiName = array_shift($this->requestUri);
 	}
 
 	public function run()
