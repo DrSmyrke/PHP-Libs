@@ -35,7 +35,7 @@ class Api
 			}
 		}
 		
-		if( $this->apiName != "" ){
+		if( $this->apiName != "" && is_array( $this->incommingData ) ){
 			if( array_key_exists( "key", $this->incommingData ) ){
 				$this->auth = ApiAuth( $this->apiName, $this->incommingData["key"] );
 			}
