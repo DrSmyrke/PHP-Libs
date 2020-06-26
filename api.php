@@ -101,15 +101,20 @@ class Api
 
 	private function requestStatus($code)
 	{
-		$status = array(
-			200 => 'OK',
-			400 => 'Bad Request',
-			401 => 'Unauthorized',
-			404 => 'Not Found',
-			405 => 'Method Not Allowed',
-			500 => 'Internal Server Error',
-		);
-		return ($status[$code])?$status[$code]:$status[500];
+		$status = "";
+		
+		switch( $code ){
+			case 200:	$status = "OK";								break;
+			case 206:	$status = "Partial Content";				break;
+			case 400:	$status = "Bad Request";					break;
+			case 401:	$status = "Unauthorized";					break;
+			case 404:	$status = "Not Found";						break;
+			case 405:	$status = "Method Not Allowed";				break;
+			case 500:	$status = "Internal API Error";				break;
+			default:	$status = "UNDEFINED";						break;
+		}
+		
+		return $status;
 	}
 
 	private function getHelp()
