@@ -5,13 +5,14 @@ class Api
 	private $classList			= array();
 	private $objectList			= array();
 	private $apiName			= "";
-	private $auth				= false;
+	private $authF				= false;
 	protected $method			= ''; //GET|POST|PUT|DELETE
 	public $requestUri			= [];
 	public $requestParams		= [];
 	protected $action			= ''; //Name Method for execute
 	protected $incommingData	= [];
 	protected $incommingRawData	= "";
+	private $remote_ip			= $_SERVER["REMOTE_ADDR"];
 
 	public function __construct()
 	{
@@ -42,7 +43,7 @@ class Api
 		
 		if( $this->apiName != "" && is_array( $this->incommingData ) ){
 			if( array_key_exists( "key", $this->incommingData ) ){
-				$this->auth = ApiAuth( $this->apiName, $this->incommingData["key"] );
+				$this->authF = $this->checkAuth( $this->apiName, $this->incommingData["key"] );
 				sleep( 1 );
 			}
 		}
@@ -57,7 +58,7 @@ class Api
 
 			$file = "http://".$_SERVER['SERVER_NAME']."/".$name;
 			
-			$this->objectList[ $name ] = new $name( $this->requestUri, $this->incommingData, $this->auth );
+			$this->objectList[ $name ] = new $name( $this->requestUri, $this->incommingData, $this->authF );
 
 			if( method_exists( $this->objectList[$name], "getHelp" ) ) {
                $file .=  $this->objectList[$name]->{"getHelp"}();
@@ -140,6 +141,53 @@ class Api
 			default:
 				return null;
 		}
+	}
+	
+	private function checkAuth( $apiName = "", $apiKey = "" )
+	{
+		global $ApiAuthDB;
+		
+		$apiAuthSQL		= new Sql;
+		$key			= "";
+		$my_ip			= explode( ".", $this->remote_ip );
+		$access_ip		= [];
+		$find			= false;
+		
+		if( $apiName == "" ) return false;
+		if( !$apiAuthSQL->init( $ApiAuthDB["server"], $ApiAuthDB["user"], $ApiAuthDB["pass"], $ApiAuthDB["db"] ) ) return false;
+		if( !$apiAuthSQL->connect() ) return false;
+		
+		$data			= $apiAuthSQL->getData( $ApiAuthDB["keyTable"], array( "*", "name" => $apiName ) );
+		$apiAuthSQL->disconnect();
+		
+		if( !is_array( $data ) ) return false;
+		if( count( $data ) == 0 ) return false;
+		
+		if( array_key_exists( "key", $data[0] ) )			$key			= $data[0]["key"];
+		if( array_key_exists( "access_ip", $data[0] ) )		$access_ip		= explode( ",", $data[0]["access_ip"] );
+		
+		if( $key != $apiKey ) return false;
+		
+		foreach( $access_ip as $ip ){
+			if( $ip == "*" ){
+				$find = true;
+				break;
+			}
+			$tmp = explode( ".", $ip );
+			if( count( $tmp ) != 4 ) continue;
+			if( $tmp[0] == $my_ip[0] && $tmp[1] == $my_ip[1] && $tmp[2] == $my_ip[2] && $tmp[3] == 0 ){
+				$find = true;
+				break;
+			}
+			if( $tmp[0] == $my_ip[0] && $tmp[1] == $my_ip[1] && $tmp[2] == $my_ip[2] && $tmp[3] == $my_ip[3] ){
+				$find = true;
+				break;
+			}
+		}
+	
+		if( !$find ) return false;
+		
+		return true;
 	}
 }
 ?>
