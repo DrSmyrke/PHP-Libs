@@ -12,7 +12,6 @@ class Api
 	protected $action			= ''; //Name Method for execute
 	protected $incommingData	= [];
 	protected $incommingRawData	= "";
-	private $remote_ip			= $_SERVER["REMOTE_ADDR"];
 
 	public function __construct()
 	{
@@ -145,11 +144,11 @@ class Api
 	
 	private function checkAuth( $apiName = "", $apiKey = "" )
 	{
-		global $ApiAuthDB;
+		global $_SERVER, $ApiAuthDB;
 		
 		$apiAuthSQL		= new Sql;
 		$key			= "";
-		$my_ip			= explode( ".", $this->remote_ip );
+		$my_ip			= explode( ".", $_SERVER["REMOTE_ADDR"] );
 		$access_ip		= [];
 		$find			= false;
 		
