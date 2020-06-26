@@ -11,6 +11,7 @@ class Api
 	public $requestParams		= [];
 	protected $action			= ''; //Name Method for execute
 	protected $incommingData	= [];
+	protected $incommingRawData	= "";
 
 	public function __construct()
 	{
@@ -20,7 +21,11 @@ class Api
 
 		$this->requestUri		= explode('/', trim($_SERVER['REQUEST_URI'],'/'));
 		$this->requestParams	= $_REQUEST;
-		$this->incommingData	= json_decode( file_get_contents( 'php://input' ), true );
+		$this->incommingRawData	= file_get_contents( 'php://input' );
+		$this->incommingData	= json_decode( $this->incommingRawData, true );
+		if( $this->incommingData === NULL ){
+			$this->incommingData = parse_ini_string( $this->incommingRawData, true );
+		}
 		$this->method			= $_SERVER['REQUEST_METHOD'];
 		
 		if( count( $this->requestUri ) > 0 ) $this->apiName = array_shift( $this->requestUri );
@@ -38,6 +43,7 @@ class Api
 		if( $this->apiName != "" && is_array( $this->incommingData ) ){
 			if( array_key_exists( "key", $this->incommingData ) ){
 				$this->auth = ApiAuth( $this->apiName, $this->incommingData["key"] );
+				sleep( 1 );
 			}
 		}
 
