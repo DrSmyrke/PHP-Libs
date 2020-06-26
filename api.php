@@ -95,7 +95,9 @@ class Api
 
 	protected function response($data, $status = 500)
 	{
-		header("HTTP/1.1 " . $status . " " . $this->requestStatus($status));
+		$statusString = $this->requestStatus( $status );
+		header("HTTP/1.1 " . $status . " " . $statusString);
+		if( !array_key_exists( "message", $data ) )	$data["message"] = $statusString;
 		return json_encode($data);
 	}
 
