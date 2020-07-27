@@ -15,15 +15,16 @@ function WriteNBTFile($filename,$nbtdata){
 	fclose($fp);
 	return $tmp;
 }
-function writeTag($fp,$tag){
-	$tagType=$tag{"type"};
-	$tagName=$tag{"name"};
-	$tagValue=$tag{"value"};
+function writeTag($fp,$tag)
+{
+	$tagType = ( isset( $tag["type"] ) ) ? $tag["type"] : "";
+	$tagName = ( isset( $tag["name"] ) ) ? $tag["name"] : "";
+	$tagValue = ( isset( $tag["value"] ) ) ? $tag["value"] : "";
 	#print "[$tagType,$tagName,$tagValue]<br>";
 	writeType($fp,1,$tagType);
 	writeType($fp,8,$tagName);
 	return writeType($fp,$tagType,$tagValue);
-#	return writeType($fp,1,$tag{"type"}) && writeType($fp,8,$tag{"name"}) && writeType($fp,$tag{"type"},$tag{"value"});
+#	return writeType($fp,1,$tag["type"]) && writeType($fp,8,$tag["name"]) && writeType($fp,$tag["type"],$tag["value"]);
 }
 function writeType($fp,$typeid,$value){
 	global $NBT_types;
@@ -171,16 +172,16 @@ function _intstring2signedlong($string){
 }
 function getSectionsIndex($data){
 	$index=0;
-	foreach($data[0]{"value"}[0]{"value"} as $str){
-		if($str{"name"}=="Sections"){break;}
+	foreach($data[0]["value"][0]["value"] as $str){
+		if($str["name"]=="Sections"){break;}
 		$index++;
 	}
 	return $index;
 }
 function getChunkPos($data){
-	foreach($data[0]{"value"}[0]{"value"} as $str){
-		if($str{"name"}=="xPos"){$cx=$str{"value"}*16;}
-		if($str{"name"}=="zPos"){$cz=$str{"value"}*16;}
+	foreach($data[0]["value"][0]["value"] as $str){
+		if($str["name"]=="xPos"){$cx=$str["value"]*16;}
+		if($str["name"]=="zPos"){$cz=$str["value"]*16;}
 	}
 	return array($cx,$cz);
 }
@@ -287,7 +288,7 @@ function getNBTParam($data,$param,$url,$find){
 			if($key==="name"){
 				if($val==="$param"){
 					$url="$url/value";
-					$value=$data{"value"};
+					$value=$data["value"];
 					$find=true;
 					break;
 				}
@@ -301,15 +302,15 @@ function getNBTAttributes($data,$name){
 	$find=false;
 	list($data,$url,$tmp)=getNBTParam($data,"Attributes");
 	if(!$tmp){return array(null,null,$find);}
-	foreach($data{"value"} as $key=>$val){
-		if($val[0]{"value"}==="generic.$name"){
-			$value=$val[1]{"value"};
+	foreach($data["value"] as $key=>$val){
+		if($val[0]["value"]==="generic.$name"){
+			$value=$val[1]["value"];
 			$url="$url/value/$key/1/value";
 			$find=true;
 			break;
 		}
-		if($val[1]{"value"}==="generic.$name"){
-			$value=$val[0]{"value"};
+		if($val[1]["value"]==="generic.$name"){
+			$value=$val[0]["value"];
 			$url="$url/$key/value/$key/0/value";
 			$find=true;
 			break;
@@ -318,7 +319,7 @@ function getNBTAttributes($data,$name){
 	return array($value,$url,$find);
 }
 function createNewInventory($data){
-	$data[0]{"value"}[]=array("type"=>9,"name"=>"Inventory","value"=>array("type"=>10,"value"=>array()));
+	$data[0]["value"][]=array("type"=>9,"name"=>"Inventory","value"=>array("type"=>10,"value"=>array()));
 	return $data;
 }
 ?>
