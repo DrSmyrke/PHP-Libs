@@ -1,25 +1,25 @@
 <?php
 
-function vkBot_help()
+
+function vkAPI_help()
 {
-	print "\$vkBot = new vkBot();<br>\n";
-	print "\$vkBot->setConfirmationToken( CALLBACK_API_CONFIRMATION_TOKEN );<br>\n";
-	print "\$vkBot->setGroupID( CALLBACK_API_GROUP_ID )<br>\n";
-	print "\$vkBot->setAccessToken( VK_API_ACCESS_TOKEN )<br>\n";
-	print "\$vkBot->init()<br>\n";
-	print "\$data = \$vkBot->execute();<br>\n";
-	print "\$color = \$vkBot->replaceColor( \"blue\" );<br>\n";
+	print "\$vkAPI = new vkAPI();<br>\n";
+	print "\$vkAPI->setConfirmationToken( CALLBACK_API_CONFIRMATION_TOKEN );<br>\n";
+	print "\$vkAPI->setGroupID( CALLBACK_API_GROUP_ID )<br>\n";
+	print "\$vkAPI->setAccessToken( VK_API_ACCESS_TOKEN )<br>\n";
+	print "\$data = \$vkAPI->execute();<br>\n";
+	print "\$color = \$vkAPI->replaceColor( \"blue\" );<br>\n";
 }
 
 
 
-class vkBot
+class vkAPI
 {
 	private $confirmationToken		= "";
 	private $groupID				= "";
 	private $accessToken			= "";
 	
-	public function init()
+	public function __construct()
 	{
 		define('VK_API_VERSION', '5.69');
 		define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
@@ -65,7 +65,7 @@ class vkBot
 	
 	public function sendMessage($targetID, $message, $attachments = array())
 	{
-		return vkBot::call('messages.send', array(
+		return $this->call('messages.send', array(
 			'peer_id'		=> $targetID,
 			'message'		=> $message,
 			'attachment'	=> implode(',', $attachments)
@@ -78,7 +78,7 @@ class vkBot
 		$buttonsSend["buttons"] = $buttons;
 		$buttonsSend["one_time"] = $one_time;
 		
-		return vkBot::call('messages.send', array(
+		return $this->call('messages.send', array(
 			'peer_id'		=> $targetID,
 			'message'		=> $message,
 			'keyboard'		=> json_encode($buttonsSend, JSON_UNESCAPED_UNICODE)
@@ -100,10 +100,13 @@ class vkBot
 			curl_setopt($curl, CURLOPT_URL, $url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+			//FIXME: remove down line later!!!
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			
 			$json = curl_exec($curl);
 			$error = curl_error($curl);
 			
-			if ($error) return "Failed '{$method}' request";
+			if ($error) return "Failed '{$method}' request ['{$error}']";
 			curl_close($curl);
 			$response = json_decode($json, true);
 			if (!$response || !isset($response['response'])) return "Invalid response for '{$method}' request";
@@ -124,7 +127,7 @@ class vkBot
 		switch ($color) {
 			case 'red':		$color = 'negative';	break;
 			case 'green':	$color = 'positive';	break;
-			case 'white':	$color = 'secondary';		break;
+			case 'white':	$color = 'secondary';	break;
 			case 'blue':	$color = 'primary';		break;
 
 			default: break;
