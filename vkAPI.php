@@ -7,6 +7,7 @@ function vkAPI_help()
 	print "\$vkAPI->setConfirmationToken( CALLBACK_API_CONFIRMATION_TOKEN );<br>\n";
 	print "\$vkAPI->setGroupID( CALLBACK_API_GROUP_ID )<br>\n";
 	print "\$vkAPI->setAccessToken( VK_API_ACCESS_TOKEN )<br>\n";
+	print "\$vkAPI->setCheckSSL( false )<br>\n";
 	print "\$data = \$vkAPI->execute();<br>\n";
 	print "\$color = \$vkAPI->replaceColor( \"blue\" );<br>\n";
 }
@@ -18,6 +19,7 @@ class vkAPI
 	private $confirmationToken		= "";
 	private $groupID				= "";
 	private $accessToken			= "";
+	private $checkSSL				= true;
 	
 	public function __construct()
 	{
@@ -100,8 +102,8 @@ class vkAPI
 			curl_setopt($curl, CURLOPT_URL, $url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-			//FIXME: remove down line later!!!
-			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			
+			if( !$this->checkSSL ) curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 			
 			$json = curl_exec($curl);
 			$error = curl_error($curl);
@@ -119,6 +121,7 @@ class vkAPI
 	public function setConfirmationToken( $value ){ $this->confirmationToken = $value; }
 	public function setGroupID( $value ){ $this->groupID = $value; }
 	public function setAccessToken( $value ){ $this->accessToken = $value; }
+	public function setCheckSSL( $value = true ){ $this->checkSSL = $value; }
 	
 	private function getData(){ return json_decode(file_get_contents('php://input'), true); }
 	
