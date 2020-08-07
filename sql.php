@@ -49,8 +49,12 @@ class Sql
 
 	public function connect()
 	{
+		mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 		$this->connect_db = mysqli_connect( $this->serverAddr, $this->userName, $this->password, $this->dataBase);
-		//TODO: Доделать return "Cannot connect to MySQL server."
+		if( !$this->connect_db ){
+			$this->success = false;
+			return false;
+		}
 		$this->success = mysqli_select_db( $this->connect_db, $this->dataBase );
 		return $this;
 	}
@@ -58,6 +62,11 @@ class Sql
 	public function disconnect()
 	{
 		mysqli_close( $this->connect_db );
+	}
+	
+	public function getConnectErrorString()
+	{
+		return mysqli_connect_error();
 	}
 	
 	public function getErrorString()
