@@ -124,7 +124,7 @@ function acceptCookie()
 		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }.bottomСookieBlock td{ padding: 10px; }.bottomСookieBlock{	position: fixed;	bottom: 0px;	left: 0px;	background-color: gray;	font-size: 14pt;}.cookieBlockAccept{	padding: 15px;	border: 1px solid orange;	color: orange;	font-weight: bold;	background-color: gray;	cursor: pointer;}</style>';
 		
 		if( is_file( $this->assetsPath."/img/logo.png" ) ){
-			print '<div class="logo"> <a href="/"><img src="'.$this->assetsPathUrl.'img/my.png"></a> </div>';
+			print '<div class="logo"> <a href="/"><img src="'.$this->assetsPathUrl.'img/logo.png"></a> </div>';
 		}
 		
 		if( $this->useCookie ){
