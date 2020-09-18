@@ -10,7 +10,6 @@ class MyEngine
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий,портфолио,Мои работы,Мои проекты, Программы, Свободное программное обеспечение";
 	private $authorDescription	= "Персональная страничка -= Dr.Smyrke =-";
-	private $authorGenerator	= "Gedit";
 	private $lngAll = array(
 	"en" => array(
 		"links"=>"My Links",
@@ -102,9 +101,6 @@ function acceptCookie()
 		if( $this->authorDescription != "" ){
 			print '			<META NAME="description" CONTENT="'.$this->authorDescription.'"/>'."\n";
 		}
-		if( $this->authorGenerator != "" ){
-			print '			<META NAME="Generator" CONTENT="'.$this->authorGenerator.'"/>'."\n";
-		}
 		if( $this->pageIco != "" ){
 			print '			<link rel="shortcut icon" href="'.$this->pageIco.'"/>'."\n";
 		}
@@ -125,7 +121,7 @@ function acceptCookie()
 			print '		<body>'."\n";
 		}
 		
-		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }</style>';
+		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }.bottomСookieBlock td{ padding: 10px; }.bottomСookieBlock{	position: fixed;	bottom: 0px;	left: 0px;	background-color: gray;	font-size: 14pt;}.cookieBlockAccept{	padding: 15px;	border: 1px solid orange;	color: orange;	font-weight: bold;	background-color: gray;	cursor: pointer;}</style>';
 		print '<div class="logo"> <a href="/"><img src="/data/img/my.png"></a> </div>';
 		
 		if( $this->useCookie ){
@@ -140,28 +136,11 @@ function acceptCookie()
 		}
 	}
 
-	public function pageBottom()
+	public function pageBottom( $preContent ="" )
 	{
+		print '<style>.madeBy i{ color: gray; font-style: italic; font-size:8pt; }.madeBy{ text-align: center; }</style>';
+		print $preContent;
 		print '
-	<hr>
-	<div class="block mylinks">
-		<div class="legend">'.$this->lngAll[$this->language]["links"].'</div>
-		<div class="content">
-			<a href="https://trudvsem.ru/cv/card/print/ef130d60-a2e2-11e5-b24a-833b590698f7/b9de76c0-a300-11e5-9ca9-0163a9ae3d01" target="_blank" class="button"><img src="https://trudvsem.ru/assets/img/header-text.png" title="Труд всем"></a>
-			<a href="https://www.superjob.ru/resume/inzhener-8175571.html" target="_blank" class="button"><img src="/data/img/sites_icons/SuperJob.png" title="Super Job.ru"></a>
-			<a href="https://hh.ru/resume/544bce82ff00c8582c0039ed1f447369476b73" target="_blank" class="button"><img src="/data/img/sites_icons/hh_ru.svg" title="Head Hunter"></a>
-			<a href="http://www.icq.com/people/238114708" target="_blank" class="button"><img src="/data/img/sites_icons/icq.png" title="ICQ: 238114708"></a>
-			<a href="http://vk.com/drsmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/vk.png" title="VK: drsmyrke"></a>
-			<a href="callto:drsmyrke" class="button"><img src="/data/img/sites_icons/skype.png" title="Skype: drsmyrke"></a>
-			<a href="http://www.youtube.com/channel/UCkxJ1_cSxlUMPkZ3GB400Wg" target="_blank" class="button"><img src="/data/img/sites_icons/youtube.png" title="YouTube"></a>
-			<!-- #style:     fill: currentColor; / для темного фона	!-->
-			<a href="https://github.com/DrSmyrke" target="_blank" class="button"><svg aria-hidden="true" title="GitHub" height="32" version="1.1" viewBox="0 0 16 16" width="32"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a>
-			<a href="https://www.stihi.ru/avtor/drsmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/stihi.svg" title="Стихи.ру"></a>
-			<a href="https://www.thingiverse.com/DrSmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/thingiverse.png" title="Thingiverse"></a>
-			<a href="https://cults3d.com/en/users/drsmyrke/creations" target="_blank" class="button"><img src="/data/img/sites_icons/cults-3d.svg" title="Cults 3d"></a>
-			<a href="https://www.patreon.com/DrSmyrke" target="_blank" class="button"><img src="/data/img/sites_icons/Patreon.png" title="Patreon"></a>
-		</div>
-	</div>
 	<hr>
 	<div class="madeBy">
 		Created by <a href="http://drsmyrke.ru" target="_blank">Dr.Smyrke</a>
