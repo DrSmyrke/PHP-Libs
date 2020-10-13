@@ -66,6 +66,11 @@ class Yaml
 				}
 				
 				if( !is_array( $value ) ) $value = str_replace( "\"", "", $value );
+				if( is_string( $value ) ){
+					$lowerValue = strtolower( $value );
+					if( $lowerValue == "true" ) $value = ( boolean ) $value;
+					if( $lowerValue == "false" ) $value = ( boolean ) $value;
+				}
 				$prew[$key] = $value;
 
 				if( $level != $prewLevel ) $prewLevel = $level;
