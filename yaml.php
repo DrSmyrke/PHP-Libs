@@ -25,8 +25,16 @@ class Yaml
 			$str = str_replace( array( "\n", "\r" ), "", $str );
 			
 			$level = 0;
-			while( substr( $str, $level, 1 ) == " " ) $level++;
-			$str = substr( $str, $level );
+			$firstSym = substr( $str, 0, 1 );
+			if( $firstSym == " " || $firstSym == "	" ){
+				if( $firstSym == " " ){
+					while( substr( $str, $level, 1 ) == " " ) $level++;
+				}
+				if( $firstSym == "	" ){
+					while( substr( $str, $level, 1 ) == "	" ) $level++;
+				}
+				$str = substr( $str, $level );
+			}
 			
 			$level /= 2;
 
