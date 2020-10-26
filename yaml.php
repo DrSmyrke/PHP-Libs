@@ -113,7 +113,15 @@ class Yaml
 				if(  is_numeric( $val ) ){
 					$res .= "$val\n";
 				}else{
-					$res .= "\"$val\"\n";
+					if( is_bool( $val ) ){
+						if( $val ){
+							$res .= "true\n";
+						}else{
+							$res .= "false\n";
+						}
+					}else{
+						$res .= "\"$val\"\n";
+					}
 				}
 			}
 		}
