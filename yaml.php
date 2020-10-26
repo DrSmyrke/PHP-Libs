@@ -88,12 +88,12 @@ class Yaml
 		return $data;
 	}
 
-	public function saveToFile( $fileName, $data )
+	public function saveToFile( $fileName, $data = array(), $separator = "  " )
 	{
 		if( !is_array( $data ) ) return;
 		$fs = fopen( $fileName, "w" );
 		if( $fs ){
-			fwrite( $fs, Yaml::serializeData( $data ) );
+			fwrite( $fs, Yaml::serializeData( $data, $separator ) );
 			fclose( $fs );
 		}
 	}
@@ -123,4 +123,3 @@ class Yaml
 }
 
 ?>
-
