@@ -58,17 +58,17 @@ class Sql
 		$this->success = mysqli_select_db( $this->connect_db, $this->dataBase );
 		return $this;
 	}
-	
+
 	public function disconnect()
 	{
 		mysqli_close( $this->connect_db );
 	}
-	
+
 	public function getConnectErrorString()
 	{
 		return mysqli_connect_error();
 	}
-	
+
 	public function getErrorString()
 	{
 		return mysqli_error( $this->connect_db );
@@ -77,14 +77,14 @@ class Sql
 	public function deleteData( $table, $query, $debug = false )
 	{
 		$counter = 0;
-		$total = count($query); 
+		$total = count($query);
 		$where = "WHERE ";
 		foreach($query as $key => $val){
 			$counter++;
 			if(is_numeric($val)){
-				$where = $where." "."`$key` = $val"; 
+				$where = $where." "."`$key` = $val";
 			}else{
-				$where = $where." "."`$key` LIKE '$val'"; 
+				$where = $where." "."`$key` LIKE '$val'";
 			}
 
 			if($counter == $total){
@@ -94,9 +94,9 @@ class Sql
 			}
 		}
 
-		$delete = "DELETE FROM "."`$table`".$where.";"; 
+		$delete = "DELETE FROM "."`$table`".$where.";";
 		if( $debug ) print_r( $delete );
-		mysqli_query( $this->connect_db,"SET NAMES `utf8`" ); 
+		mysqli_query( $this->connect_db,"SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db,"SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`" );
 		return mysqli_query( $this->connect_db, $delete);
@@ -116,7 +116,7 @@ class Sql
 				if($counter != $total){
 					$data = $data . ",";
 				}else{
-				   $data = $data; 
+				   $data = $data;
 				}
 			}else{
 				$insert_f = false;
@@ -126,19 +126,19 @@ class Sql
 					$data = $data . ",";
 					$colls = $colls.",";
 				}else{
-					$data = $data; 
+					$data = $data;
 					$colls = $colls;
 				}
 			}
 		}
-	
+
 		if($insert_f == false){
 			$colls = " (".$colls.") ";
 		}
 
-		$insert = "INSERT INTO "."`$table`"."$colls"." VALUES (". $data .");"; 
+		$insert = "INSERT INTO "."`$table`"."$colls"." VALUES (". $data .");";
 		if( $debug ) print_r( $insert );
-		mysqli_query($this->connect_db,"SET NAMES `utf8`"); 
+		mysqli_query($this->connect_db,"SET NAMES `utf8`");
 		mysqli_query($this->connect_db,"SET CHARACTER SET `utf8`");
 		mysqli_query($this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`");
 		return mysqli_query($this->connect_db, $insert);
@@ -150,39 +150,39 @@ class Sql
 		$total = count($query);
 		$data = "";
 		foreach($query as $key => $val){
-			$counter++;	
+			$counter++;
 			if( is_int($val) or is_float($val) ){
 				$data = $data . "`$key` = ".$val ;
 			}else{
 				$data = $data . "`$key` = "."'$val'" ;
 			}
- 
+
 			if($counter != $total){
 				$data = $data . ",";
 			}else{
-				$data = $data; 
-			}	
+				$data = $data;
+			}
 		}
-	
+
 		$cond = "WHERE ";
 		foreach($where as $key => $val){
 			if(!is_numeric($val)){
-			   $cond = $cond."`$key`"." LIKE "."'$val'"."\n"; 
+			   $cond = $cond."`$key`"." LIKE "."'$val'"."\n";
 			}else{
-				$cond = $cond."`$key`"." = "."$val"."\n"; 
+				$cond = $cond."`$key`"." = "."$val"."\n";
 			}
-		
+
 			if(!$counter == $total){
 				$cond = $cond." AND ";
 			}else{
 				$cond = $cond;
-			}	   
+			}
 		}
-	
-		$update = "UPDATE "."`$table` SET "." $data ".$cond.";"; 
+
+		$update = "UPDATE "."`$table` SET "." $data ".$cond.";";
 		if( $debug ) print_r( $update );
 		//print_r("UPDATE  `tempD`.`tb_color` SET  `color` =  'Многоцветный 2' WHERE  `tb_color`.`id` =6;");
-		mysqli_query( $this->connect_db, "SET NAMES `utf8`" ); 
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
 		return mysqli_query( $this->connect_db, $update );
@@ -195,9 +195,9 @@ class Sql
 		$data = "";
 		$total = count($query);
 		$where_f = true;
-	
+
 		if( array_key_exists( 0, $query ) && $query[0] == '*' ){
-			$data = " * ";	
+			$data = " * ";
 			foreach($query as $key => $val){
 				$counter++;
 				$where_buf = "OR";
@@ -219,12 +219,12 @@ class Sql
 						   $where = $where;
 						}else{
 						   $where = $where." ".$where_buf." ";
-						}			
+						}
 				}
 			}
 		}else{
 			foreach($query as $key => $val){
-				$counter++;   
+				$counter++;
 				$where_buf = "OR";
 				if(is_numeric($key)){
 				   if($counter == $total){
@@ -256,23 +256,23 @@ class Sql
 				}
 			}
 		}
-	
+
 		$select = "SELECT ".$data." FROM "."`$table`"." ".$where;
-	
-		if( !is_null($sort) && $random ) $select .= " ORDER BY $sort ASC";
+
+		if( !is_null($sort) && !$random ) $select .= " ORDER BY `$sort` ASC";
 		if( is_null($sort) && $random ) $select .= " ORDER BY RAND()";
 		if( !is_null($limit) && is_numeric($limit) ){
 			$select .= " LIMIT ";
 			if( !is_null($limitStart) && is_numeric($limitStart) ) $select .= $limitStart.",";
 			$select .= " ".$limit;
 		}
-	
+
 		$select .= ";";
 		if( $debug ) print_r( $select );
-		mysqli_query( $this->connect_db, "SET NAMES `utf8`" ); 
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
-	
+
 		$result = mysqli_query($this->connect_db, $select);
 		if(!$result) return array();
 		return Sql::r_normal_array_DB($result);
