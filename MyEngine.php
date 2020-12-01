@@ -7,6 +7,7 @@ class MyEngine
 	private $assetsPathUrl		= "/data/";
 	private $assetsPath			= "/data";
 	private $jsArray			= Array();
+	private $cssArray			= Array();
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий, портфолио, Мои работы, Мои проекты, Программы, Свободное программное обеспечение, Open source";
@@ -86,6 +87,7 @@ function acceptCookie()
 	public function setLanguage( $language = "en" ){ $this->language = $language; }
 
 	public function addScriptFile( $url ){ array_push( $this->jsArray, $url ); }
+	public function addCssFile( $url ){ array_push( $this->cssArray, $url ); }
 
 	public function pageTop( $pagetitle )
 	{
@@ -107,8 +109,8 @@ function acceptCookie()
 		if( $this->pageIco != "" ){
 			print '			<link rel="shortcut icon" href="'.$this->pageIco.'"/>'."\n";
 		}
-		foreach( glob( $this->assetsPath."/*.css" ) as $file ){
-			print '			<link rel=stylesheet type="text/css" href="'.$this->assetsPathUrl.basename( $file ).'"/>'."\n";
+		foreach( $this->cssArray as $file ){
+			print '			<link rel=stylesheet type="text/css" href="'.$file.'"/>'."\n";
 		}
 		foreach( $this->jsArray as $file ){
 			print '			<script type="text/javascript" src="'.$file.'"></script>'."\n";
