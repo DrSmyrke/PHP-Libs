@@ -46,11 +46,11 @@ class MyFunctions
 					$tmp = explode( ".", $fName );
 					$rash = array_pop( $tmp );
 					$name = array_shift( $tmp );
-					
+
 					if( $onlyRash != "" ){
 						if( $onlyRash != $rash ) continue;
 					}
-					
+
 					$prewImg = ( is_file("$path/$name.jpg") ) ? "$path/$name.jpg" : "";
 					$prewImg = ( is_file("$path/$name.png") ) ? "$path/$name.png" : $prewImg;
 					$prewImg = ( is_file("$path/$name.bmp") ) ? "$path/$name.bmp" : $prewImg;
@@ -96,11 +96,11 @@ class MyFunctions
 		if( $mon == 0 ){
 			return "----";
 		}
-		
+
 		if( $mon > 12 || $mon < 1 ) $mon = 1;
 
 		$mon--;
-		
+
 		switch ($language){
 			case "en":	return $en[$mon];	break;
 			case "ru":	return $ru[$mon];	break;
@@ -142,24 +142,14 @@ class MyFunctions
 		$string = "";
 		$len = strlen( $val );
 		$counter = 0;
-		for( $i = $len - 1; $i > 0; $i-- ){
-			if( $i % 3 ) $string = " ".$string;
+		for( $i = $len - 1; $i >= 0; $i-- ){
+			if( $counter++ == 3 ){
+				$string = " ".$string;
+				$counter = 0;
+			}
 			$string = $val[$i].$string;
 		}
-		/*
-		if( $stmp > 3 and $stmp <= 6 ){
-			$t1 = substr( $val, -3 );
-			$t2 = substr( $val, 0, -3 );
-			$string = "$t2 $t1";
-		}
-		if( $stmp > 6 and $stmp <= 9){
-			$t1 = substr( $val, -3 );
-			$t2 = substr( $val, -6, 3 );
-			$t3 = substr( $val, 0, -6 );
-			$string = "$t3 $t2 $t1";
-		}
-		if($stmp>9 and $stmp<=12){$t1=substr($val,-3);$t2=substr($val,-6,3);$t3=substr($val,-9,3);$t4=substr($val,0,3);$string="$t4 $t3 $t2 $t1";}if($stmp>12 and $stmp<=15){$t1=substr($val,-3);$t2=substr($val,-6,3);$t3=substr($val,-9,3);$t4=substr($val,-12,3);$t5=substr($val,0,3);$string="$t5 $t4 $t3 $t2 $t1";}
-		*/
+
 		if( $dot ) $string .= ".".$dot;
 		return $string;
 	}
@@ -174,7 +164,7 @@ class MyFunctions
 		}
 
 		$index = 0;
-		
+
 		if( $size < 1024 ){
 			return "$size  $mass[0]";
 		}else{
@@ -200,7 +190,7 @@ class MyFunctions
 	public function removeDirectory( $dir )
 	{
 		if( !is_dir( $dir ) ) return;
-	
+
 		foreach( glob( "$dir/*" ) as $path){
 			if( is_dir( $path ) ){
 				MyFunctions::removeDirectory( $path );
@@ -208,15 +198,15 @@ class MyFunctions
 				unlink( (string)$path );
 			}
 		}
-	
+
 		rmdir( $dir );
 	}
-	
+
 	public function setLog( $mess )
 	{
 		return date("d.m.Y [H:i:s]")." ".$mess."\n";
 	}
-	
+
 	public function xorString( $string, $key )
 	{
 		$outText = '';
@@ -226,15 +216,15 @@ class MyFunctions
 				$outText .= $string{$i} ^ $key{$j};
 			}
 		}
-		
+
 		return $outText;
 	}
-	
+
 	public function scanDirParam( $dir, $md5 = false )
 	{
 		$data = array();
 		if( !is_dir( $dir ) ) return $data;
-	
+
 		foreach( glob( "$dir/*" ) as $elem ){
 			if( is_dir( $elem ) ){
 				foreach( $this->scanDirParam( $elem, $md5 ) as $newElem ){
@@ -252,7 +242,7 @@ class MyFunctions
 
 		return $data;
 	}
-	
+
 	public function dirParamToRepoList( &$string, $data )
 	{
 		foreach( $data as $elem ){
