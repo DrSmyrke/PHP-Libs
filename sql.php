@@ -165,14 +165,17 @@ class Sql
 		}
 
 		$cond = "WHERE ";
+		$total = count($where);
+		$counter = 0;
 		foreach($where as $key => $val){
+			$counter++;
 			if(!is_numeric($val)){
 			   $cond = $cond."`$key`"." LIKE "."'$val'"."\n";
 			}else{
 				$cond = $cond."`$key`"." = "."$val"."\n";
 			}
 
-			if(!$counter == $total){
+			if( $counter != $total ){
 				$cond = $cond." AND ";
 			}else{
 				$cond = $cond;
