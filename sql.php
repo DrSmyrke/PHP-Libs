@@ -206,9 +206,11 @@ class Sql
 							$where = "WHERE ";
 							$where_f = false;
 						}
-						if($val[0] == "&"){
-							$val = substr($val,1);
-							$where_buf = "AND";
+						if( is_string( $val ) ){
+							if($val[0] == "&"){
+								$val = substr($val,1);
+								$where_buf = "AND";
+							}
 						}
 						if( is_int($val) or is_float($val) ){
 							$where = $where. "`$key`"." = ".$val."\n";
