@@ -6,9 +6,10 @@ class MyEngine
 	private $useCookie			= true;
 	private $assetsPathUrl		= "/data/";
 	private $assetsPath			= "/data";
+	private $jsArray			= Array();
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
-	private $authorKeywords		= "Прокофьев Юрий,портфолио,Мои работы,Мои проекты, Программы, Свободное программное обеспечение";
+	private $authorKeywords		= "Прокофьев Юрий, портфолио, Мои работы, Мои проекты, Программы, Свободное программное обеспечение, Open source";
 	private $authorDescription	= "Персональная страничка -= Dr.Smyrke =-";
 	private $lngAll = array(
 	"en" => array(
@@ -51,7 +52,7 @@ function getCookie(name)
   */
   var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
   if (match) return match[2];
-  
+
   return undefined;
 }
 
@@ -77,12 +78,14 @@ function acceptCookie()
 		}else{
 			$this->language = $_COOKIE["lang"];
 		}
-		
+
 		$this->assetsPath = $_SERVER['DOCUMENT_ROOT'].$this->assetsPath;
 	}
 
 	public function getLanguage(){ return $this->language; }
 	public function setLanguage( $language = "en" ){ $this->language = $language; }
+
+	public function addScriptFile( $url ){ array_push( $this->jsArray, $url ); }
 
 	public function pageTop( $pagetitle )
 	{
@@ -107,8 +110,8 @@ function acceptCookie()
 		foreach( glob( $this->assetsPath."/*.css" ) as $file ){
 			print '			<link rel=stylesheet type="text/css" href="'.$this->assetsPathUrl.basename( $file ).'"/>'."\n";
 		}
-		foreach( glob( $this->assetsPath."/*.js" ) as $file ){
-			print '			<script type="text/javascript" src="'.$this->assetsPathUrl.basename( $file ).'"></script>'."\n";
+		foreach( $this->jsArray as $file ){
+			print '			<script type="text/javascript" src="'.$file.'"></script>'."\n";
 		}
 		if( $this->useCookie ){
 			print '			<script type="text/javascript">'.$this->cookieJS.'</script>'."\n";
@@ -120,13 +123,13 @@ function acceptCookie()
 		}else{
 			print '		<body>'."\n";
 		}
-		
+
 		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }.bottomСookieBlock td{ padding: 10px; }.bottomСookieBlock{	position: fixed;	bottom: 0px;	left: 0px;	background-color: gray;	font-size: 14pt;}.cookieBlockAccept{	padding: 15px;	border: 1px solid orange;	color: orange;	font-weight: bold;	background-color: gray;	cursor: pointer;}</style>';
-		
+
 		if( is_file( $this->assetsPath."/img/logo.png" ) ){
 			print '<div class="logo"> <a href="/"><img src="'.$this->assetsPathUrl.'img/logo.png"></a> </div>';
 		}
-		
+
 		if( $this->useCookie ){
 			print '			<table class="bottomСookieBlock hidden" id="cookieBox" width="100%">
 			<tr>
@@ -152,7 +155,7 @@ function acceptCookie()
 	</div>
 </body></html>';
 	}
-	
+
 	public function drawMenu( $mainMenu )
 	{
 		$tmp = explode( "?", $_SERVER["REQUEST_URI"] );
