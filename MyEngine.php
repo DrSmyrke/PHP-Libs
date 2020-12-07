@@ -94,13 +94,12 @@ class MyEngine
 
 	public function pageBottom( $preContent ="" )
 	{
-		print '<style>.madeBy i{ color: gray; font-style: italic; font-size:8pt; }.madeBy{ text-align: center; }</style>';
 		print $preContent;
 		print '
 	<hr>
-	<div class="madeBy">
+	<center>
 		Created by <a href="http://drsmyrke.ru" target="_blank">Dr.Smyrke</a>
-	</div>
+	</center>
 </body></html>';
 	}
 
