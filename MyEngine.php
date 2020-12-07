@@ -99,8 +99,6 @@ class MyEngine
 	<hr>
 	<div class="madeBy">
 		Created by <a href="http://drsmyrke.ru" target="_blank">Dr.Smyrke</a>
-		<!--<br><i>ООО "Шайтан технолоджи"</i><br>
-		<i>при поддержке ЗАО "Мутные схемы" и ОАО "Любовь в займы"</i>!-->
 	</div>
 </body></html>';
 	}
