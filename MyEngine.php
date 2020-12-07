@@ -2,76 +2,21 @@
 class MyEngine
 {
 	private $language			= "en";
-	private $pageIco			= "";
-	private $useCookie			= true;
-	private $assetsPathUrl		= "/data/";
-	private $assetsPath			= "/data";
+	private $useCookie			= false;
+	private $staticMode			= false;
 	private $jsArray			= Array();
-	private $cssArray			= Array();
+	private $cssArray			= Array( "/data/css/index.css" );
+	private $onLoadArray		= Array();
+	private $staticHost			= "";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий, портфолио, Мои работы, Мои проекты, Программы, Свободное программное обеспечение, Open source";
 	private $authorDescription	= "Персональная страничка -= Dr.Smyrke =-";
-	private $lngAll = array(
-	"en" => array(
-		"links"=>"My Links",
-		"update"=>"Update",
-		"file"=>"File",
-		"size"=>"Size",
-		"upload"=>"Upload",
-		"cookieBanner" => "By using this website, you agree to our use of cookies. We use cookies to provide you with a great experience and to help our website run effectively.",
-		),
-	"ru" => array(
-		"links"=>"Мои ссылки",
-		"update"=>"Обновить",
-		"file"=>"Файл",
-		"size"=>"Размер",
-		"upload"=>"Загружено",
-		"cookieBanner" => "Используя этот сайт, вы соглашаетесь на использование нами файлов cookie. Мы используем куки, чтобы предоставить вам удобство использования и помочь нашему веб-сайту работать эффективно.",
-		)
-	);
 	###### END EDIT MANUAL ##################
 
 	###### DONT EDIT ########################
 
-	private $cookieJS		= '
-function setCookie(cname,cvalue)
-{
-	var d = new Date();
-	d.setTime(d.getTime() + (365*24*60*60*1000));
-	var expires = "expires="+d.toUTCString();
-	document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-function getCookie(name)
-{
-	/*
-  let matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"
-  ));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-  */
-  var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  if (match) return match[2];
-
-  return undefined;
-}
-
-function chkCookie()
-{
-	if( getCookie( "acceptCookie" ) != "true" ){
-		document.getElementById( "cookieBox" ).className = "bottomСookieBlock";
-	}
-}
-
-function acceptCookie()
-{
-	setCookie( "acceptCookie", true );
-	document.location.reload();
-}
-'."\n";
-
-	public function __construct()
+	public function __construct( $staticMode = false )
 	{
 		if( !isset( $_COOKIE["lang"] ) ){
 			//setcookie("lang","en");
@@ -80,7 +25,15 @@ function acceptCookie()
 			$this->language = $_COOKIE["lang"];
 		}
 
-		$this->assetsPath = $_SERVER['DOCUMENT_ROOT'].$this->assetsPath;
+		$this->staticMode = $staticMode;
+
+		if( !$this->staticMode ) return;
+
+		$tmp = explode( ".", $_SERVER['SERVER_NAME'] );
+		if( count( $tmp ) > 1 ){
+			$this->staticHost = array_pop( $tmp );
+			$this->staticHost = 'http://static.'.array_pop( $tmp ).'.'.$this->staticHost;
+		}
 	}
 
 	public function getLanguage(){ return $this->language; }
@@ -89,14 +42,17 @@ function acceptCookie()
 	public function addScriptFile( $url ){ array_push( $this->jsArray, $url ); }
 	public function addCssFile( $url ){ array_push( $this->cssArray, $url ); }
 
+	public function setUseCookie( $use = false ){ $this->useCookie = $use; }
+
 	public function pageTop( $pagetitle )
 	{
 		print '<!DOCTYPE html>
 	<html lang="'.$this->language.'">
-		<head>
+		<head lang="'.$this->language.'">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<meta charset="utf-8"/>
-			<META http-equiv="Pragma" content="no-cache">'."\n";
+			<META http-equiv="Pragma" content="no-cache">
+			<link rel="shortcut icon" href="/data/img/siteIco.png"/>'."\n";
 		if( $this->authorContent != "" ){
 			print '			<META NAME="Author" CONTENT="'.$this->authorContent.'"/>'."\n";
 		}
@@ -106,8 +62,10 @@ function acceptCookie()
 		if( $this->authorDescription != "" ){
 			print '			<META NAME="description" CONTENT="'.$this->authorDescription.'"/>'."\n";
 		}
-		if( $this->pageIco != "" ){
-			print '			<link rel="shortcut icon" href="'.$this->pageIco.'"/>'."\n";
+
+		if( $this->staticMode ){
+			print '			<link rel=stylesheet type="text/css" href="'.$this->staticHost.'/css/index.css"/>'."\n";
+			print '			<link rel=stylesheet type="text/css" href="'.$this->staticHost.'/js/index.js"/>'."\n";
 		}
 		foreach( $this->cssArray as $file ){
 			print '			<link rel=stylesheet type="text/css" href="'.$file.'"/>'."\n";
@@ -116,31 +74,20 @@ function acceptCookie()
 			print '			<script type="text/javascript" src="'.$file.'"></script>'."\n";
 		}
 		if( $this->useCookie ){
-			print '			<script type="text/javascript">'.$this->cookieJS.'</script>'."\n";
+			array_push( $this->onLoadArray, "chkCookie()" );
+			if( $this->staticMode ){
+				print '			<script type="text/javascript" src="'.$this->staticHost.'/js/cookie.js"></script>'."\n";
+			}else{
+				print '			<script type="text/javascript" src="/data/js/cookie.js"></script>'."\n";
+			}
 		}
 		print '			<title>-= '.$pagetitle.' =-</title>
 		</head>';
-		if( $this->useCookie ){
-			print '		<body onLoad="chkCookie();">'."\n";
-		}else{
+
+		if( count( $this->onLoadArray ) == 0 ){
 			print '		<body>'."\n";
-		}
-
-		print '<style>.logo,.mainMenu{ margin: auto;text-align: center; }.bottomСookieBlock td{ padding: 10px; }.bottomСookieBlock{	position: fixed;	bottom: 0px;	left: 0px;	background-color: gray;	font-size: 14pt;}.cookieBlockAccept{	padding: 15px;	border: 1px solid orange;	color: orange;	font-weight: bold;	background-color: gray;	cursor: pointer;}</style>';
-
-		if( is_file( $this->assetsPath."/img/logo.png" ) ){
-			print '<div class="logo"> <a href="/"><img src="'.$this->assetsPathUrl.'img/logo.png"></a> </div>';
-		}
-
-		if( $this->useCookie ){
-			print '			<table class="bottomСookieBlock hidden" id="cookieBox" width="100%">
-			<tr>
-				<td>'.$this->lngAll[$this->language]["cookieBanner"].'</td>
-				<td>
-					<button class="cookieBlockAccept" onClick="acceptCookie();">OK</button>
-				</td>
-			</tr>
-			</table>'."\n";
+		}else{
+			print '		<body onLoad="'.join( ";", $this->onLoadArray ).'">'."\n";
 		}
 	}
 
