@@ -7,12 +7,24 @@ class MyEngine
 	private $jsArray			= Array();
 	private $cssArray			= Array( "/data/css/index.css" );
 	private $onLoadArray		= Array();
+	private $mainMenu			= Array();
 	private $staticHost			= "";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
 	private $authorKeywords		= "Прокофьев Юрий, портфолио, Мои работы, Мои проекты, Программы, Свободное программное обеспечение, Open source";
 	private $authorDescription	= "Персональная страничка -= Dr.Smyrke =-";
 	###### END EDIT MANUAL ##################
+
+	private $lng = array(
+		"en" => array(
+			"opis1"=>"Hello! My name is Yura.",
+			"opis2"=>"But here you can find some of my personal projects, download my projects, or find out a bit more about me.",
+		),
+		"ru" => array(
+			"opis1"=>"Привет! Меня зовут Юра.",
+			"opis2"=>"Здесь вы можете найти некоторые из моих личных проектов, скачать мои проекты, или узнать немного больше обо мне.",
+		)
+	);
 
 	###### DONT EDIT ########################
 
@@ -43,6 +55,7 @@ class MyEngine
 	public function addCssFile( $url ){ array_push( $this->cssArray, $url ); }
 
 	public function setUseCookie( $use = false ){ $this->useCookie = $use; }
+	public function setMainMenu( $mainMenu = array() ){ $this->mainMenu = $mainMenu; }
 
 	public function pageTop( $pagetitle )
 	{
@@ -90,6 +103,16 @@ class MyEngine
 		}else{
 			print '		<body onLoad="'.join( ";", $this->onLoadArray ).'">'."\n";
 		}
+
+		print '			<div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+				<div style="display: flex;">
+					<img src="/data/img/avatar.jpg" style="border-radius: 64px;">
+					<div class="mySay">'."\n";
+		print '<b>'.$this->lng[$this->language]["opis1"].'</b><br>';
+		print $this->lng[$this->language]["opis2"];
+		print '			</div></div>'."\n";
+		$this->drawMenu( $this->mainMenu );
+		print '			</div>';
 	}
 
 	public function pageBottom( $preContent ="" )
@@ -110,6 +133,19 @@ class MyEngine
 		print '<div class="mainMenu">';
 			foreach( $mainMenu as $url => $data ){
 				if( !is_array( $data ) ) continue;
+
+				if( $url == "languages" ){
+					if( count( $data ) > 0 ){
+						print '<div class="languageButtons">';
+						foreach( $data as $lang ){
+							$selected	= ( $lang == $this->language ) ? ' class="selected"' : '';
+							$url		= ( $this->staticMode ) ? $this->staticHost.'/images/languages/'.$lang.'.gif' : '/data/img/languages/'.$lang.'.gif';
+							print '<img src="'.$url.'"'.$selected.' onClick="setCookie( \'lang\', \''.$lang.'\' );document.location.reload();">';
+						}
+						print '</div>';
+					}
+					continue;
+				}
 
 				$text	= ( isset( $data[$this->language] ) ) ? $data[$this->language] : '';
 				$ico = ( isset($data["ico"]) ) ? '<img src="'.$data["ico"].'">' : "";
