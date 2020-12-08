@@ -108,7 +108,7 @@ class MyEngine
 		print '<div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
 				<div style="display: flex;">
 					<img src="/data/img/avatar.jpg" style="border-radius: 64px;">
-					<div class="mySay">'."\n";
+					<div class="sayBox">'."\n";
 		print '<b>'.$this->lng[$this->language]["opis1"].'</b><br>';
 		print $this->lng[$this->language]["opis2"];
 		print '			</div></div>'."\n";
