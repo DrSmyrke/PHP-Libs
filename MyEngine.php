@@ -8,6 +8,7 @@ class MyEngine
 	private $cssArray			= Array( "/data/css/index.css" );
 	private $onLoadArray		= Array();
 	private $mainMenu			= Array();
+	private $languages			= Array( "en", "ru" );
 	private $staticHost			= "";
 	###### EDIT MANUAL ##################
 	private $authorContent		= "Прокофьев Юрий (Prokofiev Jura)";
@@ -104,7 +105,7 @@ class MyEngine
 			print '		<body onLoad="'.join( ";", $this->onLoadArray ).'">'."\n";
 		}
 
-		print '			<div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+		print '<div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
 				<div style="display: flex;">
 					<img src="/data/img/avatar.jpg" style="border-radius: 64px;">
 					<div class="mySay">'."\n";
@@ -112,7 +113,19 @@ class MyEngine
 		print $this->lng[$this->language]["opis2"];
 		print '			</div></div>'."\n";
 		$this->drawMenu( $this->mainMenu );
-		print '			</div>';
+
+		if( count( $this->languages ) > 0 ){
+			print '<div class="languageButtons">';
+			foreach( $this->languages as $lang ){
+				$selected	= ( $lang == $this->language ) ? ' class="selected"' : '';
+				$url		= ( $this->staticMode ) ? $this->staticHost.'/images/languages/'.$lang.'.gif' : '/data/img/languages/'.$lang.'.gif';
+				print '<img src="'.$url.'"'.$selected.' onClick="setCookie( \'lang\', \''.$lang.'\' );document.location.reload();">';
+			}
+			print '</div>';
+		}
+
+		print '</div>'."\n";
+		print '			<hr>'."\n";
 	}
 
 	public function pageBottom( $preContent ="" )
@@ -133,19 +146,6 @@ class MyEngine
 		print '<div class="mainMenu">';
 			foreach( $mainMenu as $url => $data ){
 				if( !is_array( $data ) ) continue;
-
-				if( $url == "languages" ){
-					if( count( $data ) > 0 ){
-						print '<div class="languageButtons">';
-						foreach( $data as $lang ){
-							$selected	= ( $lang == $this->language ) ? ' class="selected"' : '';
-							$url		= ( $this->staticMode ) ? $this->staticHost.'/images/languages/'.$lang.'.gif' : '/data/img/languages/'.$lang.'.gif';
-							print '<img src="'.$url.'"'.$selected.' onClick="setCookie( \'lang\', \''.$lang.'\' );document.location.reload();">';
-						}
-						print '</div>';
-					}
-					continue;
-				}
 
 				$text	= ( isset( $data[$this->language] ) ) ? $data[$this->language] : '';
 				$ico = ( isset($data["ico"]) ) ? '<img src="'.$data["ico"].'">' : "";
