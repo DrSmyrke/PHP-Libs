@@ -7,7 +7,7 @@ function myimage_help()
 
 class MyImage
 {
-	public function resizeImage( $filename, $newWidth = 600, $newHeight = 400, $newFile )
+	public function resizeImage( $filename, $newWidth = 600, $newHeight = 400, $newFile = "" )
 	{
 		//Open image
 	

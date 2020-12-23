@@ -39,7 +39,7 @@ class Rcon
 		$this->Disconnect( );
 	}
 	
-	public function Connect( $Ip, $Port = 80, $Password, $Timeout = 3 )
+	public function Connect( $Ip, $Port = 80, $Password = "", $Timeout = 3 )
 	{
 		$this->RequestId = 0;
 		

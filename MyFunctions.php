@@ -213,7 +213,7 @@ class MyFunctions
 
 		for( $i = 0; $i < strlen( $string ); ){
 			for( $j = 0; ($j < strlen($key) && $i < strlen( $string )); $j++, $i++ ){
-				$outText .= $string{$i} ^ $key{$j};
+				$outText .= $string[$i] ^ $key[$j];
 			}
 		}
 

@@ -53,7 +53,7 @@ function parsAuthHTTP()
 				break;
 				case "ntlm":
 					$chain = base64_decode(substr($headers['Authorization'],5));
-					switch (ord($chain{8})) { // смотрим номер этапа процесса идентификации
+					switch (ord($chain[8])) { // смотрим номер этапа процесса идентификации
 						case 3: // этап 5 - приём сообщения type-3
 							foreach (array('LM_resp','NT_resp','domain','user','host') as $k=>$v) {
 								extract(unpack('vlength/voffset',substr($chain,$k*8+14,4)));
@@ -72,7 +72,7 @@ function parsAuthHTTP()
 						case 1:
 							// этап 3 (тут было == 0xB2, я исправил на 130). 178 -> B2 или 130 -> 82
 							// 0x82 возвращают мозилла и опера при обычном вводе руками, а 0xB2 возвращает IE при параметре "исользовать текущие логин и пароль"
-							if (ord($chain{13}) == 0x82||ord($chain{13}) == 0xB2) {
+							if (ord($chain[13]) == 0x82||ord($chain[13]) == 0xB2) {
 								// проверяем признак NTLM 0x82 по смещению 13 в сообщении type-1:
 								$chain = "NTLMSSP\x00".// протокол
 								"\x02" /* номер этапа */ ."\x00\x00\x00\x00\x00\x00\x00".
