@@ -8,6 +8,7 @@
 	$data			= null;
 	$dateTime		= date("Y-m-d H:i:s");
 	$currentYear	= date("Y");
+	$currentWeekDay	= date("N");
 	$thisPage		= baseName( $_SERVER["SCRIPT_NAME"] );
 	
 	######################################################
