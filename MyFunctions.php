@@ -141,13 +141,18 @@ class MyFunctions
 		}
 		$string = "";
 		$len = strlen( $val );
-		$counter = 0;
-		for( $i = $len - 1; $i >= 0; $i-- ){
-			if( $counter++ == 3 ){
-				$string = " ".$string;
-				$counter = 0;
+
+		if( $len <= 1 ){
+			$string = $val;
+		}else{
+			$counter = 0;
+			for( $i = $len - 1; $i >= 0; $i-- ){
+				if( $counter++ == 3 ){
+					$string = " ".$string;
+					$counter = 0;
+				}
+				$string = substr( $val, $i, 1 ).$string;
 			}
-			$string = $val[$i].$string;
 		}
 
 		if( $dot ) $string .= ".".$dot;

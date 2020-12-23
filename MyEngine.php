@@ -58,6 +58,8 @@ class MyEngine
 	public function setUseCookie( $use = false ){ $this->useCookie = $use; }
 	public function setMainMenu( $mainMenu = array() ){ $this->mainMenu = $mainMenu; }
 
+	public function getStaticHost(){ return $this->staticHost; }
+
 	public function pageTop( $pagetitle )
 	{
 		print '<!DOCTYPE html>
