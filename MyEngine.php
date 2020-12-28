@@ -16,16 +16,7 @@ class MyEngine
 	private $authorDescription	= "Персональная страничка -= Dr.Smyrke =-";
 	###### END EDIT MANUAL ##################
 
-	private $lng = array(
-		"en" => array(
-			"opis1"=>"Hello! My name is Yura.",
-			"opis2"=>"But here you can find some of my personal projects, download my projects, or find out a bit more about me.",
-		),
-		"ru" => array(
-			"opis1"=>"Привет! Меня зовут Юра.",
-			"opis2"=>"Здесь вы можете найти некоторые из моих личных проектов, скачать мои проекты, или узнать немного больше обо мне.",
-		)
-	);
+
 
 	###### DONT EDIT ########################
 
@@ -108,14 +99,17 @@ class MyEngine
 		}
 
 		print '<div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-				<div style="display: flex;">
-					<img src="/data/img/avatar.jpg" style="border-radius: 64px;">
-					<div class="sayBox">'."\n";
-		print '<b>'.$this->lng[$this->language]["opis1"].'</b><br>';
-		print $this->lng[$this->language]["opis2"];
-		print '			</div></div>'."\n";
+			<a href="/"><img src="'.$this->staticHost.'/images/myLogo.svg" height="64px"></a>
+		';
+
 		$this->drawMenu( $this->mainMenu );
 
+		print '</div>'."\n";
+		print '			<hr>'."\n";
+	}
+
+	public function getLanguageButtons()
+	{
 		if( count( $this->languages ) > 0 ){
 			print '<div class="languageButtons">';
 			foreach( $this->languages as $lang ){
@@ -125,9 +119,6 @@ class MyEngine
 			}
 			print '</div>';
 		}
-
-		print '</div>'."\n";
-		print '			<hr>'."\n";
 	}
 
 	public function pageBottom( $preContent ="" )
