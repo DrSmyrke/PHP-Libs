@@ -29,12 +29,13 @@ class Yaml
 			if( $firstSym == " " || $firstSym == "	" ){
 				if( $firstSym == " " ){
 					while( substr( $str, $level, 1 ) == " " ) $level++;
+					$str = substr( $str, $level );
 					$level /= 2;
 				}
 				if( $firstSym == "	" ){
 					while( substr( $str, $level, 1 ) == "	" ) $level++;
+					$str = substr( $str, $level );
 				}
-				$str = substr( $str, $level );
 			}
 
 
