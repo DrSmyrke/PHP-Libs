@@ -1,4 +1,65 @@
 <?php
+
+function Auth_help()
+{
+	print '$auth = new Auth;'."<br>\n";
+	print '$auth->sendAuthResponse( $realm = "My Intranet", $content = "" );'."<br>\n";
+}
+
+
+
+class Auth
+{
+	public function sendAuthResponse( $realm = "My Intranet", $content = "" )
+	{
+		header( 'HTTP/1.0 401 Unauthorized' );
+		header( 'WWW-Authenticate: Basic realm="'.$realm.'"' );
+		print $content;
+		exit;
+	}
+
+	public function parsAuth()
+	{
+		$result			= array( "username" => null, "password" => null );
+
+		$headers = apache_request_headers();
+		if( !isset($headers['Authorization']) ) return $result;
+
+		$tmp = explode( " ", $headers['Authorization'] );
+
+		if( count( $tmp ) == 2 ){
+			$authType = strtolower( $tmp[0] );
+			$authKey = $tmp[1];
+
+			switch( $authType ){
+				case "basic":
+					$authTmpBase64 = explode( ":", base64_decode( $authKey ) );
+					if( count( $authTmpBase64 ) == 2 ){
+						$result["username"]		= strtolower( $authTmpBase64[0] );
+						$result["password"]		= $authTmpBase64[1];
+					}
+				break;
+			}
+		}
+
+		return $result;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	######################### GLOBAL VARS ###########################
 	
 	$auth				= false;
