@@ -98,7 +98,7 @@ class MyEngine
 			print '		<body onLoad="'.join( ";", $this->onLoadArray ).'">'."\n";
 		}
 
-		print '<div style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+		print '<div style="display: flex;justify-content: space-around;flex-wrap: wrap;">
 			<a href="/"><img src="'.$this->staticHost.'/images/myLogo.svg" height="64px"></a>
 		';
 
