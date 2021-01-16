@@ -73,6 +73,17 @@ class Yaml
 					if( $lowerValue == "true" ) $value = true;
 					if( $lowerValue == "false" ) $value = false;
 				}
+
+				if( is_float( $value ) )	$value = Float( $value );
+				if( is_int( $value ) )		$value = Int( $value );
+
+				if( is_string( $value ) ){
+					if( substr( $value, 0, 1 ) == "[" && substr( $value,-1 ) == "]" ){
+						$value = substr( $value, 1, -1 );
+						$value = $this->constructArray( explode( ", ", $value ) );
+					}
+				}
+
 				$prew[$key] = $value;
 
 				if( $level != $prewLevel ) $prewLevel = $level;
@@ -87,6 +98,30 @@ class Yaml
 
 
 		return $data;
+	}
+
+	private function constructArray( $dataArray = array() )
+	{
+		$res		= array();
+
+		foreach( $dataArray as $value ){
+			if( is_numeric( $value )){
+				$value += 1;
+				$value -= 1;
+				array_push( $res, $value );
+			}else{
+				if( is_bool( $value ) ){
+					array_push( $res, Bool( $value ) );
+					continue;
+				}
+				if( is_string( $value ) ){
+					array_push( $res, $value );
+					continue;
+				}
+			}
+		}
+
+		return $res;
 	}
 
 	public function saveToFile( $fileName, $data = array(), $separator = "  " )
