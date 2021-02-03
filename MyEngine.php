@@ -36,7 +36,11 @@ class MyEngine
 		$tmp = explode( ".", $_SERVER['SERVER_NAME'] );
 		if( count( $tmp ) > 1 ){
 			$this->staticHost = array_pop( $tmp );
-			$this->staticHost = 'http://static.'.array_pop( $tmp ).'.'.$this->staticHost;
+			if( $this->staticHost != "localhost" ){
+				$this->staticHost = 'http://static.'.array_pop( $tmp ).'.'.$this->staticHost;
+			}else{
+				$this->staticHost = 'http://static.'.$this->staticHost;
+			}
 		}
 	}
 
