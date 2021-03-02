@@ -2,18 +2,19 @@
 
 class Api
 {
-	private $classList			= array();
-	private $objectList			= array();
-	private $apiName			= "";
-	private $authF				= false;
-	protected $method			= ''; //GET|POST|PUT|DELETE
-	public $requestUri			= [];
-	public $requestParams		= [];
-	protected $action			= ''; //Name Method for execute
-	protected $incommingData	= [];
-	protected $incommingRawData	= "";
+	private $classList				= array();
+	private $objectList				= array();
+	private $apiName				= "";
+	private $authF					= false;
+	protected $method				= ''; //GET|POST|PUT|DELETE
+	public $requestUri				= [];
+	public $requestParams			= [];
+	protected $action				= ''; //Name Method for execute
+	protected $incommingData		= [];
+	protected $incommingRawData		= "";
+	protected $hostPort				= 80;
 
-	public function __construct()
+	public function __construct( $port = 80 )
 	{
 		header("Access-Control-Allow-Orgin: *");
 		header("Access-Control-Allow-Methods: *");
@@ -27,6 +28,8 @@ class Api
 			$this->incommingData = parse_ini_string( $this->incommingRawData, true );
 		}
 		$this->method			= $_SERVER['REQUEST_METHOD'];
+
+		if( is_numeric( $port ) ) $this->hostPort = (int)$port;
 		
 		if( count( $this->requestUri ) > 0 ) $this->apiName = array_shift( $this->requestUri );
 		
@@ -55,7 +58,8 @@ class Api
 			
 			if( $file == "index.php" ) continue;
 
-			$file = "http://".$_SERVER['SERVER_NAME']."/".$name;
+			$portStr = ( $this->hostPort != 80 ) ? ':'.$this->hostPort : '';
+			$file = "http://".$_SERVER['SERVER_NAME'].$portStr."/".$name;
 			
 			$this->objectList[ $name ] = new $name( $this->requestUri, $this->incommingData, $this->authF );
 
