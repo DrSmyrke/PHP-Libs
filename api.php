@@ -26,6 +26,9 @@ class Api
 		$this->incommingData	= json_decode( $this->incommingRawData, true );
 		if( $this->incommingData === NULL ){
 			$this->incommingData = parse_ini_string( $this->incommingRawData, true );
+			if( $this->incommingData == false ){
+				$this->incommingData = $this->incommingRawData;
+			}
 		}
 		$this->method			= $_SERVER['REQUEST_METHOD'];
 
@@ -69,7 +72,6 @@ class Api
 
 			array_push( $this->classList, $file );
 		}
-
 	}
 
 	public function run()
