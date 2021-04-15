@@ -9,7 +9,7 @@ function sql_help()
 	print "\$res = \$sql->deleteData( table, query, debug = false ); //return true or error<br>\n";
 	print "\$res = \$sql->addData( table, query, debug = false ); //return true or error<br>\n";
 	print "\$res = \$sql->updateData( table, query, where, debug = false ); //return true or error<br>\n";
-	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error<br>\n";
+	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error. (reverse sotring if first symbol sort = ! )<br>\n";
 	print "\$string = \$sql->getErrorString(); //return error string<br>\n";
 }
 
@@ -264,7 +264,14 @@ class Sql
 
 		$select = "SELECT ".$data." FROM "."`$table`"." ".$where;
 
-		if( !is_null($sort) && !$random ) $select .= " ORDER BY `$sort` ASC";
+		if( !is_null($sort) && !$random ){
+			if( $sort[0] == "!" ){
+				$sort = substr( $sort, 1 );
+				$select .= " ORDER BY `$sort` DESC";
+			}else{
+				$select .= " ORDER BY `$sort` ASC";
+			}
+		}
 		if( is_null($sort) && $random ) $select .= " ORDER BY RAND()";
 		if( !is_null($limit) && is_numeric($limit) ){
 			$select .= " LIMIT ";
