@@ -51,10 +51,12 @@ class Sql
 	{
 		mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
 		$this->connect_db = mysqli_connect( $this->serverAddr, $this->userName, $this->password, $this->dataBase);
-		if( !$this->connect_db ){
+		
+		if( $this->connect_db == false ){
 			$this->success = false;
 			return false;
 		}
+
 		$this->success = mysqli_select_db( $this->connect_db, $this->dataBase );
 		return $this;
 	}
@@ -229,13 +231,12 @@ class Sql
 			}
 		}else{
 			foreach($query as $key => $val){
-				$counter++;
 				$where_buf = "OR";
 				if(is_numeric($key)){
-				   if($counter == $total){
-						$data = $data."`$key`";
+					if(++$counter == $total){
+						$data = $data."`$val`";
 					}else{
-					   $data = $data."`$key`,";
+					   $data = $data."`$val`,";
 					}
 				}else{
 					if($where_f == true){
@@ -251,13 +252,13 @@ class Sql
 					} else {
 						$where = $where."`$key`"." LIKE "."'$val'"."\n";
 					}
-				}
-			   if($counter == $total){
-					$data = $data."`$key`";
-					$where = $where;
-				} else{
-				   $data = $data."`$key`,";
-				   $where = $where." ".$where_buf." ";
+					if(++$counter == $total){
+						$data = $data."`$key`";
+						$where = $where;
+					} else{
+					   $data = $data."`$key`,";
+					   $where = $where." ".$where_buf." ";
+					}
 				}
 			}
 		}
