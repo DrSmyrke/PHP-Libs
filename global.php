@@ -4,14 +4,28 @@
 	
 	######################################################
 	
-	$cmd			= null;
-	$data			= null;
-	$dateTime		= date("Y-m-d H:i:s");
-	$currentYear	= date("Y");
-	$currentMonth	= date("m");
-	$currentWeekDay	= date("N");
-	$thisPage		= baseName( $_SERVER["SCRIPT_NAME"] );
+	$cmd				= null;
+	$data				= null;
+	$dateTime			= date("Y-m-d H:i:s");
+	$currentYear		= date("Y");
+	$currentMonth		= date("m");
+	$currentWeekDay		= date("N");
+	$thisPage			= baseName( $_SERVER["SCRIPT_NAME"] );
+	$staticHost			= "";
 	
+	######################################################
+
+	$tmp = explode( ".", $_SERVER['SERVER_NAME'] );
+
+	if( count( $tmp ) > 1 ){
+		$staticHost = array_pop( $tmp );
+		if( $staticHost != "localhost" ){
+			$staticHost = 'http://static.'.array_pop( $tmp ).'.'.$staticHost;
+		}else{
+			$staticHost = 'http://static.'.$staticHost;
+		}
+	}
+
 	######################################################
 	
 	if( isset( $_SERVER['REQUEST_METHOD'] ) ){
