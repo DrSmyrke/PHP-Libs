@@ -11,6 +11,7 @@ function sql_help()
 	print "\$res = \$sql->updateData( table, query, where, debug = false ); //return true or error<br>\n";
 	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error. (reverse sotring if first symbol sort = ! )<br>\n";
 	print "\$string = \$sql->getErrorString(); //return error string<br>\n";
+	print "\$id = \$sql->getLastInsertID(); //return last ID or 0 from non AUTO_INCREMENT fields or false<br>\n";
 }
 
 class Sql
@@ -40,7 +41,7 @@ class Sql
 	public function selectDB( $dataBase )
 	{
 		if( $dataBase == "" )		return "SQL ERROR: dataBase";
-		if( $success ){
+		if( $this->success ){
 			mysqli_close( $this->connect_db );
 		}
 		$this->dataBase				= $dataBase;
@@ -295,6 +296,15 @@ class Sql
 	{
 		for ($data = []; $row = mysqli_fetch_assoc($data_query); $data[] = $row){};
 		return $data;
+	}
+
+	public function getLastInsertID()
+	{
+		if( $this->success ){
+			return mysqli_insert_id( $this->connect_db );
+		}
+		
+		return false;
 	}
 }
 ?>
