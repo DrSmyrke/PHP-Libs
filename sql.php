@@ -12,6 +12,7 @@ function sql_help()
 	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error. (reverse sotring if first symbol sort = ! )<br>\n";
 	print "\$string = \$sql->getErrorString(); //return error string<br>\n";
 	print "\$id = \$sql->getLastInsertID(); //return last ID or 0 from non AUTO_INCREMENT fields or false<br>\n";
+	print "\$value = \$sql->getAutoincrementValue( table, debug =s false )<br>\n";
 }
 
 class Sql
@@ -123,11 +124,7 @@ class Sql
 				}
 			}else{
 				$insert_f = false;
-				if( is_numeric($val) || $val == "now()" ){
-					$data = $data . "$val";
-				}else{
-					$data = $data . "'$val'";
-				}
+				$data = $data . "'$val'";
 				$colls = $colls. "`$key`"." ";
 				if($counter != $total) {
 					$data = $data . ",";
@@ -309,6 +306,34 @@ class Sql
 		}
 		
 		return false;
+	}
+
+	public function getAutoincrementValue( $table, $debug = false )
+	{
+		$select = "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$this->dataBase."' AND TABLE_NAME = '".$table."';";
+		
+		if( $debug ) print_r( $select );
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
+
+		$result = mysqli_query($this->connect_db, $select);
+		if(!$result) return NULL;
+		$data = Sql::r_normal_array_DB( $result );
+
+		if( is_array( $data ) ){
+			if( isset( $data[0] ) ){
+				if( isset( $data[0][ "AUTO_INCREMENT" ] ) ){
+					return $data[0][ "AUTO_INCREMENT" ];
+				}else{
+					return NULL;
+				}
+			}else{
+				return NULL;
+			}
+		}else{
+			return NULL;
+		}
 	}
 }
 ?>
