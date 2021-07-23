@@ -123,7 +123,11 @@ class Sql
 				}
 			}else{
 				$insert_f = false;
-				$data = $data . "'$val'";
+				if( is_numeric($val) || $val == "now()" ){
+					$data = $data . "$val";
+				}else{
+					$data = $data . "'$val'";
+				}
 				$colls = $colls. "`$key`"." ";
 				if($counter != $total) {
 					$data = $data . ",";
