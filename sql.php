@@ -5,6 +5,7 @@ function sql_help()
 	print "\$res = \$sql->init( serverAddr, userName, password, dataBase ); //return true or error<br>\n";
 	print "\$res = \$sql->connect(); //return true or error<br>\n";
 	print "\$sql->disconnect();<br>\n";
+	print "\$sql->isConnected(); //return true if connection open<br>\n";
 	print "\$res = \$sql->selectDB( dataBase ); //return true or error<br>\n";
 	print "\$res = \$sql->deleteData( table, query, debug = false ); //return true or error<br>\n";
 	print "\$res = \$sql->addData( table, query, debug = false ); //return true or error<br>\n";
@@ -66,7 +67,10 @@ class Sql
 	public function disconnect()
 	{
 		mysqli_close( $this->connect_db );
+		$this->success = false;
 	}
+
+	public function isConnected(){ return $this->success; }
 
 	public function getConnectErrorString()
 	{
