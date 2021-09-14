@@ -13,7 +13,9 @@ function sql_help()
 	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error. (reverse sotring if first symbol sort = ! )<br>\n";
 	print "\$string = \$sql->getErrorString(); //return error string<br>\n";
 	print "\$id = \$sql->getLastInsertID(); //return last ID or 0 from non AUTO_INCREMENT fields or false<br>\n";
-	print "\$value = \$sql->getAutoincrementValue( table, debug =s false )<br>\n";
+	print "\$value = \$sql->getAutoincrementValue( table, debug = false )<br>\n";
+	print "\$res = \$sql->setAutoincrementValue( table, value = 1, debug = false )<br>\n";
+	print "\$res = \$sql->clearTable( table, debug = false )<br>\n";
 }
 
 class Sql
@@ -342,6 +344,39 @@ class Sql
 		}else{
 			return NULL;
 		}
+	}
+
+	public function setAutoincrementValue( $table, $value = 1, $debug = false )
+	{
+		if( !is_numeric( $value ) ){
+			if( $debug ) print "Value is invalid";
+			return false;
+		}
+
+		$select = "ALTER TABLE `".$table."` AUTO_INCREMENT=".$value.";";
+		
+		if( $debug ) print_r( $select );
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
+
+		$result = mysqli_query($this->connect_db, $select);
+
+		return ( $result === true ) ? true : false;
+	}
+
+	public function clearTable( $table, $debug = false )
+	{
+		$select = "DELETE FROM `".$table."`;";
+		
+		if( $debug ) print_r( $select );
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
+
+		$result = mysqli_query($this->connect_db, $select);
+
+		return ( $result === true ) ? true : false;
 	}
 }
 ?>
