@@ -10,6 +10,9 @@ function vkAPI_help()
 	print "\$vkAPI->setCheckSSL( false )<br>\n";
 	print "\$data = \$vkAPI->execute();<br>\n";
 	print "\$color = \$vkAPI->replaceColor( \"blue\" );<br>\n";
+	print "\$res = \$vkAPI->sendMessage( targetID, message, attachments = array() );<br>\n";
+	print "\$res = \$vkAPI->sendSticker( targetID, sticker_id = 0 );<br>\n";
+	print "\$res = \$vkAPI->sendButtons( targetID, message, buttons = array(), inline = true, one_time = false );<br>\n";
 }
 
 
@@ -23,40 +26,48 @@ class vkAPI
 	
 	public function __construct()
 	{
-		define('VK_API_VERSION', '5.69');
+		define('VK_API_VERSION', '5.131');
 		define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
 	}
 	
 	public function execute()
 	{
-		$returnData = array();
+		$returnData				= array();
+		$requestData			= $this->getData();
+		$group_id				= ( isset( $requestData["group_id"] ) ) ? $requestData["group_id"] : "";
+		$type					= ( isset( $requestData["type"] ) ) ? $requestData["type"] : "";
 		
-		$requestData = $this->getData();
-		
-		
-		$group_id = ( isset( $requestData["group_id"] ) ) ? $requestData["group_id"] : "";
-		$type = ( isset( $requestData["type"] ) ) ? $requestData["type"] : "";
-		$user_id = ( isset( $requestData["object"]["user_id"] ) ) ? $requestData["object"]["user_id"] : "";
-		
-		$returnData["type"] = $type;
-		$returnData["user_id"] = $user_id;
+		if( $group_id != $this->groupID ){
+			print "error";
+			return $returnData;
+		}
+
+		$returnData["type"]		= $type;
 		
 		switch( $type ){
 			case "confirmation":
-				if( $group_id == $this->groupID ){
-					print $this->confirmationToken;
-				}else{
-					print "ERROR";
-				}
-				return $returnData;
+				print $this->confirmationToken;
 			break;
 			case "message_new":
-				if( isset( $requestData["object"]["body"] ) ){
-					$returnData["mess"] = $requestData["object"]['body'];
+				if( isset( $requestData[ "object" ] ) ){
+					$object = $requestData["object"];
+
+
+					if( isset( $object["message"] ) ){
+						$returnData["message"] = $object["message"];
+
+						if( isset( $object["message"]["from_id"] ) ){
+							$returnData["user_id"] = $object["message"]["from_id"];
+						}
+						if( isset( $object["message"]["text"] ) ){
+							$returnData["text"] = $object["message"]["text"];
+						}
+						if( isset( $object["message"]["payload"] ) ){
+							$returnData["payload"] = $object["message"]["payload"];
+						}
+					}
 				}
-				if( isset( $requestData["object"]["payload"] ) ){
-					$returnData["payload"] = $requestData["object"]['payload'];
-				}
+				print "ok";
 			break;
 		}
 		
@@ -65,25 +76,38 @@ class vkAPI
 		return $returnData;
 	}
 	
-	public function sendMessage($targetID, $message, $attachments = array())
+	public function sendMessage( $targetID, $message, $attachments = array() )
 	{
 		return $this->call('messages.send', array(
 			'peer_id'		=> $targetID,
+			'random_id'		=> time(),
 			'message'		=> $message,
 			'attachment'	=> implode(',', $attachments)
 		));
 	}
+
+	public function sendSticker( $targetID, $sticker_id = 0 )
+	{
+		return $this->call('messages.send', array(
+			'peer_id'		=> $targetID,
+			'random_id'		=> time(),
+			'message'		=> "",
+			'sticker_id'	=> $sticker_id
+		));
+	}
 	
-	public function sendButtons($targetID, $message, $buttons = array(), $one_time = true)
+	public function sendButtons( $targetID, $message, $buttons = array(), $inline = false, $one_time = false )
 	{
 		$buttonsSend = array();
 		$buttonsSend["buttons"] = $buttons;
-		$buttonsSend["one_time"] = $one_time;
+		$buttonsSend["inline"] = $inline;
+		if( $inline ) $buttonsSend["one_time"] = $one_time;
 		
 		return $this->call('messages.send', array(
 			'peer_id'		=> $targetID,
+			'random_id'		=> time(),
 			'message'		=> $message,
-			'keyboard'		=> json_encode($buttonsSend, JSON_UNESCAPED_UNICODE)
+			'keyboard'		=> json_encode( $buttonsSend, JSON_UNESCAPED_UNICODE )
 		));
 	}
 	
@@ -105,14 +129,25 @@ class vkAPI
 			
 			if( !$this->checkSSL ) curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 			
-			$json = curl_exec($curl);
+			$response = curl_exec($curl);
 			$error = curl_error($curl);
 			
-			if ($error) return "Failed '{$method}' request ['{$error}']";
+			if ($error) return "Failed '{$method}' request";
 			curl_close($curl);
-			$response = json_decode($json, true);
-			if (!$response || !isset($response['response'])) return "Invalid response for '{$method}' request";
-			return $response['response'];
+			$data = json_decode( $response, true);
+			if( is_array( $data ) ){
+				if( isset( $data["error"] ) ){
+					$errorNo	= ( isset( $data["error"]["error_code"] ) ) ? $data["error"]["error_code"] : "N/A";
+					$errorMsg	= ( isset( $data["error"]["error_msg"] ) ) ? $data["error"]["error_msg"] : "-";
+
+					return "Invalid request for '{$method}' error [".$errorNo.":".$errorMsg."]";
+				}else if( !isset( $data['response'] ) ){
+					return "Invalid response for '{$method}'";
+				}else{
+					return $data['response'];
+				}
+			}
+			return "Error";
 		}else{
 			return "Failed CURL init";
 		}
