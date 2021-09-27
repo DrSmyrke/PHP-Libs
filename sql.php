@@ -63,7 +63,7 @@ class Sql
 		}
 
 		$this->success = mysqli_select_db( $this->connect_db, $this->dataBase );
-		return $this;
+		return true;
 	}
 
 	public function disconnect()
