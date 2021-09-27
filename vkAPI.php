@@ -65,6 +65,9 @@ class vkAPI
 						if( isset( $object["message"]["payload"] ) ){
 							$returnData["payload"] = $object["message"]["payload"];
 						}
+						if( isset( $object["message"]["attachments"] ) ){
+							$returnData["attachments"] = $object["message"]["attachments"];
+						}
 					}
 				}
 				print "ok";
