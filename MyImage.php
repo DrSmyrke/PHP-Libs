@@ -2,7 +2,8 @@
 function myimage_help()
 {
 	print "\$mi = new MyImage;<br>\n";
-	print "\$mf->resizeImage( filename, newWidth = 600, newHeight = 400, newFile );<br>\n";
+	print "\$mi->resizeImage( filename, newWidth = 600, newHeight = 400, newFile );<br>\n";
+	print "\$mi->getThumbnail( origImage, targetImage = '' );<br>\n";
 }
 
 class MyImage
@@ -88,6 +89,65 @@ class MyImage
 		}
 	
 		imagedestroy($img);
+	}
+
+	public function getThumbnail( $origImage, $targetImage = '' )
+	{
+		$info = GetImageSize( $origImage 	);
+		$width = $info[0];
+		$height = $info[1];
+		if( $width > $height ){
+			$r = $height / $width;
+		}else{
+			$r = $width / $height;
+		}
+
+		$nw = 640;
+		$nh = $nw * $r;
+
+		$dst = imagecreatetruecolor( $nw, $nh );
+
+
+		switch($info[2]){
+			case IMAGETYPE_GIF:
+				//header('content-type: image/gif');
+				$src = imagecreatefromgif( $origImage );
+				//imagegif($dst);
+			break;
+			case IMAGETYPE_JPEG:
+				//header('content-type: image/jpeg');
+				$src = imagecreatefromjpeg( $origImage );
+				//imagejpeg($dst);
+			break;
+			case IMAGETYPE_PNG:
+				//header('content-type: image/png');
+				$src = imagecreatefrompng( $origImage );
+				//imagepng($dst);
+			break;
+		}
+
+		if( $targetImage == "" ) header('content-type: image/jpeg');
+
+		imagecopyresampled( $dst, $src, 0, 0, 0, 0, $nw,$nh,$width,$height );
+
+		if( $targetImage == "" ){
+			imagejpeg( $dst );
+		}else{
+			switch( $info[ 2 ] ){
+				case IMAGETYPE_GIF:
+					imagegif( $dst, $targetImage );
+				break;
+				case IMAGETYPE_JPEG:
+					imagejpeg( $dst, $targetImage );
+				break;
+				case IMAGETYPE_PNG:
+					imagepng( $dst, $targetImage );
+				break;
+			}
+		}
+
+		imagedestroy( $src );
+		imagedestroy( $dst );
 	}
 }
 ?>
