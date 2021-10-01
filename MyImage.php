@@ -1,11 +1,4 @@
 <?php
-function myimage_help()
-{
-	print "\$mi = new MyImage;<br>\n";
-	print "\$mi->resizeImage( filename, newWidth = 600, newHeight = 400, newFile );<br>\n";
-	print "\$mi->getThumbnail( origImage, targetImage = '' );<br>\n";
-}
-
 class MyImage
 {
 	public function resizeImage( $filename, $newWidth = 600, $newHeight = 400, $newFile = "" )
