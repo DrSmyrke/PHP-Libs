@@ -1,22 +1,4 @@
 <?php
-function myfunctions_help()
-{
-	print "\$mf = new MyFunctions;<br>\n";
-	print "\$mf->printDir( path, asTable = true, className = \"table\" );<br>\n";
-	print "\$res = \$mf->readDirToArray( dir );<br>\n";
-	print "\$res = \$mf->getMonName( mon, language = \"en\" ); // print month name<br>\n";
-	print "\$res = \$mf->hex_dump( str ); // print string to hex format<br>\n";
-	print "\$res = \$mf->drawData( data, spc = \"| &#160;&#160;&#160;\", recursion = 0 ); // draw data (fork var_dump)<br>\n";
-	print "\$res = \$mf->chis( number ); // get human format to number ex: 1000130 -> 1 000 130<br>\n";
-	print "\$res = \$mf->getSize( size ); // get human format to bytes<br>\n";
-	print "\$res = \$mf->getAgeFromBirthday( birthday ); // get full years from birthday date<br>\n";
-	print "\$mf->removeDirectory( dir ); //recursive remove directory<br>\n";
-	print "\$res = \$mf->setLog( mess ); //added date time before message\n";
-	print "\$res = \$mf->xorString( str, key ); //encode XOR string from key\n";
-	print "\$res = \$mf->scanDirParam( dir, true ); //scan dir recursive param\n";
-	print "\$mf->dirParamToRepoList( &string, data ); //print to string repo file list\n";
-}
-
 class MyFunctions
 {
 	public function printDir( $path, $asTable = true, $className = "table", $asIco = false, $onlyRash = "")
