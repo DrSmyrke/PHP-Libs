@@ -81,47 +81,74 @@ class MyImage
 			}
 		}
 	
-		imagedestroy($img);
+		imagedestroy( $img );
 	}
 
 	public function getThumbnail( $origImage, $targetImage = '' )
 	{
-		$info = GetImageSize( $origImage 	);
-		$width = $info[0];
-		$height = $info[1];
-		if( $width > $height ){
-			$r = $height / $width;
-		}else{
-			$r = $width / $height;
-		}
+		$info		= GetImageSize( $origImage 	);
+		$exif		= exif_read_data( $origImage );
+		$width		= $info[0];
+		$height		= $info[1];
+		$r			= $width / $height;
+		$img		= null;
 
-		$nw = 640;
-		$nh = $nw * $r;
+		$newWidth	= 640;
+		$newHeight	= $newWidth / $r;
 
-		$dst = imagecreatetruecolor( $nw, $nh );
-
-
-		switch($info[2]){
+		switch( $info[2] ){
 			case IMAGETYPE_GIF:
 				//header('content-type: image/gif');
-				$src = imagecreatefromgif( $origImage );
+				$img = imagecreatefromgif( $origImage );
 				//imagegif($dst);
 			break;
 			case IMAGETYPE_JPEG:
 				//header('content-type: image/jpeg');
-				$src = imagecreatefromjpeg( $origImage );
+				$img = imagecreatefromjpeg( $origImage );
 				//imagejpeg($dst);
 			break;
 			case IMAGETYPE_PNG:
 				//header('content-type: image/png');
-				$src = imagecreatefrompng( $origImage );
+				$img = imagecreatefrompng( $origImage );
 				//imagepng($dst);
 			break;
 		}
 
+		if( $img == null ){
+			return;
+		}
+
+		//Pictures that are rotated using EXIF, will show up in the original orientation
+		if( $exif && isset( $exif['Orientation'] ) ){
+			$ort = $exif['Orientation'];
+			if ($ort == 6 || $ort == 5){
+				$img = imagerotate( $img, 270, null );
+				$tmp = $newWidth;
+				$newWidth = $newHeight;
+				$newHeight = $tmp;
+				$tmp = $width;
+				$width = $height;
+				$height = $tmp;
+			}else if( $ort == 3 || $ort == 4 ){
+				$img = imagerotate( $img, 180, null );
+			}else if( $ort == 8 || $ort == 7 ){
+				$img = imagerotate( $img, 90, null );
+				$tmp = $newWidth;
+				$newWidth = $newHeight;
+				$newHeight = $tmp;
+				$tmp = $width;
+				$width = $height;
+				$height = $tmp;
+			}
+                
+			if( $ort == 5 || $ort == 4 || $ort == 7 ) imageflip( $img, IMG_FLIP_HORIZONTAL );
+		}
+
+		$dst = imagecreatetruecolor( $newWidth, $newHeight );
+
 		if( $targetImage == "" ) header('content-type: image/jpeg');
 
-		imagecopyresampled( $dst, $src, 0, 0, 0, 0, $nw,$nh,$width,$height );
+		imagecopyresampled( $dst, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height );
 
 		if( $targetImage == "" ){
 			imagejpeg( $dst );
@@ -139,7 +166,7 @@ class MyImage
 			}
 		}
 
-		imagedestroy( $src );
+		imagedestroy( $img );
 		imagedestroy( $dst );
 	}
 }
