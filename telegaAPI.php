@@ -15,6 +15,7 @@ class telegaAPI
 {
 	private $accessToken			= "";
 	private $checkSSL				= true;
+	private $parse_mode				= "HTML";
 	private $debug					= false;
 	
 	public function __construct( $debug = false )
@@ -62,11 +63,12 @@ class telegaAPI
 	// 	return $returnData;
 	// }
 	
-	public function sendMessage($targetID, $message)
+	public function sendMessage( $chatID, $message )
 	{
 		return $this->call('sendMessage', array(
-			'chat_id'		=> $targetID,
+			'chat_id'		=> $chatID,
 			'text'			=> substr( $message, 0, 4096 ),
+			'parse_mode'	=> $this->parse_mode,
 		));
 	}
 	
