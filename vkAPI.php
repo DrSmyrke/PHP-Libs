@@ -78,15 +78,50 @@ class vkAPI
 		
 		return $returnData;
 	}
+
+	public function uploadImage( $file = "" )
+	{
+		if( !is_file( $file ) ) return "File not found";
+
+		$res = $this->call( 'photos.getMessagesUploadServer' );
+
+		if( !is_array( $res ) ) return $res;
+		
+		if( !function_exists( 'curl_file_create' ) ){
+			function curl_file_create($filename, $mimetype = '', $postname = '') {
+				return "@$filename;filename="
+					. ($postname ?: basename($filename))
+					. ($mimetype ? ";type=$mimetype" : '');
+			}
+		}
+
+		$url				= ( isset( $res[ "upload_url" ] ) ) ? $res[ "upload_url" ] : "";
+
+		if( $url == "" ) return "Upload url incorrect";
+
+		$info				= getimagesize( $file );
+		$basename			= pathinfo( $file );
+		$file				= curl_file_create( $file, $info['mime'], $basename['basename'] );
+		$v					= $this->post( $url, array('photo' => $file ) );
+		$response			= json_decode( $v, true );
+
+		$res = $this->call( 'photos.saveMessagesPhoto', array(
+			'photo'			=> $response[ "photo" ],
+			'server'		=> $response[ "server" ],
+			'hash'			=> $response[ "hash" ]
+		) );
+
+		return $res;
+	}
 	
 	public function sendMessage( $targetID, $message, $attachments = array() )
 	{
-		return $this->call('messages.send', array(
+		return $this->call( 'messages.send', array(
 			'peer_id'		=> $targetID,
 			'random_id'		=> time(),
 			'message'		=> $message,
 			'attachment'	=> implode(',', $attachments)
-		));
+		) );
 	}
 
 	public function sendSticker( $targetID, $sticker_id = 0 )
@@ -113,6 +148,27 @@ class vkAPI
 			'keyboard'		=> json_encode( $buttonsSend, JSON_UNESCAPED_UNICODE )
 		));
 	}
+
+	private function post( $url, $params )
+	{
+		if( function_exists('curl_init') ){
+			$curl = curl_init( $url );
+			curl_setopt( $curl, CURLOPT_POST, 1 );
+			curl_setopt( $curl, CURLOPT_URL, $url );
+			curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $curl, CURLOPT_POSTFIELDS, $params );
+			
+			if( !$this->checkSSL ) curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+			$result = curl_exec( $curl );
+			$error = curl_error($curl);
+			
+			if( $error ) return "Failed '{$method}' request";
+			curl_close($curl);
+
+			return $result;
+		}
+    }
 	
 	private function call($method, $params = array())
 	{
@@ -124,7 +180,7 @@ class vkAPI
 		$url = VK_API_ENDPOINT.$method;
 
 		if( function_exists('curl_init') ){
-			$curl = curl_init($url);
+			$curl = curl_init( $url );
 			curl_setopt($curl, CURLOPT_HTTPHEADER, array( "Content-Type:multipart/form-data" ));
 			curl_setopt($curl, CURLOPT_URL, $url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
