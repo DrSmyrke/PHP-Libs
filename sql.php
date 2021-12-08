@@ -63,7 +63,7 @@ class Sql
 		}
 
 		$this->success = mysqli_select_db( $this->connect_db, $this->dataBase );
-		return true;
+		return $this;
 	}
 
 	public function disconnect()
@@ -313,9 +313,9 @@ class Sql
 	{
 		if( $this->success ){
 			return mysqli_insert_id( $this->connect_db );
+		}else{
+			return -1;
 		}
-		
-		return false;
 	}
 
 	public function getAutoincrementValue( $table, $debug = false )
