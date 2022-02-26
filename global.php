@@ -12,18 +12,30 @@
 	$currentWeekDay		= date("N");
 	$thisPage			= baseName( $_SERVER["SCRIPT_NAME"] );
 	$staticHost			= "";
+	$language			= "en";
+	$printPage			= true;
 	
 	######################################################
 
-	$tmp = explode( ".", $_SERVER['SERVER_NAME'] );
+	if( $_SERVER['SERVER_NAME'] == $_SERVER['SERVER_ADDR'] ){
+		$staticHost = $_SERVER['SERVER_ADDR'];
+	}else{
+		$tmp = explode( ".", $_SERVER['SERVER_NAME'] );
 
-	if( count( $tmp ) > 1 ){
-		$staticHost = array_pop( $tmp );
-		if( $staticHost != "localhost" ){
-			$staticHost = 'http://static.'.array_pop( $tmp ).'.'.$staticHost;
-		}else{
-			$staticHost = 'http://static.'.$staticHost;
+		if( count( $tmp ) > 1 ){
+			if( array_shift( $tmp ) != "localhost" ){
+				$staticHost = 'http://static.'.join( ".", $tmp );
+			}else{
+				$staticHost = 'http://static.localhost';
+			}
 		}
+	}
+
+	if( !isset( $_COOKIE["lang"] ) ){
+		//setcookie("lang","en");
+		$language = "en";
+	}else{
+		$language = $_COOKIE["lang"];
 	}
 
 	######################################################
