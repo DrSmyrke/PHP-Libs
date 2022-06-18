@@ -107,7 +107,7 @@ class Sql
 		$delete = "DELETE FROM "."`$table`".$where.";";
 		if( $debug ) print_r( $delete );
 		mysqli_query( $this->connect_db,"SET NAMES `utf8`" );
-		mysqli_query( $this->connect_db,"SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db,"SET CHARACTER SET `utf8mb4`" );
 		mysqli_query( $this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`" );
 		return mysqli_query( $this->connect_db, $delete);
 	}
@@ -153,7 +153,7 @@ class Sql
 		$insert = "INSERT INTO "."`$table`"."$colls"." VALUES (". $data .");";
 		if( $debug ) print_r( $insert );
 		mysqli_query($this->connect_db,"SET NAMES `utf8`");
-		mysqli_query($this->connect_db,"SET CHARACTER SET `utf8`");
+		mysqli_query($this->connect_db,"SET CHARACTER SET `utf8mb4`");
 		mysqli_query($this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`");
 		return mysqli_query($this->connect_db, $insert);
 	}
@@ -200,7 +200,7 @@ class Sql
 		if( $debug ) print_r( $update );
 		//print_r("UPDATE  `tempD`.`tb_color` SET  `color` =  'Многоцветный 2' WHERE  `tb_color`.`id` =6;");
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
-		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8mb4`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
 		return mysqli_query( $this->connect_db, $update );
 	}
@@ -295,7 +295,7 @@ class Sql
 		$select .= ";";
 		if( $debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
-		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8mb4`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
 
 		$result = mysqli_query($this->connect_db, $select);
