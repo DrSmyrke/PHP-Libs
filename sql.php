@@ -217,16 +217,16 @@ class Sql
 			$data = " * ";
 			foreach($query as $key => $val){
 				$counter++;
-				$where_buf = "OR";
+				$where_buf = "AND";
 				if(!is_numeric($key)){
 						if($where_f == true){
 							$where = "WHERE ";
 							$where_f = false;
 						}
 						if( is_string( $val ) ){
-							if($val[0] == "&"){
+							if($val[0] == "|"){
 								$val = substr($val,1);
-								$where_buf = "AND";
+								$where_buf = "OR";
 							}
 						}
 						if( is_int($val) or is_float($val) ){
@@ -243,7 +243,7 @@ class Sql
 			}
 		}else{
 			foreach($query as $key => $val){
-				$where_buf = "OR";
+				$where_buf = "AND";
 				if(is_numeric($key)){
 					if(++$counter == $total){
 						$data = $data."`$val`";
@@ -255,9 +255,11 @@ class Sql
 						$where = "WHERE ";
 						$where_f = false;
 					}
-					if($val[0] == "&"){
-						$val = substr($val,1);
-						$where_buf = "AND";
+					if( is_string( $val ) ){
+						if($val[0] == "|"){
+							$val = substr($val,1);
+							$where_buf = "OR";
+						}
 					}
 					if( is_int($val) or is_float($val) ){
 						$where = $where. "`$key`"." = ".$val."\n";
