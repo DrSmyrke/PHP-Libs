@@ -215,31 +215,36 @@ class Sql
 
 		if( array_key_exists( 0, $query ) && $query[0] == '*' ){
 			$data = " * ";
-			foreach($query as $key => $val){
-				$counter++;
+			foreach( $query as $key => $val ){
 				$where_buf = "AND";
 				if(!is_numeric($key)){
-						if($where_f == true){
-							$where = "WHERE ";
-							$where_f = false;
+					if($where_f == true){
+						$where = "WHERE ";
+						$where_f = false;
+					}
+					if( is_string( $val ) ){
+						if( substr( $val, 0, 1 ) == "|" ){
+							$val = substr( $val, 1 );
+							$where_buf = "OR";
 						}
-						if( is_string( $val ) ){
-							if($val[0] == "|"){
-								$val = substr($val,1);
-								$where_buf = "OR";
-							}
-						}
-						if( is_int($val) or is_float($val) ){
-							$where = $where. "`$key`"." = ".$val."\n";
-						}else {
-							$where = $where."`$key`"." LIKE "."'$val'"."\n";
-						}
-						if($counter == $total){
-						   $where = $where;
-						}else{
-						   $where = $where." ".$where_buf." ";
-						}
+					}
+
+					if( $counter != $total && $counter > 1 ){
+						$where .= $where_buf." ";
+					}
+
+					$testVal = $val;
+					$testVal++;
+					$testVal--;
+
+					if( is_int( $testVal ) || is_float( $testVal ) ){
+						$where = $where. "`$key`"." = ".$val."\n";
+					}else{
+						$where = $where."`$key`"." LIKE "."'$val'"."\n";
+					}					
 				}
+
+				$counter++;
 			}
 		}else{
 			foreach($query as $key => $val){
@@ -256,16 +261,22 @@ class Sql
 						$where_f = false;
 					}
 					if( is_string( $val ) ){
-						if($val[0] == "|"){
-							$val = substr($val,1);
+						if( substr( $val, 0, 1 ) == "|" ){
+							$val = substr( $val, 1 );
 							$where_buf = "OR";
 						}
 					}
-					if( is_int($val) or is_float($val) ){
+
+					$testVal = $val;
+					$testVal++;
+					$testVal--;
+
+					if( is_int( $testVal ) || is_float( $testVal ) ){
 						$where = $where. "`$key`"." = ".$val."\n";
 					} else {
 						$where = $where."`$key`"." LIKE "."'$val'"."\n";
 					}
+					
 					if(++$counter == $total){
 						$data = $data."`$key`";
 						$where = $where;
