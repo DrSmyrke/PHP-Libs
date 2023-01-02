@@ -27,11 +27,11 @@ class Bits
 	 * 
 	 * @param number value
 	 * @param number bit number (0..7)
-	 * @return true if bit as set
+	 * @return notching
 	 */
-	static public function setBit( $value, $bitNum )
+	static public function setBit( &$value, $bitNum )
 	{
-		return ( $value |= ( 1 << $bitNum ) );
+		$value |= ( 1 << $bitNum );
 	}
 
 	/**
@@ -39,11 +39,11 @@ class Bits
 	 * 
 	 * @param number value
 	 * @param number bit number (0..7)
-	 * @return true if bit as set
+	 * @return notching
 	 */
-	static public function resetBit( $value, $bitNum )
+	static public function resetBit( &$value, $bitNum )
 	{
-		return ( $value &= ~( 1 << $bitNum ) );
+		$value &= ~( 1 << $bitNum );
 	}
 
 	/**
@@ -51,11 +51,11 @@ class Bits
 	 * 
 	 * @param number value
 	 * @param number bit number (0..7)
-	 * @return true if bit as set
+	 * @return notching
 	 */
-	static public function invertBit( $value, $bitNum )
+	static public function invertBit( &$value, $bitNum )
 	{
-		return ( $value ^= ( 1 << $bitNum ) );
+		$value ^= ( 1 << $bitNum );
 	}
 }
 ?>
