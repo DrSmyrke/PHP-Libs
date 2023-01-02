@@ -21,5 +21,41 @@ class Bits
 	{
 		return ( $value & ( 1 << $bitNum ) ) ? true : false;
 	}
+
+	/**
+	 * Set bit in number
+	 * 
+	 * @param number value
+	 * @param number bit number (0..7)
+	 * @return true if bit as set
+	 */
+	static public function setBit( $value, $bitNum )
+	{
+		return ( $value |= ( 1 << $bitNum ) );
+	}
+
+	/**
+	 * Reset bit in number
+	 * 
+	 * @param number value
+	 * @param number bit number (0..7)
+	 * @return true if bit as set
+	 */
+	static public function resetBit( $value, $bitNum )
+	{
+		return ( $value &= ~( 1 << $bitNum ) );
+	}
+
+	/**
+	 * Invert bit in number
+	 * 
+	 * @param number value
+	 * @param number bit number (0..7)
+	 * @return true if bit as set
+	 */
+	static public function invertBit( $value, $bitNum )
+	{
+		return ( $value ^= ( 1 << $bitNum ) );
+	}
 }
 ?>
