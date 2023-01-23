@@ -14,14 +14,14 @@ function telegaAPI_help()
 class telegaAPI
 {
 	private $accessToken			= "";
+	private $api_endpoint			= "";
 	private $checkSSL				= true;
 	private $parse_mode				= "HTML";
 	private $debug					= false;
 	
 	public function __construct( $debug = false )
 	{
-		define('API_ENDPOINT', 'https://api.telegram.org/bot');
-
+		$this->api_endpoint			= 'https://api.telegram.org/bot';
 		$this->debug				= $debug;
 	}
 	
@@ -74,7 +74,7 @@ class telegaAPI
 	
 	private function call( $method, $params = array() )
 	{
-		$url = API_ENDPOINT.$this->accessToken.'/'.$method;
+		$url = $this->api_endpoint.$this->accessToken.'/'.$method;
 
 		if( $this->debug ) print ">:".$url."<br>";
 
