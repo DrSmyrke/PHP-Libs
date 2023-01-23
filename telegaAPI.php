@@ -4,8 +4,10 @@
 function telegaAPI_help()
 {
 	print "\$telegaAPI = new telegaAPI();<br>\n";
-	print "\$telegaAPI->setAccessToken( VK_API_ACCESS_TOKEN )<br>\n";
-	print "\$telegaAPI->setCheckSSL( false )<br>\n";
+	print "\$telegaAPI->setAccessToken( VK_API_ACCESS_TOKEN );<br>\n";
+	print "\$telegaAPI->setCheckSSL( false );<br>\n";
+	print "\$telegaAPI->about(); //Get bot information<br>\n";
+	print "\$telegaAPI->getUpdates(); //Get for bot messages<br>\n";
 	print "\$data = \$telegaAPI->execute();<br>\n";
 }
 
@@ -70,6 +72,15 @@ class telegaAPI
 			'text'			=> substr( $message, 0, 4096 ),
 			'parse_mode'	=> $this->parse_mode,
 		));
+	}
+
+	public function about()
+	{
+		return $this->call( 'getMe' );
+	}
+	public function getUpdates()
+	{
+		return $this->call( 'getUpdates' );
 	}
 	
 	private function call( $method, $params = array() )
