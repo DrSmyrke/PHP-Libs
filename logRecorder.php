@@ -13,26 +13,14 @@ function LogRecorder_help()
 
 ############################################################################
 
-enum LogType{
-	case CORE;
-	case ERROR;
-	case WARN;
-	case INFO;
-	case DEBUG;
-}
-
-enum LogOutputType{
-	case TELEGRAM;
-	case FILE;
-}
 
 
 ############################################################################
 class LogRecorder
 {
 	private $debug					= false;
-	private $logLevel				= LogType::INFO;
-	private $logType				= LogOutputType::FILE;
+	private $logLevel				= 3;
+	private $logType				= 0;
 	private $target					= '';
 	private $param					= '';
 	
@@ -41,21 +29,23 @@ class LogRecorder
 		$this->debug				= $debug;
 	}
 	
-	public function setLogLevel( LogType $level )
+	public function setLogLevel( $level )
 	{
-		$this->logLevel				= $level;
+		$this->logLevel				= (int) $level;
 	}
 
-	public function setOutput( LogOutputType $type, $target, $param )
+	public function setOutput( $type, $target, $param )
 	{
-		$this->logType				= $type;
+		$this->logType				= (int) $type;
 		$this->target				= $target;
 		$this->param				= $param;
 	}
 
-	public function toLog( LogType $type, $message, $file = '', $line = -1 )
+	public function toLog( $level, $message, $file = '', $line = -1 )
 	{
-		$dateTime				= date( 'Y-m-d H:i:s' );
+		if( $level > $this->logLevel ) return;
+
+		$dateTime					= date( 'Y-m-d H:i:s' );
 
 		if( $file != '' ){
 			if( $line >= 0 ) $file .= ':'.$line;
@@ -63,28 +53,43 @@ class LogRecorder
 		}
 
 		switch( $this->logType ){
-			case LogOutputType::TELEGRAM:
+			case 1:
 				$logAPI = new telegaAPI();
 				$logAPI->setAccessToken( $this->param );
 				$logAPI->setCheckSSL( false );
-				$logAPI->sendMessage( $this->target, '['.$dateTime.'] <b>'.$this->getLogTypeString( $type ).'</b> '.$message );
+				$logAPI->sendMessage( $this->target, '['.$dateTime.'] <b>'.$this->getLogLevelString( $type ).'</b> '.$message );
 			break;
 		}
 	}
 
-	private function getLogTypeString( LogType $type )
+	private function getLogLevelString( $type )
 	{
 		$string = 'N/A';
 
-		switch( $this->logType ){
-			case LogType::CORE:		$string = 'CORE';	break;
-			case LogType::ERROR:	$string = 'ERROR';	break;
-			case LogType::WARN:		$string = 'WARN';	break;
-			case LogType::INFO:		$string = 'INFO';	break;
-			case LogType::DEBUG:	$string = 'DEBUG';	break;
+		switch( $type ){
+			case 0:		$string = 'CORE';	break;
+			case 1:		$string = 'ERROR';	break;
+			case 2:		$string = 'WARN';	break;
+			case 3:		$string = 'INFO';	break;
+			case 4:		$string = 'DEBUG';	break;
 		}
 
 		return $string;
+	}
+
+	public static function getLogLevelFromString( $string )
+	{
+		$level = -1;
+
+		switch( strtoupper( $string ) ){
+			case 'CORE':	$level = 0;		break;
+			case 'ERROR':	$level = 1;		break;
+			case 'WARN':	$level = 2;		break;
+			case 'INFO':	$level = 3;		break;
+			case 'DEBUG':	$level = 4;		break;
+		}
+
+		return $level;
 	}
 }
 
