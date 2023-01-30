@@ -57,7 +57,7 @@ class LogRecorder
 				$logAPI = new telegaAPI();
 				$logAPI->setAccessToken( $this->param );
 				$logAPI->setCheckSSL( false );
-				$logAPI->sendMessage( $this->target, '['.$dateTime.'] <b>'.$this->getLogLevelString( $type ).'</b> '.$message );
+				$logAPI->sendMessage( $this->target, '['.$dateTime.'] <b>'.$this->getLogLevelString( $level ).'</b> '.$message );
 			break;
 		}
 	}
