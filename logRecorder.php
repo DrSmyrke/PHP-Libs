@@ -13,7 +13,10 @@ function LogRecorder_help()
 
 ############################################################################
 
-
+enum LogsOutputType {
+	case Telegram;
+	case Discord;
+}
 
 ############################################################################
 class LogRecorder
@@ -36,7 +39,7 @@ class LogRecorder
 
 	public function setOutput( $type, $target, $param )
 	{
-		$this->logType				= (int) $type;
+		$this->logType				= $type;
 		$this->target				= $target;
 		$this->param				= $param;
 	}
@@ -53,11 +56,17 @@ class LogRecorder
 		}
 
 		switch( $this->logType ){
-			case 1:
+			case LogsOutputType::Telegram:
 				$logAPI = new telegaAPI();
 				$logAPI->setAccessToken( $this->param );
 				$logAPI->setCheckSSL( false );
 				$logAPI->sendMessage( $this->target, '['.$dateTime.'] <b>'.$this->getLogLevelString( $level ).'</b> '.$message );
+			break;
+			case LogsOutputType::Discord:
+				$logAPI = new discordAPI();
+				$logAPI->setAccessToken( $this->param );
+				$logAPI->setCheckSSL( false );
+				$logAPI->sendMessage( '['.$dateTime.'] <b>'.$this->getLogLevelString( $level ).'</b> '.$message, true );
 			break;
 		}
 	}
