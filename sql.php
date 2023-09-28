@@ -16,6 +16,7 @@ function sql_help()
 	print "\$value = \$sql->getAutoincrementValue( table, debug = false )<br>\n";
 	print "\$res = \$sql->setAutoincrementValue( table, value = 1, debug = false )<br>\n";
 	print "\$res = \$sql->clearTable( table, debug = false )<br>\n";
+	print "\$res = \$sql->sendRaw( request, debug = false )<br>\n";
 }
 
 class Sql
@@ -390,6 +391,19 @@ class Sql
 		$result = mysqli_query($this->connect_db, $select);
 
 		return ( $result === true ) ? true : false;
+	}
+
+	public function sendRaw( $request, $debug = false )
+	{
+		if( $debug ) print_r( $request );
+		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
+		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
+		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
+
+		$result = mysqli_query( $this->connect_db, $request );
+
+		if( !$result ) return Array();
+		return Sql::r_normal_array_DB( $result );
 	}
 }
 ?>
