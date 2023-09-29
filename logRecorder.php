@@ -66,7 +66,7 @@ class LogRecorder
 				$logAPI = new discordAPI();
 				$logAPI->setAccessToken( $this->param );
 				$logAPI->setCheckSSL( false );
-				$logAPI->sendMessage( '['.$dateTime.'] <b>'.$this->getLogLevelString( $level ).'</b> '.$message, true );
+				$logAPI->sendWebhook( '['.$dateTime.'] <b>'.$this->getLogLevelString( $level ).'</b> '.$message );
 			break;
 		}
 	}
