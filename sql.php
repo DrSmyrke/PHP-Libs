@@ -21,19 +21,20 @@ function sql_help()
 
 class Sql
 {
-	private $serverAddr				= "localhost";
-	private $userName				= "";
-	private $password				= "";
-	private $dataBase				= "";
-	private $connect_db				= "";
+	private $serverAddr				= 'localhost';
+	private $userName				= '';
+	private $password				= '';
+	private $dataBase				= '';
+	private $connect_db				= '';
 	private $success				= false;
+	private $errorString			= '';
 
-	public function init( $serverAddr, $userName, $password, $dataBase = "" )
+	public function init( $serverAddr, $userName, $password, $dataBase = '' )
 	{
-		if( $serverAddr == "" )		return "SQL ERROR: serverAddr";
-		if( $userName == "" )		return "SQL ERROR: userName";
-		if( $password == "" )		return "SQL ERROR: password";
-		if( $dataBase == "" )		return "SQL ERROR: dataBase";
+		if( $serverAddr == '' )		return 'SQL ERROR: serverAddr';
+		if( $userName == '' )		return 'SQL ERROR: userName';
+		if( $password == '' )		return 'SQL ERROR: password';
+		if( $dataBase == '' )		return 'SQL ERROR: dataBase';
 
 		$this->serverAddr			= $serverAddr;
 		$this->userName				= $userName;
@@ -56,11 +57,21 @@ class Sql
 	public function connect()
 	{
 		mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
-		$this->connect_db = mysqli_connect( $this->serverAddr, $this->userName, $this->password, $this->dataBase);
-		
-		if( $this->connect_db == false ){
-			$this->success = false;
-			return false;
+
+		$this->success = false;
+
+		try{
+			$this->connect_db = mysqli_connect( $this->serverAddr, $this->userName, $this->password, $this->dataBase);
+		}catch(Exception $e){
+			$this->errorString = 'Caught exception: '.$e->getMessage()."\n";
+		}finally{
+			if( $this->connect_db == false ){
+				$this->success = false;
+				return false;
+			}
+
+			$this->errorString = '';
+			$this->success = true;
 		}
 
 		$this->success = mysqli_select_db( $this->connect_db, $this->dataBase );
@@ -242,7 +253,7 @@ class Sql
 						$where = $where. "`$key`"." = ".$val."\n";
 					}else{
 						$where = $where."`$key`"." LIKE "."'$val'"."\n";
-					}					
+					}
 				}
 
 				$counter++;
@@ -277,7 +288,7 @@ class Sql
 					} else {
 						$where = $where."`$key`"." LIKE "."'$val'"."\n";
 					}
-					
+
 					if(++$counter == $total){
 						$data = $data."`$key`";
 						$where = $where;
@@ -335,7 +346,7 @@ class Sql
 	public function getAutoincrementValue( $table, $debug = false )
 	{
 		$select = "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$this->dataBase."' AND TABLE_NAME = '".$table."';";
-		
+
 		if( $debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
@@ -368,7 +379,7 @@ class Sql
 		}
 
 		$select = "ALTER TABLE `".$table."` AUTO_INCREMENT=".$value.";";
-		
+
 		if( $debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
@@ -382,7 +393,7 @@ class Sql
 	public function clearTable( $table, $debug = false )
 	{
 		$select = "DELETE FROM `".$table."`;";
-		
+
 		if( $debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
