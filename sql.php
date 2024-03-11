@@ -3,38 +3,39 @@ function sql_help()
 {
 	print "\$sql = new Sql;<br>\n";
 	print "\$res = \$sql->init( serverAddr, userName, password, dataBase ); //return true or error<br>\n";
+	print 'setDebug( debug = true );'."\n";
 	print "\$res = \$sql->connect(); //return true or error<br>\n";
 	print "\$sql->disconnect();<br>\n";
 	print "\$sql->isConnected(); //return true if connection open<br>\n";
 	print "\$res = \$sql->selectDB( dataBase ); //return true or error<br>\n";
-	print "\$res = \$sql->deleteData( table, query, debug = false ); //return true or error<br>\n";
-	print "\$res = \$sql->addData( table, query, debug = false ); //return true or error<br>\n";
-	print "\$res = \$sql->updateData( table, query, where, debug = false ); //return true or error<br>\n";
-	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null, debug = false ); //return Array or error. (reverse sotring if first symbol sort = ! )<br>\n";
+	print "\$res = \$sql->deleteData( table, query ); //return true or error<br>\n";
+	print "\$res = \$sql->addData( table, query ); //return true or error<br>\n";
+	print "\$res = \$sql->updateData( table, query, where ); //return true or error<br>\n";
+	print "\$data = \$sql->getData( table, query, sort = null, random = false, limit = null, limitStart = null ); //return Array or error. (reverse sotring if first symbol sort = ! )<br>\n";
 	print "\$string = \$sql->getErrorString(); //return error string<br>\n";
 	print "\$id = \$sql->getLastInsertID(); //return last ID or 0 from non AUTO_INCREMENT fields or false<br>\n";
-	print "\$value = \$sql->getAutoincrementValue( table, debug = false )<br>\n";
-	print "\$res = \$sql->setAutoincrementValue( table, value = 1, debug = false )<br>\n";
-	print "\$res = \$sql->clearTable( table, debug = false )<br>\n";
-	print "\$res = \$sql->sendRaw( request, debug = false )<br>\n";
+	print "\$value = \$sql->getAutoincrementValue( table )<br>\n";
+	print "\$res = \$sql->setAutoincrementValue( table, value = 1 )<br>\n";
+	print "\$res = \$sql->clearTable( table )<br>\n";
+	print "\$res = \$sql->sendRaw( request )<br>\n";
 }
 
 class Sql
 {
-	private $serverAddr				= 'localhost';
-	private $userName				= '';
-	private $password				= '';
-	private $dataBase				= '';
-	private $connect_db				= '';
+	private $serverAddr				= "localhost";
+	private $userName				= "";
+	private $password				= "";
+	private $dataBase				= "";
+	private $connect_db				= "";
 	private $success				= false;
-	private $errorString			= '';
+	private $debug					= false;
 
-	public function init( $serverAddr, $userName, $password, $dataBase = '' )
+	public function init( $serverAddr, $userName, $password, $dataBase = "" )
 	{
-		if( $serverAddr == '' )		return 'SQL ERROR: serverAddr';
-		if( $userName == '' )		return 'SQL ERROR: userName';
-		if( $password == '' )		return 'SQL ERROR: password';
-		if( $dataBase == '' )		return 'SQL ERROR: dataBase';
+		if( $serverAddr == "" )		return "SQL ERROR: serverAddr";
+		if( $userName == "" )		return "SQL ERROR: userName";
+		if( $password == "" )		return "SQL ERROR: password";
+		if( $dataBase == "" )		return "SQL ERROR: dataBase";
 
 		$this->serverAddr			= $serverAddr;
 		$this->userName				= $userName;
@@ -43,6 +44,8 @@ class Sql
 
 		return true;
 	}
+
+	public function setDebug( $debug = true ){ $this->debug = (bool)$debug; }
 
 	public function selectDB( $dataBase )
 	{
@@ -96,7 +99,7 @@ class Sql
 		return mysqli_error( $this->connect_db );
 	}
 
-	public function deleteData( $table, $query, $debug = false )
+	public function deleteData( $table, $query )
 	{
 		$counter = 0;
 		$total = count($query);
@@ -117,14 +120,14 @@ class Sql
 		}
 
 		$delete = "DELETE FROM "."`$table`".$where.";";
-		if( $debug ) print_r( $delete );
+		if( $this->debug ) print_r( $delete );
 		mysqli_query( $this->connect_db,"SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db,"SET CHARACTER SET `utf8mb4`" );
 		mysqli_query( $this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`" );
 		return mysqli_query( $this->connect_db, $delete);
 	}
 
-	public function addData( $table, $query, $debug = false )
+	public function addData( $table, $query )
 	{
 		$counter = 0;
 		$insert_f = true;
@@ -163,14 +166,14 @@ class Sql
 		}
 
 		$insert = "INSERT INTO "."`$table`"."$colls"." VALUES (". $data .");";
-		if( $debug ) print_r( $insert );
+		if( $this->debug ) print_r( $insert );
 		mysqli_query($this->connect_db,"SET NAMES `utf8`");
 		mysqli_query($this->connect_db,"SET CHARACTER SET `utf8mb4`");
 		mysqli_query($this->connect_db,"SET SESSION collation_connection = `utf8_general_ci`");
 		return mysqli_query($this->connect_db, $insert);
 	}
 
-	public function updateData( $table, $query, $where, $debug = false )
+	public function updateData( $table, $query, $where )
 	{
 		$counter = 0;
 		$total = count($query);
@@ -209,7 +212,7 @@ class Sql
 		}
 
 		$update = "UPDATE "."`$table` SET "." $data ".$cond.";";
-		if( $debug ) print_r( $update );
+		if( $this->debug ) print_r( $update );
 		//print_r("UPDATE  `tempD`.`tb_color` SET  `color` =  'Многоцветный 2' WHERE  `tb_color`.`id` =6;");
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8mb4`" );
@@ -217,27 +220,30 @@ class Sql
 		return mysqli_query( $this->connect_db, $update );
 	}
 
-	public function getData( $table, $query = array( "*" ), $sort = null, $random = false, $limit = null, $limitStart = null, $debug = false )
+	public function getData( $table, $query = array( "*" ), $sort = null, $random = false, $limit = null, $limitStart = null )
 	{
 		$counter = 0;
-		$where = "";
-		$data = "";
+		$where = '';
+		$data = '';
 		$total = count($query);
 		$where_f = true;
 
 		if( array_key_exists( 0, $query ) && $query[0] == '*' ){
-			$data = " * ";
+			$data = ' * ';
 			foreach( $query as $key => $val ){
-				$where_buf = "AND";
+				$where_buf = 'AND';
 				if(!is_numeric($key)){
 					if($where_f == true){
-						$where = "WHERE ";
+						$where = 'WHERE ';
 						$where_f = false;
 					}
 					if( is_string( $val ) ){
-						if( substr( $val, 0, 1 ) == "|" ){
+						if( substr( $val, 0, 1 ) == '|' ){
 							$val = substr( $val, 1 );
-							$where_buf = "OR";
+							$where_buf = 'OR';
+						}else if( substr( $val, 0, 1 ) == '!' ){
+							$val = substr( $val, 1 );
+							$where_buf = '!=';
 						}
 					}
 
@@ -260,22 +266,28 @@ class Sql
 			}
 		}else{
 			foreach($query as $key => $val){
-				$where_buf = "AND";
+
+				$where_buf = 'AND';
+				$action = '=';
+
 				if(is_numeric($key)){
 					if(++$counter == $total){
 						$data = $data."`$val`";
 					}else{
-					   $data = $data."`$val`,";
+						$data = $data."`$val`,";
 					}
 				}else{
-					if($where_f == true){
-						$where = "WHERE ";
+					if( $where_f == true ){
+						$where = 'WHERE ';
 						$where_f = false;
 					}
 					if( is_string( $val ) ){
-						if( substr( $val, 0, 1 ) == "|" ){
+						if( substr( $val, 0, 1 ) == '|' ){
 							$val = substr( $val, 1 );
-							$where_buf = "OR";
+							$where_buf = 'OR';
+						}else if( substr( $val, 0, 1 ) == '!' ){
+							$val = substr( $val, 1 );
+							$action = '!=';
 						}
 					}
 
@@ -284,11 +296,11 @@ class Sql
 					$testVal--;
 
 					if( is_int( $testVal ) || is_float( $testVal ) ){
-						$where = $where. "`$key`"." = ".$val."\n";
+						$where = $where.'`'.$key.'`'.' '.$action.' '.$val."\n";
 					} else {
-						$where = $where."`$key`"." LIKE "."'$val'"."\n";
+						$where = $where.'`'.$key.'`'.' LIKE '."'$val'"."\n";
 					}
-
+					
 					if(++$counter == $total){
 						$data = $data."`$key`";
 						$where = $where;
@@ -318,7 +330,7 @@ class Sql
 		}
 
 		$select .= ";";
-		if( $debug ) print_r( $select );
+		if( $this->debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8mb4`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
@@ -343,11 +355,11 @@ class Sql
 		}
 	}
 
-	public function getAutoincrementValue( $table, $debug = false )
+	public function getAutoincrementValue( $table )
 	{
 		$select = "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$this->dataBase."' AND TABLE_NAME = '".$table."';";
-
-		if( $debug ) print_r( $select );
+		
+		if( $this->debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
@@ -371,16 +383,16 @@ class Sql
 		}
 	}
 
-	public function setAutoincrementValue( $table, $value = 1, $debug = false )
+	public function setAutoincrementValue( $table, $value = 1 )
 	{
 		if( !is_numeric( $value ) ){
-			if( $debug ) print "Value is invalid";
+			if( $this->debug ) print "Value is invalid";
 			return false;
 		}
 
 		$select = "ALTER TABLE `".$table."` AUTO_INCREMENT=".$value.";";
-
-		if( $debug ) print_r( $select );
+		
+		if( $this->debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
@@ -390,11 +402,11 @@ class Sql
 		return ( $result === true ) ? true : false;
 	}
 
-	public function clearTable( $table, $debug = false )
+	public function clearTable( $table )
 	{
 		$select = "DELETE FROM `".$table."`;";
-
-		if( $debug ) print_r( $select );
+		
+		if( $this->debug ) print_r( $select );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
@@ -404,9 +416,9 @@ class Sql
 		return ( $result === true ) ? true : false;
 	}
 
-	public function sendRaw( $request, $debug = false )
+	public function sendRaw( $request )
 	{
-		if( $debug ) print_r( $request );
+		if( $this->debug ) print_r( $request );
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
