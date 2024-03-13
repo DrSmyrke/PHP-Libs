@@ -177,10 +177,10 @@ class Sql
 	{
 		$counter = 0;
 		$total = count($query);
-		$data = "";
+		$data = '';
 		foreach($query as $key => $val){
 			$counter++;
-			if( is_int($val) or is_float($val) ){
+			if( is_int( $val ) or is_float( $val ) or substr( $val, 0, 2 ) == '0x' ){
 				$data = $data . "`$key` = ".$val ;
 			}else{
 				$data = $data . "`$key` = "."'$val'" ;
@@ -217,7 +217,16 @@ class Sql
 		mysqli_query( $this->connect_db, "SET NAMES `utf8`" );
 		mysqli_query( $this->connect_db, "SET CHARACTER SET `utf8mb4`" );
 		mysqli_query( $this->connect_db, "SET SESSION collation_connection = `utf8_general_ci`" );
-		return mysqli_query( $this->connect_db, $update );
+
+		try{
+			return mysqli_query( $this->connect_db, $update );
+		}catch(Exception $e){
+			$this->errorString = 'Caught exception: '.$e->getMessage()."\n";
+			return false;
+		}finally{
+			$this->errorString = '';
+		}
+		return true;
 	}
 
 	public function getData( $table, $query = array( "*" ), $sort = null, $random = false, $limit = null, $limitStart = null )
@@ -425,6 +434,8 @@ class Sql
 
 		$result = mysqli_query( $this->connect_db, $request );
 
+		if( $result === true ) return true;
+		if( $result === false ) return false;
 		if( !$result ) return Array();
 		return Sql::r_normal_array_DB( $result );
 	}
