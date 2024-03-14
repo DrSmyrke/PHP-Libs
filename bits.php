@@ -2,8 +2,10 @@
 function bits_help()
 {
 	print "\$bits = new Bits;<br>\n";
-	// print "\$res = \$sql->init( serverAddr, userName, password, dataBase ); //return true or error<br>\n";
-	// print "\$res = \$sql->init( serverAddr, userName, password, dataBase ); //return true or error<br>\n";
+	print "\$res = Bits::checkBit( value, bitNum ); //return true or false<br>\n";
+	print "\$res = Bits::setBit( &value, bitNum );<br>\n";
+	print "\$res = Bits::resetBit( &value, bitNum );<br>\n";
+	print "\$res = Bits::invertBit( &value, bitNum );<br>\n";
 }
 
 class Bits
