@@ -22,20 +22,21 @@ function sql_help()
 
 class Sql
 {
-	private $serverAddr				= "localhost";
-	private $userName				= "";
-	private $password				= "";
-	private $dataBase				= "";
-	private $connect_db				= "";
+	private $serverAddr				= 'localhost';
+	private $userName				= '';
+	private $password				= '';
+	private $dataBase				= '';
+	private $connect_db				= '';
+	private $errorString			= '';
 	private $success				= false;
 	private $debug					= false;
 
-	public function init( $serverAddr, $userName, $password, $dataBase = "" )
+	public function init( $serverAddr, $userName, $password, $dataBase = '' )
 	{
-		if( $serverAddr == "" )		return "SQL ERROR: serverAddr";
-		if( $userName == "" )		return "SQL ERROR: userName";
-		if( $password == "" )		return "SQL ERROR: password";
-		if( $dataBase == "" )		return "SQL ERROR: dataBase";
+		if( $serverAddr == '' )		return 'SQL ERROR: serverAddr';
+		if( $userName == '' )		return 'SQL ERROR: userName';
+		if( $password == '' )		return 'SQL ERROR: password';
+		if( $dataBase == '' )		return 'SQL ERROR: dataBase';
 
 		$this->serverAddr			= $serverAddr;
 		$this->userName				= $userName;
@@ -49,7 +50,7 @@ class Sql
 
 	public function selectDB( $dataBase )
 	{
-		if( $dataBase == "" )		return "SQL ERROR: dataBase";
+		if( $dataBase == '' )		return 'SQL ERROR: dataBase';
 		if( $this->success ){
 			mysqli_close( $this->connect_db );
 		}
