@@ -181,7 +181,13 @@ class Sql
 		$data = '';
 		foreach($query as $key => $val){
 			$counter++;
-			if( is_int( $val ) or is_float( $val ) or substr( $val, 0, 2 ) == '0x' ){
+			
+			$isHex = false;
+			if( is_string( $val) ){
+				if( substr( $val, 0, 2 ) == '0x' ) $isHex = true;
+			}
+
+			if( is_int( $val ) or is_float( $val ) or $isHex ){
 				$data = $data . "`$key` = ".$val ;
 			}else{
 				$data = $data . "`$key` = "."'$val'" ;
