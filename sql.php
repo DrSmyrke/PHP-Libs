@@ -177,17 +177,30 @@ class Sql
 	public function updateData( $table, $query, $where )
 	{
 		$counter = 0;
-		$total = count($query);
+		$total = count( $query );
 		$data = '';
-		foreach($query as $key => $val){
+		foreach( $query as $key => $val ){
 			$counter++;
 			
 			$isHex = false;
-			if( is_string( $val) ){
+			$math = '';
+			$fSym = substr( $key, -1, 1 );
+
+			if( is_string( $val ) ){
 				if( substr( $val, 0, 2 ) == '0x' ) $isHex = true;
 			}
 
-			if( is_int( $val ) or is_float( $val ) or $isHex ){
+			if( $fSym == '+' || $fSym == '-' || $fSym == '/' || $fSym == '*' ){
+				$val++;
+				$val--;
+				if( is_int( $val ) or is_float( $val ) ){
+					$math = $fSym;
+					$key = substr( $key, 0, -1 );
+					$val = '`'.$key.'` '.$fSym.' '.$val;
+				}
+			}
+
+			if( is_int( $val ) or is_float( $val ) or $isHex or $math != '' ){
 				$data = $data . "`$key` = ".$val ;
 			}else{
 				$data = $data . "`$key` = "."'$val'" ;
