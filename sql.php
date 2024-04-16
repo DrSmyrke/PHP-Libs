@@ -146,15 +146,22 @@ class Sql
 				}
 			}else{
 				$insert_f = false;
-				if( is_numeric($val) || $val == "now()" ){
-					$data = $data . "$val";
+				$isHex = false;
+
+				if( is_string( $val ) ){
+					if( substr( $val, 0, 2 ) == '0x' ) $isHex = true;
+				}
+
+				if( is_numeric($val) || $val == 'now()' || $isHex ){
+					$data = $data . $val;
 				}else{
 					$data = $data . "'$val'";
 				}
-				$colls = $colls. "`$key`"." ";
+
+				$colls = $colls. "`$key`".' ';
 				if($counter != $total) {
-					$data = $data . ",";
-					$colls = $colls.",";
+					$data = $data . ',';
+					$colls = $colls.',';
 				}else{
 					$data = $data;
 					$colls = $colls;
