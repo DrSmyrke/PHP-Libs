@@ -328,8 +328,6 @@ class Sql
 					}
 
 					$testVal = $val;
-					$testVal++;
-					$testVal--;
 
 					if( is_int( $testVal ) || is_float( $testVal ) ){
 						$where = $where.'`'.$key.'`'.' '.$action.' '.$val."\n";
