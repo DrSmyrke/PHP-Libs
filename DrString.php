@@ -1,7 +1,7 @@
 <?php
 function DrString_help()
 {
-	// print "\$class = new DrString;<br>\n";
+	// print "\$binary = new Binary;<br>\n";
 }
 
 class DrString
@@ -20,7 +20,7 @@ class DrString
 	 * @param boolean value
 	 * @return packed binary string
 	 */
-	static public function compare( &$string1, &$string2, $smart = true, $percent = true )
+	static public function compare( &$string1, &$string2, $percent = true )
 	{
 		$similar_symbols					= Array(
 			'n' => 'ñ', 'e' => 'é', 'a' => 'á', 'i' => 'í', 'u' => 'ú', '?' => '¿',
